@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+import org.usfirst.frc.team166.robot.commands.CommandBase;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -24,7 +26,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		oi = new OI();
+
+		// Initialize all subsystems and the OI
+		CommandBase.init();
+
 		// instantiate the command used for the autonomous period
 		autonomousCommand = null;
 	}
