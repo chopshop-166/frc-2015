@@ -52,6 +52,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		CommandBase.updateSmartDashboardCommands();
 	}
 
 	@Override
@@ -79,6 +80,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		CommandBase.updateSmartDashboardCommands();
 	}
 
 	/**
