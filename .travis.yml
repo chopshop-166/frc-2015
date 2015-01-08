@@ -1,0 +1,5 @@
+sudo: false
+language: java
+install: git clone https://github.com/chopshop-166/wpilib-mirror.git ~/wpilib
+script: ant jar
+jdk: oraclejdk8
