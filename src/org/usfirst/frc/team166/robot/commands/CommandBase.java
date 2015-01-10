@@ -1,8 +1,10 @@
 package org.usfirst.frc.team166.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.OI;
+import org.usfirst.frc.team166.robot.subsystems.Drive;
 
 /**
  * This is the base for all commands that will be implemented. All subsystems
@@ -11,6 +13,8 @@ import org.usfirst.frc.team166.robot.OI;
 public abstract class CommandBase extends Command {
 
 	protected static OI oi;
+
+	protected static final Drive drive = new Drive();
 
 	public CommandBase() {
 		super();
@@ -32,5 +36,6 @@ public abstract class CommandBase extends Command {
 	}
 
 	public static void updateSmartDashboardCommands() {
+		SmartDashboard.putData(drive);
 	}
 }
