@@ -7,8 +7,7 @@ import org.usfirst.frc.team166.robot.OI;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
 
 /**
- * This is the base for all commands that will be implemented. All subsystems
- * instances will be contained in this class.
+ * This is the base for all commands that will be implemented. All subsystems instances will be contained in this class.
  */
 public abstract class CommandBase extends Command {
 
