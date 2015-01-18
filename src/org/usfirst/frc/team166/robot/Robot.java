@@ -6,6 +6,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team166.robot.commands.CommandBase;
+import org.usfirst.frc.team166.robot.subsystems.Claw;
+import org.usfirst.frc.team166.robot.subsystems.Drive;
+import org.usfirst.frc.team166.robot.subsystems.Lift;
+import org.usfirst.frc.team166.robot.subsystems.Wing;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -15,7 +19,13 @@ import org.usfirst.frc.team166.robot.commands.CommandBase;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
-
+	public static final Wing leftWing = new Wing(null);// this null is gonna be a solenoid
+	public static final Wing rightWing = new Wing(null);// see above
+	public static final Drive drive = new Drive();// Those two juniors are working on this, so I will let them make the
+													// parameter
+	public static final Lift toteLift = new Lift(null);// this null is gonna be a motor
+	public static final Lift rcLift = new Lift(null);// see above
+	public static final Claw claw = new Claw(null);// This is gonna be a solenoid
 	Command autonomousCommand;
 
 	/**
