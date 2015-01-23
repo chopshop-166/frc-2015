@@ -7,25 +7,23 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Wing extends Subsystem {
-	
-	public Wing(Solenoid solenoid) {
-		
-	}
-	
-	public void raise(){
-		
-	return;	
-	}
-	public void lower(){
-		
-	return;	
-	}
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+	private Solenoid solenoid;
 
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    }
+	public Wing(int channel) {
+		solenoid = new Solenoid(channel);
+	}
+
+	public void raise() {
+		solenoid.set(true);
+
+	}
+
+	public void lower() {
+		solenoid.set(false);
+	}
+
+	@Override
+	public void initDefaultCommand() {
+
+	}
 }
-
