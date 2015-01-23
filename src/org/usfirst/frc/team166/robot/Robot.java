@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import org.usfirst.frc.team166.robot.commands.CommandBase;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
@@ -22,7 +21,7 @@ public class Robot extends IterativeRobot {
 	public static final Wing leftWing = new Wing(null);// this null is gonna be a solenoid
 	public static final Wing rightWing = new Wing(null);// see above
 	public static final Drive drive = new Drive();// Those two juniors are working on this, so I will let them make the
-													// parameter
+	// parameter
 	public static final Lift toteLift = new Lift(null);// this null is gonna be a motor
 	public static final Lift rcLift = new Lift(null);// see above
 	public static final Claw claw = new Claw(null);// This is gonna be a solenoid
@@ -33,10 +32,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-
-		// Initialize all subsystems and the OI
-		CommandBase.init();
-
+		// This MUST be here. If the OI creates Commands (which it very likely
+		// will), constructing it during the construction of CommandBase (from
+		// which commands extend), subsystems are not guaranteed to be yet.
+		// Thus, their requires() statements may grab null pointers. Bad news.
+		// Don't move it.
+		oi = new OI();
 		// instantiate the command used for the autonomous period
 		autonomousCommand = null;
 	}
@@ -59,7 +60,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		CommandBase.updateSmartDashboardCommands();
 	}
 
 	@Override
@@ -84,7 +84,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		CommandBase.updateSmartDashboardCommands();
 	}
 
 	/**
