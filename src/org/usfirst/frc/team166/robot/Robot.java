@@ -18,8 +18,8 @@ import org.usfirst.frc.team166.robot.subsystems.Wing;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
-	public static final Wing leftWing = new Wing(null);// this null is gonna be a solenoid
-	public static final Wing rightWing = new Wing(null);// see above
+	public static final Wing leftWing = new Wing(RobotMap.LeftWingSolenoid);
+	public static final Wing rightWing = new Wing(RobotMap.RightWingSolenoid);
 	public static final Drive drive = new Drive();// Those two juniors are working on this, so I will let them make the
 	// parameter
 	public static final Lift toteLift = new Lift(null);// this null is gonna be a motor
