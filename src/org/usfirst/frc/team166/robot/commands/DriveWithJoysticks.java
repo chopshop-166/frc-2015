@@ -1,12 +1,16 @@
 package org.usfirst.frc.team166.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
+
+import org.usfirst.frc.team166.robot.Robot;
+
 /**
  *
  */
-public class DriveWithJoysticks extends CommandBase {
+public class DriveWithJoysticks extends Command {
 
 	public DriveWithJoysticks() {
-		requires(drive);
+		requires(Robot.drive);
 	}
 
 	// Called just before this Command runs the first time
@@ -17,7 +21,7 @@ public class DriveWithJoysticks extends CommandBase {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		oi.getExampleDriveJoystick();
+		Robot.oi.getDriveJoystick();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
