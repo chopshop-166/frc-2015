@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
-import org.usfirst.frc.team166.robot.subsystems.Lift;
+import org.usfirst.frc.team166.robot.subsystems.RCLift;
+import org.usfirst.frc.team166.robot.subsystems.ToteLift;
 import org.usfirst.frc.team166.robot.subsystems.Wing;
 
 /**
@@ -22,8 +23,8 @@ public class Robot extends IterativeRobot {
 	public static final Wing rightWing = new Wing(RobotMap.RightWingSolenoid);
 	public static final Drive drive = new Drive();// Those two juniors are working on this, so I will let them make the
 	// parameter
-	public static final Lift toteLift = new Lift(null);// this null is gonna be a motor
-	public static final Lift rcLift = new Lift(null);// see above
+	public static final ToteLift toteLift = new ToteLift(null);// this null is gonna be a motor
+	public static final RCLift rcLift = new RCLift(null);// see above
 	public static final Claw claw = new Claw(null);// This is gonna be a solenoid
 	Command autonomousCommand;
 
