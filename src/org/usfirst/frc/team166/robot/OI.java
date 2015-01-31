@@ -8,6 +8,7 @@ import org.usfirst.frc.team166.robot.commands.Autonomous;
 import org.usfirst.frc.team166.robot.commands.CancelDriveCommand;
 import org.usfirst.frc.team166.robot.commands.DriveDirection;
 import org.usfirst.frc.team166.robot.commands.LiftWings;
+import org.usfirst.frc.team166.robot.commands.LowerWings;
 
 /**
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
@@ -27,6 +28,7 @@ public class OI {
 		button3.whileHeld(new DriveDirection(90));
 		button4.whenPressed(new Autonomous());
 		SmartDashboard.putData("LiftWings", new LiftWings());
+		SmartDashboard.putData("LiftWings", new LowerWings());
 	}
 
 	public Joystick getDriveJoystick() {
