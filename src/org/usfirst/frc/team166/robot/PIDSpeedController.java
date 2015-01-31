@@ -6,58 +6,51 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+/*
+ * Implements a SpeedController with an underlying PID controller
+ */
 public class PIDSpeedController implements SpeedController {
 
 	PIDController controller;
 
-	public PIDSpeedController(PIDSource source, PIDOutput output, String controllerName) {
-		// controller = new PIDController(Preferences.getInstance().getDouble("P",
-		// 0),Preferences.getInstance().getDouble("I", 0),
-		// Preferences.getInstance().getDouble("D", 0),Preferences.getInstance().getDouble("F", 0),source,output);
-		controller = new PIDController(2, 0, 0, 1, source, output);
-		// LiveWindow.addActuator("Drive", "FrontLeft", controller);
-		LiveWindow.addActuator("Drive", controllerName, controller);
+	public PIDSpeedController(PIDSource source, PIDOutput output, String subsystem, String controllerName) {
+		controller = new PIDController(0, 0, 0, 0, source, output);
 
+		LiveWindow.addActuator(subsystem, controllerName, controller);
 	}
 
-	public void setConstants() {
-		// controller.setPID(Preferences.getInstance().getDouble("P", 0),Preferences.getInstance().getDouble("I", 0),
-		// Preferences.getInstance().getDouble("D", 0),Preferences.getInstance().getDouble("F", 0));
+	public void setConstants(double p, double i, double d, double f) {
+		controller.setPID(p, i, d, f);
+	}
+
+	public void setConstants(double p, double i, double d) {
+		controller.setPID(p, i, d);
 	}
 
 	@Override
 	public void pidWrite(double output) {
-		// TODO Auto-generated method stub
 		// Never Used
-
 	}
 
 	@Override
 	public double get() {
-
-		// TODO Auto-generated method stub
 		return controller.getSetpoint();
 	}
 
 	@Override
 	public void set(double setpoint, byte syncGroup) {
-		controller.setSetpoint(setpoint);
-		controller.enable();
+		set(setpoint);
 	}
 
 	@Override
 	public void set(double setpoint) {
 		controller.setSetpoint(setpoint);
 		controller.enable();
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void disable() {
 		controller.disable();
-		// TODO Auto-generated method stub
-
 	}
 
 	public void reset() {

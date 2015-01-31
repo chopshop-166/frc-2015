@@ -15,40 +15,41 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
+import org.usfirst.frc.team166.robot.RobotMap;
 import org.usfirst.frc.team166.robot.commands.DriveWithJoysticks;
 
 public class Drive extends Subsystem {
 	// ROBOTDRIVE INIT
-	RobotDrive robotDrive;
+	final RobotDrive robotDrive;
 
 	// PDP INIT
 	PowerDistributionPanel pdp;
 
 	// RANGEFINDER INITS
-	AnalogInput frontRangefinder;
-	AnalogInput leftRangefinder;
-	AnalogInput rightRangefinder;
+	final AnalogInput frontRangefinder;
+	final AnalogInput leftRangefinder;
+	final AnalogInput rightRangefinder;
 
 	// PID CONTROLLER INITS
-	PIDSpeedController frontLeftPID;
-	PIDSpeedController frontRightPID;
-	PIDSpeedController rearLeftPID;
-	PIDSpeedController rearRightPID;
+	final PIDSpeedController frontLeftPID;
+	final PIDSpeedController frontRightPID;
+	final PIDSpeedController rearLeftPID;
+	final PIDSpeedController rearRightPID;
 
 	// TALON INITS
-	Talon frontLeftTalon;
-	Talon rearLeftTalon;
-	Talon frontRightTalon;
-	Talon rearRightTalon;
+	final Talon frontLeftTalon;
+	final Talon rearLeftTalon;
+	final Talon frontRightTalon;
+	final Talon rearRightTalon;
 
 	// ENCODER INITS
-	Encoder frontLeftEncoder;
-	Encoder frontRightEncoder;
-	Encoder rearLeftEncoder;
-	Encoder rearRightEncoder;
+	final Encoder frontLeftEncoder;
+	final Encoder frontRightEncoder;
+	final Encoder rearLeftEncoder;
+	final Encoder rearRightEncoder;
 
 	// YAWRATE SENSOR INIT
-	public Gyro gyro;
+	public final Gyro gyro;
 
 	// YAWRATE SENSOR VARIABLES
 	double gyroOffset;
@@ -72,24 +73,24 @@ public class Drive extends Subsystem {
 		pdp = new PowerDistributionPanel();
 
 		// SPEED CONTROLLER PORTS
-		rearLeftTalon = new Talon(0);
-		rearRightTalon = new Talon(1);
-		frontLeftTalon = new Talon(2);
-		frontRightTalon = new Talon(3);
+		frontLeftTalon = new Talon(RobotMap.FrontLeftDrivePwm);
+		rearLeftTalon = new Talon(RobotMap.RearLeftDrivePwm);
+		frontRightTalon = new Talon(RobotMap.FrontRightDrivePwm);
+		rearRightTalon = new Talon(RobotMap.RearRightDrivePwm);
 
 		// ULTRASONIC SENSORS
-		frontRangefinder = new AnalogInput(1);
-		rightRangefinder = new AnalogInput(2);
-		leftRangefinder = new AnalogInput(3);
+		frontRangefinder = new AnalogInput(RobotMap.FrontRangeFinder);
+		rightRangefinder = new AnalogInput(RobotMap.RightRangeFinder);
+		leftRangefinder = new AnalogInput(RobotMap.LeftRangeFinder);
 
 		// YAWRATE SENSOR
-		gyro = new Gyro(0);
+		gyro = new Gyro(RobotMap.Gryo);
 
 		// ENCODER PORTS
-		rearLeftEncoder = new Encoder(0, 1);
-		rearRightEncoder = new Encoder(2, 3);
-		frontLeftEncoder = new Encoder(4, 5);
-		frontRightEncoder = new Encoder(6, 7);
+		frontLeftEncoder = new Encoder(RobotMap.FrontLeftDriveEncoderA, RobotMap.FrontLeftDriveEncoderB);
+		rearLeftEncoder = new Encoder(RobotMap.RearLeftDriveEncoderA, RobotMap.RearLeftDriveEncoderB);
+		frontRightEncoder = new Encoder(RobotMap.FrontRightDriveEncoderA, RobotMap.FrontRightDriveEncoderB);
+		rearRightEncoder = new Encoder(RobotMap.RearRightDriveEncoderA, RobotMap.RearRightDriveEncoderB);
 
 		// ENCODER MATH
 		frontLeftEncoder.setDistancePerPulse(((6 * Math.PI) / 1024) / 183);
@@ -102,10 +103,10 @@ public class Drive extends Subsystem {
 		rearRightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
 
 		// PID SPEED CONTROLLERS
-		frontLeftPID = new PIDSpeedController(frontLeftEncoder, frontLeftTalon, "frontLeft");
-		frontRightPID = new PIDSpeedController(frontRightEncoder, frontRightTalon, "frontRight");
-		rearLeftPID = new PIDSpeedController(rearLeftEncoder, rearLeftTalon, "rearLeft");
-		rearRightPID = new PIDSpeedController(rearRightEncoder, rearRightTalon, "rearRight");
+		frontLeftPID = new PIDSpeedController(frontLeftEncoder, frontLeftTalon, "Drive", "frontLeft");
+		frontRightPID = new PIDSpeedController(frontRightEncoder, frontRightTalon, "Drive", "frontRight");
+		rearLeftPID = new PIDSpeedController(rearLeftEncoder, rearLeftTalon, "Drive", "rearLeft");
+		rearRightPID = new PIDSpeedController(rearRightEncoder, rearRightTalon, "Drive", "rearRight");
 
 		// DRIVE DECLARATION
 		robotDrive = new RobotDrive(frontLeftPID, rearLeftPID, frontRightPID, rearRightPID);
@@ -269,10 +270,15 @@ public class Drive extends Subsystem {
 
 	// SETS THE PID CONSTANTS THROUGH PREFERENCES (CURRENTLY UNUSED)
 	public void setPIDConstants() {
-		frontLeftPID.setConstants();
-		frontRightPID.setConstants();
-		rearLeftPID.setConstants();
-		rearRightPID.setConstants();
+		double p = Preferences.getInstance().getDouble("DriveP", 0);
+		double i = Preferences.getInstance().getDouble("DriveI", 0);
+		double d = Preferences.getInstance().getDouble("DriveD", 0);
+		double f = Preferences.getInstance().getDouble("DriveF", 0);
+
+		frontLeftPID.setConstants(p, i, d, f);
+		frontRightPID.setConstants(p, i, d, f);
+		rearLeftPID.setConstants(p, i, d, f);
+		rearRightPID.setConstants(p, i, d, f);
 	}
 
 	// RESETS THE INTEGRAL BUILDUP
