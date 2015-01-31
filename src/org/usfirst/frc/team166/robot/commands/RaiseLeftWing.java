@@ -18,7 +18,7 @@ public class RaiseLeftWing extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.leftWing.lower();
+		Robot.leftWing.raise();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
