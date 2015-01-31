@@ -7,9 +7,12 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class DriveWithJoysticks extends Command {
+public class DriveDirection extends Command {
+	private int driveAngle;
 
-	public DriveWithJoysticks() {
+	public DriveDirection(int angle) {
+		this.driveAngle = angle;
+		// Use requires() here to declare subsystem dependencies
 		requires(Robot.drive);
 	}
 
@@ -21,12 +24,7 @@ public class DriveWithJoysticks extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.drive.mecanumDrive(Robot.oi.getDriveJoystick());
-		Robot.drive.printEncoderValues();
-		Robot.drive.getGyro();
-		Robot.drive.getFrontDistance();
-		Robot.drive.getRightDistance();
-		Robot.drive.getLeftDistance();
+		Robot.drive.driveAngle(driveAngle);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -38,6 +36,7 @@ public class DriveWithJoysticks extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+
 	}
 
 	// Called when another command which requires one or more of the same
