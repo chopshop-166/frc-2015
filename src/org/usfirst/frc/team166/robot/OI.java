@@ -27,8 +27,10 @@ public class OI {
 		button2.whenPressed(new CancelDriveCommand());
 		button3.whileHeld(new DriveDirection(90));
 		button4.whenPressed(new Autonomous());
+
 		SmartDashboard.putData("LiftWings", new LiftWings());
-		SmartDashboard.putData("LiftWings", new LowerWings());
+		SmartDashboard.putData("LowerWings", new LowerWings());
+
 	}
 
 	public Joystick getDriveJoystick() {
