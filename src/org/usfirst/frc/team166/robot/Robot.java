@@ -53,6 +53,8 @@ public class Robot extends IterativeRobot {
 
 		// Set the drive subsystem PID controller constants from preferences
 		drive.setPIDConstants();
+		toteLift.LiftPIDInit("Tote lift", "Tote Lift PID");
+		rcLift.LiftPIDInit("RC lift", "RC Lift PID");
 	}
 
 	@Override
