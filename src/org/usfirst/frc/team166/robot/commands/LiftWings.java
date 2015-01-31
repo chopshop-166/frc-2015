@@ -12,7 +12,7 @@ public class LiftWings extends CommandGroup {
 	public LiftWings() {
 		requires(Robot.rightWing);
 		requires(Robot.leftWing);
-		addParallel(new RaiseRightWing());
+		addParallel(new RaiseRightWing()); // raises both wings at the same time.
 		addSequential(new RaiseLeftWing());
 	}
 }
