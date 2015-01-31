@@ -55,9 +55,4 @@ public class RobotMap {
 	public static final int RightRangeFinder = 2;
 	public static final int LeftRangeFinder = 3;
 
-	// Lift Movement
-	public enum LiftMovement {
-		Stopped, Up, Down
-	}
-
 }
