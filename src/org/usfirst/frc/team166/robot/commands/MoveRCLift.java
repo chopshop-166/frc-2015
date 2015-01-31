@@ -7,9 +7,9 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class RaiseRC extends Command {
+public class MoveRCLift extends Command {
 
-	public RaiseRC() {
+	public MoveRCLift() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.rcLift);
@@ -23,6 +23,12 @@ public class RaiseRC extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		Robot.oi.getRCJoystick();
+		if (Robot.rcLift.isCarriageLimitHit() == true) // if the carriage for the tote hits the RC lift
+		{
+			cancel();// this goes to interrupted, I think
+
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -40,5 +46,6 @@ public class RaiseRC extends Command {
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
+
 	}
 }

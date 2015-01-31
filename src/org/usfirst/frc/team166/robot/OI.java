@@ -14,6 +14,8 @@ import org.usfirst.frc.team166.robot.commands.DriveDirection;
 public class OI {
 
 	private final Joystick driveJoystick = new Joystick(RobotMap.DriveJoystick);
+	private final Joystick toteJoystick = new Joystick(RobotMap.ToteJoystick);
+	private final Joystick rcJoystick = new Joystick(RobotMap.RCJoystick);
 
 	public OI() {
 
@@ -29,4 +31,13 @@ public class OI {
 	public Joystick getDriveJoystick() {
 		return driveJoystick;
 	}
+
+	public Joystick getToteJoystick() {
+		return toteJoystick;
+	}
+
+	public Joystick getRCJoystick() {
+		return rcJoystick;
+	}
+
 }

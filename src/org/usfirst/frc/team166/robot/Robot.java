@@ -8,9 +8,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team166.robot.commands.Autonomous;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
-import org.usfirst.frc.team166.robot.subsystems.RCLift;
-import org.usfirst.frc.team166.robot.subsystems.ToteLift;
+import org.usfirst.frc.team166.robot.subsystems.Lift;
+import org.usfirst.frc.team166.robot.subsystems.LimitSwitchLift;
 import org.usfirst.frc.team166.robot.subsystems.Wing;
+import org.usfirst.frc.team166.robot.triggers.LiftTrigger;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -24,9 +25,13 @@ public class Robot extends IterativeRobot {
 	public static final Wing rightWing = new Wing(RobotMap.RightWingSolenoid);
 	public static final Drive drive = new Drive();// Those two juniors are working on this, so I will let them make the
 	// parameter
-	public static final ToteLift toteLift = new ToteLift(null);// this null is gonna be a motor
-	public static final RCLift rcLift = new RCLift(null);// see above
+	public static final Lift toteLift = new Lift(RobotMap.ToteLiftMotorPwm, RobotMap.ToteLiftBrakeSolenoid,
+			RobotMap.ToteEncoderA, RobotMap.ToteEncoderB, RobotMap.BotLiftLimit, Lift.LimitBoundary.Bottom);
+	public static final LimitSwitchLift rcLift = new LimitSwitchLift(RobotMap.RCLiftMotorPwm,
+			RobotMap.RCLiftBrakeSolenoid, RobotMap.RCEncoderA, RobotMap.RCEncoderB, RobotMap.TopLiftLimit,
+			Lift.LimitBoundary.Top);
 	public static final Claw claw = new Claw(null);// This is gonna be a solenoid
+	private LiftTrigger liftTrigger = new LiftTrigger();
 	Command autonomousCommand = new Autonomous();
 
 	/**
@@ -42,6 +47,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		// instantiate the command used for the autonomous period
 		autonomousCommand = null;
+		liftTrigger.whenActive(null);// we are gonna fix this in the future
 	}
 
 	@Override

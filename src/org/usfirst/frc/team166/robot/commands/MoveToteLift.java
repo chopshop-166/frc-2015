@@ -7,9 +7,9 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class RaiseTote extends Command {
+public class MoveToteLift extends Command {
 
-	public RaiseTote() {
+	public MoveToteLift() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.toteLift);
@@ -23,6 +23,7 @@ public class RaiseTote extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		Robot.oi.getToteJoystick();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
