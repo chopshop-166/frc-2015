@@ -19,9 +19,18 @@ public class Lift extends Subsystem {
 	Encoder encoder;
 	Solenoid brake;
 	LimitBoundary limitPosition;
+	LiftMovement movementState;
 
 	public enum LimitBoundary {
 		Top, Bottom
+	}
+
+	public enum LiftMovement {
+		Stopped, Up, Down
+	}
+
+	public enum WhichCarriagePushing {
+		RC, Tote, None
 	}
 
 	public Lift(int motorChannel, int brakeChannel, int encoderChannelA, int encoderChannelB, int boundaryLimitChannel,
@@ -31,18 +40,38 @@ public class Lift extends Subsystem {
 		encoder = new Encoder(encoderChannelA, encoderChannelB);
 		boundaryLimit = new DigitalInput(boundaryLimitChannel);
 		limitPosition = bound;
+
 	}
 
 	public void move() {
-		// Robot.oi.getRCJoystick();
 		releaseLift();
 		if (Robot.oi.getToteJoystick().getX() < Preferences.getInstance().getDouble("Lift Deadzone", 0)) {
 			motor.set(Preferences.getInstance().getDouble("Move Speed", 0));
+			movementState = LiftMovement.Up;
 		} else if ((Robot.oi.getToteJoystick().getX() > Preferences.getInstance().getDouble("Lift Deadzone", 0))) {
 			motor.set(-Preferences.getInstance().getDouble("Move Speed", 0));
+			movementState = LiftMovement.Down;
 		} else {
 			brakeLift();
+			movementState = LiftMovement.Stopped;
 		}
+	}
+
+	public WhichCarriagePushing collisionMovement(LiftMovement rcMoveState, LiftMovement toteMoveState) {
+		if (rcMoveState == LiftMovement.Stopped && toteMoveState == LiftMovement.Up)
+			return WhichCarriagePushing.Tote;
+		else if (rcMoveState == LiftMovement.Down && toteMoveState == LiftMovement.Stopped)
+			return WhichCarriagePushing.RC;
+		else
+			return WhichCarriagePushing.None;
+	}
+
+	public void bePushed() {
+		motor.set(Preferences.getInstance().getDouble("Move Speed", 0));
+	}
+
+	public LiftMovement moveState() {
+		return movementState;
 	}
 
 	public void brakeLift() {

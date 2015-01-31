@@ -20,8 +20,4 @@ public class LimitSwitchLift extends Lift {
 		return carriageLimit.get();
 	}
 
-	public boolean isCarriageLimitHit() {
-		return carriageLimit.get();
-	}
-
 }

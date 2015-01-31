@@ -40,9 +40,4 @@ public class RobotMap {
 	public static final int ToteEncoderA = 5;
 	public static final int ToteEncoderB = 6;
 
-	// Lift Movement
-	public enum LiftMovement {
-		Stopped, Up, Down
-	}
-
 }
