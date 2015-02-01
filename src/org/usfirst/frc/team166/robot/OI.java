@@ -16,7 +16,7 @@ import org.usfirst.frc.team166.robot.subsystems.Drive;
  */
 public class OI {
 
-	private final Joystick driveJoystick = new Joystick(0);
+	private final Joystick driveJoystick = new Joystick(RobotMap.DriveJoystick);
 	private final Joystick toteJoystick = new Joystick(RobotMap.CopilotController);
 	private final Joystick rcJoystick = new Joystick(RobotMap.CopilotController);
 
