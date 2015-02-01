@@ -2,8 +2,11 @@ package org.usfirst.frc.team166.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.commands.CancelDriveCommand;
+import org.usfirst.frc.team166.robot.commands.LiftWings;
+import org.usfirst.frc.team166.robot.commands.LowerWings;
 import org.usfirst.frc.team166.robot.commands.StrafeDirection;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
 
@@ -14,6 +17,8 @@ import org.usfirst.frc.team166.robot.subsystems.Drive;
 public class OI {
 
 	private final Joystick driveJoystick = new Joystick(RobotMap.DriveJoystick);
+	private final Joystick toteJoystick = new Joystick(RobotMap.ToteJoystick);
+	private final Joystick rcJoystick = new Joystick(RobotMap.RCJoystick);
 
 	public OI() {
 
@@ -21,12 +26,25 @@ public class OI {
 		JoystickButton button2 = new JoystickButton(driveJoystick, 2);
 		JoystickButton button3 = new JoystickButton(driveJoystick, 3);
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
+
 		button2.whenPressed(new CancelDriveCommand());
 		button3.whileHeld(new StrafeDirection(Drive.StrafeDirection.Left));
 		button4.whileHeld(new StrafeDirection(Drive.StrafeDirection.Right));
+
+		SmartDashboard.putData("LiftWings", new LiftWings());
+		SmartDashboard.putData("LowerWings", new LowerWings());
 	}
 
 	public Joystick getDriveJoystick() {
 		return driveJoystick;
 	}
+
+	public Joystick getToteJoystick() {
+		return toteJoystick;
+	}
+
+	public Joystick getRCJoystick() {
+		return rcJoystick;
+	}
+
 }

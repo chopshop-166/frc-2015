@@ -8,9 +8,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team166.robot.commands.Autonomous;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
-import org.usfirst.frc.team166.robot.subsystems.RCLift;
-import org.usfirst.frc.team166.robot.subsystems.ToteLift;
+import org.usfirst.frc.team166.robot.subsystems.Lift;
+import org.usfirst.frc.team166.robot.subsystems.LimitSwitchLift;
 import org.usfirst.frc.team166.robot.subsystems.Wing;
+import org.usfirst.frc.team166.robot.triggers.LiftTrigger;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -22,12 +23,15 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static final Wing leftWing = new Wing(RobotMap.LeftWingSolenoid);
 	public static final Wing rightWing = new Wing(RobotMap.RightWingSolenoid);
-	public static final Drive drive = new Drive();// Those two juniors are working on this, so I will let them make the
-	// parameter
-	public static final ToteLift toteLift = new ToteLift(null);// this null is gonna be a motor
-	public static final RCLift rcLift = new RCLift(null);// see above
-	public static final Claw claw = new Claw(null);// This is gonna be a solenoid
-	Command autonomousCommand = new Autonomous();
+	public static final Drive drive = new Drive();
+	public static final Lift toteLift = new Lift(RobotMap.ToteLiftMotorPwm, RobotMap.ToteLiftBrakeSolenoid,
+			RobotMap.ToteEncoderA, RobotMap.ToteEncoderB, RobotMap.BotLiftLimit, Lift.LimitBoundary.Bottom);
+	public static final LimitSwitchLift rcLift = new LimitSwitchLift(RobotMap.RCLiftMotorPwm,
+			RobotMap.RCLiftBrakeSolenoid, RobotMap.RCEncoderA, RobotMap.RCEncoderB, RobotMap.TopLiftLimit,
+			Lift.LimitBoundary.Top);
+	public static final Claw claw = new Claw(null);
+	private final LiftTrigger liftTrigger = new LiftTrigger();
+	private Command autonomousCommand;
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -40,13 +44,15 @@ public class Robot extends IterativeRobot {
 		// Thus, their requires() statements may grab null pointers. Bad news.
 		// Don't move it.
 		oi = new OI();
-		// instantiate the command used for the autonomous period
-		autonomousCommand = null;
-	}
 
-	@Override
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
+		// instantiate the command used for the autonomous period
+		autonomousCommand = new Autonomous();
+
+		// Add the command for handling when lifts collide once it's implemented
+		liftTrigger.whenActive(null);
+
+		// Set the drive subsystem PID controller constants from preferences
+		drive.setPIDConstants();
 	}
 
 	@Override
@@ -73,6 +79,14 @@ public class Robot extends IterativeRobot {
 	}
 
 	/**
+	 * This function is called periodically during operator control
+	 */
+	@Override
+	public void teleopPeriodic() {
+		Scheduler.getInstance().run();
+	}
+
+	/**
 	 * This function is called when the disabled button is hit. You can use it to reset subsystems before shutting down.
 	 */
 	@Override
@@ -80,11 +94,8 @@ public class Robot extends IterativeRobot {
 
 	}
 
-	/**
-	 * This function is called periodically during operator control
-	 */
 	@Override
-	public void teleopPeriodic() {
+	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
