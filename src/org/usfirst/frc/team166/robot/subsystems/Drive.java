@@ -159,7 +159,7 @@ public class Drive extends Subsystem {
 
 	// DRIVES FORWARD WITH USING GYRO ASSISTANCE
 	public void driveForwardWithGyro() {
-		robotDrive.mecanumDrive_Cartesian(0, (Preferences.getInstance().getDouble("autoSpeed", 0)), getGyroOffset(), 0);
+		robotDrive.mecanumDrive_Cartesian(0, (Preferences.getInstance().getDouble("AutoSpeed", 0)), getGyroOffset(), 0);
 	}
 
 	private double getGyroOffset() {
