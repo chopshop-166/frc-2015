@@ -21,14 +21,15 @@ import org.usfirst.frc.team166.robot.triggers.LiftTrigger;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
-	public static final Wing leftWing = new Wing(RobotMap.LeftWingSolenoid);
-	public static final Wing rightWing = new Wing(RobotMap.RightWingSolenoid);
+	public static final Wing leftWing = new Wing(RobotMap.Solenoid.LeftWing);
+	public static final Wing rightWing = new Wing(RobotMap.Solenoid.RightWing);
 	public static final Drive drive = new Drive();
-	public static final Lift toteLift = new Lift(RobotMap.ToteLiftMotorPwm, RobotMap.ToteLiftBrakeSolenoid,
-			RobotMap.ToteEncoderA, RobotMap.ToteEncoderB, RobotMap.BotLiftLimit, Lift.LimitBoundary.Bottom);
-	public static final LimitSwitchLift rcLift = new LimitSwitchLift(RobotMap.RCLiftMotorPwm,
-			RobotMap.RCLiftBrakeSolenoid, RobotMap.RCEncoderA, RobotMap.RCEncoderB, RobotMap.TopLiftLimit,
-			Lift.LimitBoundary.Top);
+	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.Solenoid.ToteLiftBrake,
+			RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB, RobotMap.Switch.LiftLowerLimit,
+			Lift.LimitBoundary.Bottom);
+	public static final LimitSwitchLift rcLift = new LimitSwitchLift(RobotMap.Pwm.RCLiftMotor,
+			RobotMap.Solenoid.RCLiftBrake, RobotMap.Encoders.RCLiftA, RobotMap.Encoders.RCLiftB,
+			RobotMap.Switch.LiftUpperLimit, Lift.LimitBoundary.Top);
 	public static final Claw claw = new Claw(null);
 	private final LiftTrigger liftTrigger = new LiftTrigger();
 	private Command autonomousCommand;
