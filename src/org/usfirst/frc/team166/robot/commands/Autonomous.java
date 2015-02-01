@@ -10,7 +10,7 @@ public class Autonomous extends CommandGroup {
 	public Autonomous() {
 		addSequential(new DriveToStep());
 		addSequential(new CenterOnStep(), 3.0);
-		addSequential(new DriveDirection(180), .5);
+		addSequential(new DriveDirection(), .5);
 		addSequential(new RaiseLeftWing());
 		addParallel(new RaiseRightWing());
 	}
