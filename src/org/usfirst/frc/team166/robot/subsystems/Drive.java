@@ -73,24 +73,24 @@ public class Drive extends Subsystem {
 		pdp = new PowerDistributionPanel();
 
 		// SPEED CONTROLLER PORTS
-		frontLeftTalon = new Talon(RobotMap.FrontLeftDrivePwm);
-		rearLeftTalon = new Talon(RobotMap.RearLeftDrivePwm);
-		frontRightTalon = new Talon(RobotMap.FrontRightDrivePwm);
-		rearRightTalon = new Talon(RobotMap.RearRightDrivePwm);
+		frontLeftTalon = new Talon(RobotMap.Pwm.FrontLeftDrive);
+		rearLeftTalon = new Talon(RobotMap.Pwm.RearLeftDrive);
+		frontRightTalon = new Talon(RobotMap.Pwm.FrontRightDrive);
+		rearRightTalon = new Talon(RobotMap.Pwm.RearRightDrive);
 
 		// ULTRASONIC SENSORS
-		frontRangefinder = new AnalogInput(RobotMap.FrontRangeFinder);
-		rightRangefinder = new AnalogInput(RobotMap.RightRangeFinder);
-		leftRangefinder = new AnalogInput(RobotMap.LeftRangeFinder);
+		frontRangefinder = new AnalogInput(RobotMap.Analog.FrontRangeFinder);
+		rightRangefinder = new AnalogInput(RobotMap.Analog.RightRangeFinder);
+		leftRangefinder = new AnalogInput(RobotMap.Analog.LeftRangeFinder);
 
 		// YAWRATE SENSOR
-		gyro = new Gyro(RobotMap.Gryo);
+		gyro = new Gyro(RobotMap.Analog.Gryo);
 
 		// ENCODER PORTS
-		frontLeftEncoder = new Encoder(RobotMap.FrontLeftDriveEncoderA, RobotMap.FrontLeftDriveEncoderB);
-		rearLeftEncoder = new Encoder(RobotMap.RearLeftDriveEncoderA, RobotMap.RearLeftDriveEncoderB);
-		frontRightEncoder = new Encoder(RobotMap.FrontRightDriveEncoderA, RobotMap.FrontRightDriveEncoderB);
-		rearRightEncoder = new Encoder(RobotMap.RearRightDriveEncoderA, RobotMap.RearRightDriveEncoderB);
+		frontLeftEncoder = new Encoder(RobotMap.Encoders.FrontLeftDriveA, RobotMap.Encoders.FrontLeftDriveB);
+		rearLeftEncoder = new Encoder(RobotMap.Encoders.RearLeftDriveA, RobotMap.Encoders.RearLeftDriveB);
+		frontRightEncoder = new Encoder(RobotMap.Encoders.FrontRightDriveA, RobotMap.Encoders.FrontRightDriveB);
+		rearRightEncoder = new Encoder(RobotMap.Encoders.RearRightDriveA, RobotMap.Encoders.RearRightDriveB);
 
 		// ENCODER MATH
 		frontLeftEncoder.setDistancePerPulse(((6 * Math.PI) / 1024) / 183);
