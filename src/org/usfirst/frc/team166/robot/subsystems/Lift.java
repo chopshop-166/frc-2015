@@ -32,7 +32,7 @@ public class Lift extends Subsystem {
 	}
 
 	public enum WhichCarriagePushing {
-		RC, Tote, None
+		RC, Tote, None, Both
 	}
 
 	public Lift(int motorChannel, int brakeChannel, int encoderChannelA, int encoderChannelB, int boundaryLimitChannel,
@@ -65,6 +65,8 @@ public class Lift extends Subsystem {
 			return WhichCarriagePushing.Tote;
 		else if (rcMoveState == LiftMovement.Down && toteMoveState == LiftMovement.Stopped)
 			return WhichCarriagePushing.RC;
+		else if (rcMoveState == LiftMovement.Down && toteMoveState == LiftMovement.Up)
+			return WhichCarriagePushing.Both;
 		else
 			return WhichCarriagePushing.None;
 	}
