@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-import org.usfirst.frc.team166.robot.Robot;
+import org.usfirst.frc.team166.robot.PIDSpeedController;
 
 /**
  *
@@ -20,6 +20,8 @@ public class Lift extends Subsystem {
 	Solenoid brake;
 	LimitBoundary limitPosition;
 	LiftMovement movementState;
+
+	PIDSpeedController pid;
 
 	public enum LimitBoundary {
 		Top, Bottom
@@ -43,21 +45,22 @@ public class Lift extends Subsystem {
 
 	}
 
-	public void move() {
+	public void moveUp() {
 		releaseLift();
-		if (Robot.oi.getToteJoystick().getX() < Preferences.getInstance().getDouble("Lift Deadzone", 0)) {
-			motor.set(Preferences.getInstance().getDouble("Move Speed", 0));
-			movementState = LiftMovement.Up;
-		} else if ((Robot.oi.getToteJoystick().getX() > Preferences.getInstance().getDouble("Lift Deadzone", 0))) {
-			motor.set(-Preferences.getInstance().getDouble("Move Speed", 0));
-			movementState = LiftMovement.Down;
-		} else {
-			brakeLift();
-			movementState = LiftMovement.Stopped;
-		}
+		pid.set(Preferences.getInstance().getDouble("Move Speed", 0));
 	}
 
-	public WhichCarriagePushing collisionMovement(LiftMovement rcMoveState, LiftMovement toteMoveState) {
+	public void moveDown() {
+		releaseLift();
+		pid.set(-Preferences.getInstance().getDouble("Move Speed", 0));
+	}
+
+	public void stop() {
+		pid.set(0);
+		brakeLift();
+	}
+
+	public static WhichCarriagePushing collisionMovement(LiftMovement rcMoveState, LiftMovement toteMoveState) {
 		if (rcMoveState == LiftMovement.Stopped && toteMoveState == LiftMovement.Up)
 			return WhichCarriagePushing.Tote;
 		else if (rcMoveState == LiftMovement.Down && toteMoveState == LiftMovement.Stopped)
@@ -66,15 +69,29 @@ public class Lift extends Subsystem {
 			return WhichCarriagePushing.None;
 	}
 
+	public void liftPIDInit(String liftName, String controllerName) {
+		double p = Preferences.getInstance().getDouble("Lift P", 0);
+		double i = Preferences.getInstance().getDouble("Lift I", 0);
+		double d = Preferences.getInstance().getDouble("Lift D", 0);
+		double f = Preferences.getInstance().getDouble("Lift F", 0);
+
+		pid = new PIDSpeedController(encoder, motor, liftName, controllerName);
+		pid.setConstants(p, i, d, f);
+	}
+
+	public boolean isBoundaryHit() {
+		return boundaryLimit.get();
+	}
+
 	public void bePushed() {
 		motor.set(Preferences.getInstance().getDouble("Move Speed", 0));
 	}
 
-	public LiftMovement moveState() {
+	public LiftMovement getMoveState() {
 		return movementState;
 	}
 
-	public void brakeLift() {
+	private void brakeLift() {
 		brake.set(true);
 	}
 
@@ -83,15 +100,7 @@ public class Lift extends Subsystem {
 	}
 
 	public void resetEncoder() {
-	}
-
-	public boolean getBotLiftLimit() {
-		return boundaryLimit.get();
-	}
-
-	public void stop() {
-
-		return;
+		encoder.reset();
 	}
 
 	// Put methods for controlling this subsystem

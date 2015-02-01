@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team166.robot.commands.Autonomous;
+import org.usfirst.frc.team166.robot.commands.DetermineLiftCollision;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
@@ -50,10 +51,12 @@ public class Robot extends IterativeRobot {
 		autonomousCommand = new Autonomous();
 
 		// Add the command for handling when lifts collide once it's implemented
-		liftTrigger.whenActive(null);
+		liftTrigger.whenActive(new DetermineLiftCollision());
 
 		// Set the drive subsystem PID controller constants from preferences
 		drive.setPIDConstants();
+		toteLift.liftPIDInit("Tote lift", "Tote Lift PID");
+		rcLift.liftPIDInit("RC lift", "RC Lift PID");
 	}
 
 	@Override
