@@ -8,10 +8,12 @@ import org.usfirst.frc.team166.robot.Robot;
  *
  */
 public class DriveDirection extends Command {
+	private double angle;
 
-	public DriveDirection() {
+	public DriveDirection(double driveAngle) {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.drive);
+		driveAngle = angle;
 	}
 
 	// Called just before this Command runs the first time
@@ -22,7 +24,7 @@ public class DriveDirection extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		// Robot.drive.strafeWithGyro();
+		Robot.drive.driveAngle(angle);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

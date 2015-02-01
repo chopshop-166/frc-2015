@@ -175,12 +175,11 @@ public class Drive extends Subsystem {
 	// MOVES THE ROBOT AT A GIVEN SPEED AT A GIVEN ANGLE
 	public void driveAngle(double angle) {
 		robotDrive
-				.mecanumDrive_Polar(Preferences.getInstance().getDouble("DriveAngleSpeed", 0), angle, getGyroOffset());
+		.mecanumDrive_Polar(Preferences.getInstance().getDouble("DriveAngleSpeed", 0), angle, getGyroOffset());
 	}
 
 	// CENTERS THE ROBOT ON THE STEP
 	public void centerOnStep() {
-		getGyroOffset();
 		centerOffsetDistance = getRightDistance() - getLeftDistance();
 		if (isUltrasonicDataGood()) {
 			robotDrive.mecanumDrive_Cartesian(
