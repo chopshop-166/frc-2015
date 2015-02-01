@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import org.usfirst.frc.team166.robot.commands.Autonomous;
+import org.usfirst.frc.team166.robot.commands.autonomous.Autonomous;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
 import org.usfirst.frc.team166.robot.subsystems.Lift;

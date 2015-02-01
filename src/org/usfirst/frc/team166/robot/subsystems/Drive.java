@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
 import org.usfirst.frc.team166.robot.RobotMap;
-import org.usfirst.frc.team166.robot.commands.DriveWithJoysticks;
+import org.usfirst.frc.team166.robot.commands.drive.DriveWithJoysticks;
 
 public class Drive extends Subsystem {
 	// ROBOTDRIVE INIT

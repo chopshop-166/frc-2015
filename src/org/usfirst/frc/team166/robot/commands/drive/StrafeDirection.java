@@ -1,16 +1,21 @@
-package org.usfirst.frc.team166.robot.commands;
+package org.usfirst.frc.team166.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team166.robot.Robot;
+import org.usfirst.frc.team166.robot.subsystems.Drive;
 
 /**
  *
  */
-public class DriveWithJoysticks extends Command {
+public class StrafeDirection extends Command {
+	private Drive.StrafeDirection strafeDirection;
 
-	public DriveWithJoysticks() {
+	public StrafeDirection(Drive.StrafeDirection direction) {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
 		requires(Robot.drive);
+		strafeDirection = direction;
 	}
 
 	// Called just before this Command runs the first time
@@ -21,12 +26,8 @@ public class DriveWithJoysticks extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.drive.mecanumDrive(Robot.oi.getDriveJoystick());
+		Robot.drive.strafeWithGyro(strafeDirection);
 		Robot.drive.printEncoderValues();
-		Robot.drive.getGyro();
-		Robot.drive.getFrontDistance();
-		Robot.drive.getRightDistance();
-		Robot.drive.getLeftDistance();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
