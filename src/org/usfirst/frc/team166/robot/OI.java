@@ -17,8 +17,8 @@ import org.usfirst.frc.team166.robot.commands.LowerWings;
 public class OI {
 
 	private final Joystick driveJoystick = new Joystick(RobotMap.DriveJoystick);
-	private final Joystick toteJoystick = new Joystick(RobotMap.ToteJoystick);
-	private final Joystick rcJoystick = new Joystick(RobotMap.RCJoystick);
+	private final Joystick toteJoystick = new Joystick(RobotMap.CopilotController);
+	private final Joystick rcJoystick = new Joystick(RobotMap.CopilotController);
 
 	public OI() {
 
