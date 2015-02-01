@@ -60,7 +60,7 @@ public class Lift extends Subsystem {
 		brakeLift();
 	}
 
-	public WhichCarriagePushing collisionMovement(LiftMovement rcMoveState, LiftMovement toteMoveState) {
+	public static WhichCarriagePushing collisionMovement(LiftMovement rcMoveState, LiftMovement toteMoveState) {
 		if (rcMoveState == LiftMovement.Stopped && toteMoveState == LiftMovement.Up)
 			return WhichCarriagePushing.Tote;
 		else if (rcMoveState == LiftMovement.Down && toteMoveState == LiftMovement.Stopped)
@@ -69,7 +69,7 @@ public class Lift extends Subsystem {
 			return WhichCarriagePushing.None;
 	}
 
-	public void LiftPIDInit(String liftName, String controllerName) {
+	public void liftPIDInit(String liftName, String controllerName) {
 		double p = Preferences.getInstance().getDouble("Lift P", 0);
 		double i = Preferences.getInstance().getDouble("Lift I", 0);
 		double d = Preferences.getInstance().getDouble("Lift D", 0);
@@ -87,7 +87,7 @@ public class Lift extends Subsystem {
 		motor.set(Preferences.getInstance().getDouble("Move Speed", 0));
 	}
 
-	private LiftMovement moveState() {
+	public LiftMovement getMoveState() {
 		return movementState;
 	}
 
@@ -100,6 +100,7 @@ public class Lift extends Subsystem {
 	}
 
 	public void resetEncoder() {
+		encoder.reset();
 	}
 
 	// Put methods for controlling this subsystem

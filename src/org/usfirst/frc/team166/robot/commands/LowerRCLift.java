@@ -34,6 +34,7 @@ public class LowerRCLift extends Command {
 	@Override
 	protected void end() {
 		Robot.rcLift.stop();
+		Robot.rcLift.resetEncoder();
 	}
 
 	// Called when another command which requires one or more of the same
