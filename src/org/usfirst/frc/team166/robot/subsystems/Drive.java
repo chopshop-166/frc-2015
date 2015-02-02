@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
 import org.usfirst.frc.team166.robot.RobotMap;
-import org.usfirst.frc.team166.robot.commands.DriveWithJoysticks;
+import org.usfirst.frc.team166.robot.commands.drive.DriveWithJoysticks;
 
 public class Drive extends Subsystem {
 	// ROBOTDRIVE INIT
@@ -50,9 +50,6 @@ public class Drive extends Subsystem {
 
 	// YAWRATE SENSOR INIT
 	public final Gyro gyro;
-
-	// YAWRATE SENSOR VARIABLES
-	double gyroOffset;
 
 	// ULTRASONIC VARIABLES
 	double frontUSDistance;
@@ -124,8 +121,10 @@ public class Drive extends Subsystem {
 		joystickScalerY = Preferences.getInstance().getDouble("joystickScalerY", 1);
 		joystickScalerRotation = Preferences.getInstance().getDouble("joystickScalerRotation", 1);
 		// DRIVE FORWARD WITH JOYSTICKS ONLY
-		if ((Math.abs(stick.getX()) > .1) || (Math.abs(stick.getY()) > .1) || (Math.abs(stick.getRawAxis(3)) > .1)) {
-			if (Math.abs(stick.getRawAxis(3)) > .1) {
+		if ((Math.abs(stick.getX()) > Preferences.getInstance().getDouble("deadZone", .1))
+				|| (Math.abs(stick.getY()) > Preferences.getInstance().getDouble("deadZone", .1))
+				|| (Math.abs(stick.getRawAxis(3)) > .1)) {
+			if (Math.abs(stick.getRawAxis(3)) > Preferences.getInstance().getDouble("deadZone", .1)) {
 				robotDrive.mecanumDrive_Cartesian(stick.getX() * joystickScalerX, stick.getY() * joystickScalerY,
 						stick.getRawAxis(3) * joystickScalerRotation, 0);
 				driveMode = false;
@@ -134,14 +133,10 @@ public class Drive extends Subsystem {
 				if (driveMode == false) {
 					gyro.reset();
 				}
-				gyroOffset = (getGyro() * Preferences.getInstance().getDouble("GyroStrafeConstant", .01111111));
 				driveMode = true;
 				// USE THE GYRO FOR ROTATION ASSISTANCE
-				if (Math.abs(gyroOffset) > 1) {
-					gyroOffset = (Math.abs(gyroOffset) / gyroOffset);
-				}
 				robotDrive.mecanumDrive_Cartesian(stick.getX() * joystickScalerX, stick.getY() * joystickScalerY,
-						-gyroOffset, 0);
+						getGyroOffset(), 0);
 			}
 			SmartDashboard.putBoolean("DriveMode", driveMode);
 		} else {
@@ -150,48 +145,47 @@ public class Drive extends Subsystem {
 		}
 	}
 
+	public enum StrafeDirection {
+		Left, Right
+	}
+
 	// STRAFE USING GYRO ASSISTANCE
-	public void strafeWithGyro(int direction) { // -1 is left, 1 is right
-		// SETTING THE GYRO STRAFE CONSTANT
-		gyroOffset = (getGyro() * Preferences.getInstance().getDouble("GyroStrafeConstant", .01111111111));
-		// IF THE ABOSOLUTE VAL OF THE GYRO OFFSET IS LARGER THAN 1
-		if (Math.abs(gyroOffset) > 1) {
-			// SET THE GYRO OFFSET TO EITHER 1 OR -1
-			gyroOffset = (Math.abs(gyroOffset) / gyroOffset);
-		}
+	public void strafeWithGyro(StrafeDirection direction) {
+		int multiplier = (direction == StrafeDirection.Left) ? -1 : 1;
 		// STRAFE AT SOME POWER WHILE USING THE GYRO TO CORRECT FOR ROTATION
-		robotDrive.mecanumDrive_Cartesian(Preferences.getInstance().getDouble("StrafePower", 0) * direction, 0,
-				-gyroOffset, 0);
+		robotDrive.mecanumDrive_Cartesian(Preferences.getInstance().getDouble("StrafePower", .25) * multiplier, 0,
+				getGyroOffset(), 0);
 	}
 
 	// DRIVES FORWARD WITH USING GYRO ASSISTANCE
 	public void driveForwardWithGyro() {
-		gyroOffset = (getGyro() * Preferences.getInstance().getDouble("GyroStrafeConstant", .01111111111));
+		robotDrive.mecanumDrive_Cartesian(0, (Preferences.getInstance().getDouble("AutoSpeed", 0)), getGyroOffset(), 0);
+	}
+
+	private double getGyroOffset() {
+		double gyroOffset = (getGyro() * Preferences.getInstance().getDouble("GyroStrafeConstant", .01111111111));
 		// IF THE ABOSOLUTE VAL OF THE GYRO OFFSET IS LARGER THAN 1
 		if (Math.abs(gyroOffset) > 1) {
 			// SET THE GYRO OFFSET TO EITHER 1 OR -1
-			gyroOffset = (Math.abs(gyroOffset) / gyroOffset);
+			return (-1 * (Math.abs(gyroOffset) / gyroOffset));
+		} else {
+			return -gyroOffset;
 		}
-		// STRAFE AT SOME POWER WHILE USING THE GYRO TO CORRECT FOR ROTATION
-		robotDrive.mecanumDrive_Cartesian(0, (Preferences.getInstance().getDouble("autoSpeed", 0)), -gyroOffset, 0);
 	}
 
 	// MOVES THE ROBOT AT A GIVEN SPEED AT A GIVEN ANGLE
-	public void driveAngle(int angle) {
-		robotDrive.mecanumDrive_Polar(Preferences.getInstance().getDouble("OldManSpeed", 0), angle, 0);
+	public void driveAngle(double angle) {
+		robotDrive
+		.mecanumDrive_Polar(Preferences.getInstance().getDouble("DriveAngleSpeed", 0), angle, getGyroOffset());
 	}
 
 	// CENTERS THE ROBOT ON THE STEP
 	public void centerOnStep() {
-		gyroOffset = (getGyro() * Preferences.getInstance().getDouble("GyroStrafeConstant", .01111111111));
-		if (Math.abs(gyroOffset) > 1) {
-			gyroOffset = (Math.abs(gyroOffset) / gyroOffset);
-		}
 		centerOffsetDistance = getRightDistance() - getLeftDistance();
 		if (isUltrasonicDataGood()) {
 			robotDrive.mecanumDrive_Cartesian(
 					centerOffsetDistance / Preferences.getInstance().getDouble("USCenterDistanceConstant", 27.5), 0,
-					-gyroOffset, 0);
+					getGyroOffset(), 0);
 		} else {
 			stopMotors();
 		}
