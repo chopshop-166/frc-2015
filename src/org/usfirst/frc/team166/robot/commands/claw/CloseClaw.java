@@ -1,4 +1,4 @@
-package org.usfirst.frc.team166.robot.commands;
+package org.usfirst.frc.team166.robot.commands.claw;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -7,18 +7,18 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class LowerRightWing extends Command {
+public class CloseClaw extends Command {
 
-	public LowerRightWing() {
+	public CloseClaw() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		requires(Robot.rightWing);
+		requires(Robot.claw);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.rightWing.lower();
+		Robot.claw.close();
 	}
 
 	// Called repeatedly when this Command is scheduled to run

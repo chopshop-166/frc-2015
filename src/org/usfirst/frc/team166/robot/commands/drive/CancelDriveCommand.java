@@ -1,4 +1,4 @@
-package org.usfirst.frc.team166.robot.commands;
+package org.usfirst.frc.team166.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -7,9 +7,10 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class DriveWithJoysticks extends Command {
+public class CancelDriveCommand extends Command {
 
-	public DriveWithJoysticks() {
+	public CancelDriveCommand() {
+		// Use requires() here to declare subsystem dependencies
 		requires(Robot.drive);
 	}
 
@@ -21,18 +22,12 @@ public class DriveWithJoysticks extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.drive.mecanumDrive(Robot.oi.getDriveJoystick());
-		Robot.drive.printEncoderValues();
-		Robot.drive.getGyro();
-		Robot.drive.getFrontDistance();
-		Robot.drive.getRightDistance();
-		Robot.drive.getLeftDistance();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 
 	// Called once after isFinished returns true

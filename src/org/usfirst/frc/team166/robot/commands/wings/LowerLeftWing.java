@@ -1,4 +1,4 @@
-package org.usfirst.frc.team166.robot.commands;
+package org.usfirst.frc.team166.robot.commands.wings;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -7,34 +7,34 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class CenterOnStep extends Command {
+public class LowerLeftWing extends Command {
 
-	public CenterOnStep() {
-		requires(Robot.drive);
+	public LowerLeftWing() {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(Robot.leftWing);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		Robot.leftWing.lower();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.drive.centerOnStep();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		// return Robot.drive.isCentered();
-		return false;
+		return true;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.drive.stopMotors();
 	}
 
 	// Called when another command which requires one or more of the same
