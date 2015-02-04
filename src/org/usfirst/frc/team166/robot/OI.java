@@ -9,6 +9,7 @@ import org.usfirst.frc.team166.robot.commands.CancelDriveCommand;
 import org.usfirst.frc.team166.robot.commands.DriveDirection;
 import org.usfirst.frc.team166.robot.commands.LiftWings;
 import org.usfirst.frc.team166.robot.commands.LowerWings;
+import org.usfirst.frc.team166.robot.commands.ToggleClaw;
 
 /**
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
@@ -26,6 +27,7 @@ public class OI {
 		JoystickButton button2 = new JoystickButton(driveJoystick, 2);
 		JoystickButton button3 = new JoystickButton(driveJoystick, 3);
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
+		button1.whenPressed(new ToggleClaw());
 		button2.whenPressed(new CancelDriveCommand());
 		button3.whileHeld(new DriveDirection(90));
 		button4.whenPressed(new Autonomous());

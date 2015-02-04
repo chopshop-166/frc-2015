@@ -7,18 +7,16 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class OpenClaw extends Command {
+public class ToggleClaw extends Command {
 
-	public OpenClaw() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+	public ToggleClaw() {
 		requires(Robot.claw);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.claw.open();
+		Robot.claw.Toggle();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
