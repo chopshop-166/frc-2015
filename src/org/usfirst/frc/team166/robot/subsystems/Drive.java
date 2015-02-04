@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
+import org.usfirst.frc.team166.robot.Robot;
 import org.usfirst.frc.team166.robot.RobotMap;
+import org.usfirst.frc.team166.robot.Utility;
 import org.usfirst.frc.team166.robot.commands.drive.DriveWithJoysticks;
 
 public class Drive extends Subsystem {
@@ -117,32 +119,22 @@ public class Drive extends Subsystem {
 	// MECANUMDRIVE USING DEADZONES, GYRO, AND ENCODERS
 	public void mecanumDrive(Joystick stick) {
 		printPDPAverageCurrent();
-		joystickScalerX = Preferences.getInstance().getDouble("joystickScalerX", 1);
-		joystickScalerY = Preferences.getInstance().getDouble("joystickScalerY", 1);
-		joystickScalerRotation = Preferences.getInstance().getDouble("joystickScalerRotation", 1);
 		// DRIVE FORWARD WITH JOYSTICKS ONLY
-		if ((Math.abs(stick.getX()) > Preferences.getInstance().getDouble("deadZone", .1))
-				|| (Math.abs(stick.getY()) > Preferences.getInstance().getDouble("deadZone", .1))
-				|| (Math.abs(stick.getRawAxis(3)) > .1)) {
-			if (Math.abs(stick.getRawAxis(3)) > Preferences.getInstance().getDouble("deadZone", .1)) {
-				robotDrive.mecanumDrive_Cartesian(stick.getX() * joystickScalerX, stick.getY() * joystickScalerY,
-						stick.getRawAxis(3) * joystickScalerRotation, 0);
-				driveMode = false;
-			} else {
-				// IS THIS THE FIRST TIME IN LOOP?
-				if (driveMode == false) {
-					gyro.reset();
-				}
-				driveMode = true;
-				// USE THE GYRO FOR ROTATION ASSISTANCE
-				robotDrive.mecanumDrive_Cartesian(stick.getX() * joystickScalerX, stick.getY() * joystickScalerY,
-						getGyroOffset(), 0);
-			}
-			SmartDashboard.putBoolean("DriveMode", driveMode);
+		if (Utility.isAxisZero(Robot.oi.getDriveJoystickRotation())) {
+			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
+					Robot.oi.getDriveJoystickRotation(), 0);
+			driveMode = false;
 		} else {
-			robotDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
-			gyro.reset();
+			// IS THIS THE FIRST TIME IN LOOP?
+			if (driveMode == false) {
+				gyro.reset();
+			}
+			driveMode = true;
+			// USE THE GYRO FOR ROTATION ASSISTANCE
+			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
+					getGyroOffset(), 0);
 		}
+		SmartDashboard.putBoolean("DriveMode", driveMode);
 	}
 
 	public enum StrafeDirection {
