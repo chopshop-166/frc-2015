@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team166.robot.commands.ToggleClaw;
+import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
 import org.usfirst.frc.team166.robot.commands.drive.CancelDriveCommand;
 import org.usfirst.frc.team166.robot.commands.drive.StrafeDirection;
 import org.usfirst.frc.team166.robot.commands.wings.LiftWings;

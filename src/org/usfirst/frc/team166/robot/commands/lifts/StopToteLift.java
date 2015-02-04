@@ -1,13 +1,13 @@
-package org.usfirst.frc.team166.robot.commands;
+package org.usfirst.frc.team166.robot.commands.lifts;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class StopRCLift extends Command {
+public class StopToteLift extends Command {
 
-    public StopRCLift() {
+    public StopToteLift() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
