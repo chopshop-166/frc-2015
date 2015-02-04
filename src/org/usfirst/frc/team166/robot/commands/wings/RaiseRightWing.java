@@ -1,4 +1,4 @@
-package org.usfirst.frc.team166.robot.commands;
+package org.usfirst.frc.team166.robot.commands.wings;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -7,9 +7,9 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class LowerRightWing extends Command {
+public class RaiseRightWing extends Command {
 
-	public LowerRightWing() {
+	public RaiseRightWing() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.rightWing);
@@ -18,7 +18,7 @@ public class LowerRightWing extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.rightWing.lower();
+		Robot.rightWing.raise();
 	}
 
 	// Called repeatedly when this Command is scheduled to run

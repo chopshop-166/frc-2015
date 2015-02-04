@@ -1,4 +1,4 @@
-package org.usfirst.frc.team166.robot.commands;
+package org.usfirst.frc.team166.robot.commands.wings;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -7,16 +7,18 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class CancelDriveCommand extends Command {
+public class RaiseLeftWing extends Command {
 
-	public CancelDriveCommand() {
+	public RaiseLeftWing() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drive);
+		// eg. requires(chassis);
+		requires(Robot.leftWing);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		Robot.leftWing.raise();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
