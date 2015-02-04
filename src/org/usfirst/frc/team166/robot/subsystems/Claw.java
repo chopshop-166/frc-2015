@@ -17,28 +17,28 @@ public class Claw extends Subsystem {
 	ClawStates clawState;
 	public static Solenoid solenoid = new Solenoid(RobotMap.solenoid.ClawSolenoid);
 
-	private void Open() {
+	public void open() {
 		solenoid.set(true);
 		this.clawState = ClawStates.open;
 	}
 
-	private void Close() {
+	public void close() {
 		solenoid.set(false);
 		this.clawState = ClawStates.close;
 	}
 
 	public void Toggle() {
 		if (this.clawState == ClawStates.open) {
-			Close();
+			close();
 		} else {
-			Open();
+			open();
 		}
 	}
 
 	public void begin() {
 		solenoid.get();
 		if (this.clawState == ClawStates.close) {
-			Open();
+			open();
 		}
 	}
 
