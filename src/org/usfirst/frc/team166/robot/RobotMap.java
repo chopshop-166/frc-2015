@@ -17,9 +17,8 @@ public class RobotMap {
 	public static final int ToteLiftUpDownAxis = 4;
 
 	// Solenoid Channels
-	public static class Solenoid {
-		public static final int ClawForward = 0;
-		public static final int ClawReverse = 1;
+	public static class solenoid {
+		public static final int ClawSolenoid = 1;
 		public static final int LeftWing = 2;
 		public static final int RightWing = 3;
 		public static final int ToteLiftBrake = 4;

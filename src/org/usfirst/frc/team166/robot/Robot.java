@@ -22,16 +22,16 @@ import org.usfirst.frc.team166.robot.triggers.LiftTrigger;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
-	public static final Wing leftWing = new Wing(RobotMap.Solenoid.LeftWing);
-	public static final Wing rightWing = new Wing(RobotMap.Solenoid.RightWing);
+	public static final Wing leftWing = new Wing(RobotMap.solenoid.LeftWing);
+	public static final Wing rightWing = new Wing(RobotMap.solenoid.RightWing);
 	public static final Drive drive = new Drive();
-	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.Solenoid.ToteLiftBrake,
+	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.solenoid.ToteLiftBrake,
 			RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB, RobotMap.Switch.LiftLowerLimit,
 			Lift.LimitBoundary.Bottom);
 	public static final LimitSwitchLift rcLift = new LimitSwitchLift(RobotMap.Pwm.RCLiftMotor,
-			RobotMap.Solenoid.RCLiftBrake, RobotMap.Encoders.RCLiftA, RobotMap.Encoders.RCLiftB,
+			RobotMap.solenoid.RCLiftBrake, RobotMap.Encoders.RCLiftA, RobotMap.Encoders.RCLiftB,
 			RobotMap.Switch.LiftUpperLimit, Lift.LimitBoundary.Top);
-	public static final Claw claw = new Claw(null);
+	public static final Claw claw = new Claw();
 	private final LiftTrigger liftTrigger = new LiftTrigger();
 	private Command autonomousCommand;
 
@@ -46,6 +46,7 @@ public class Robot extends IterativeRobot {
 		// Thus, their requires() statements may grab null pointers. Bad news.
 		// Don't move it.
 		oi = new OI();
+		claw.begin();
 
 		// instantiate the command used for the autonomous period
 		autonomousCommand = new Autonomous();

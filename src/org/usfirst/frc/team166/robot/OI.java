@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team166.robot.commands.ToggleClaw;
 import org.usfirst.frc.team166.robot.commands.drive.CancelDriveCommand;
 import org.usfirst.frc.team166.robot.commands.drive.StrafeDirection;
 import org.usfirst.frc.team166.robot.commands.wings.LiftWings;
@@ -32,6 +33,7 @@ public class OI {
 
 		SmartDashboard.putData("LiftWings", new LiftWings());
 		SmartDashboard.putData("LowerWings", new LowerWings());
+		SmartDashboard.putData("Toggle Claw", new ToggleClaw());
 	}
 
 	public Joystick getDriveJoystick() {
