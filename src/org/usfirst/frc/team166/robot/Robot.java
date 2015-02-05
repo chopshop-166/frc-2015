@@ -1,6 +1,7 @@
 package org.usfirst.frc.team166.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -22,6 +23,7 @@ import org.usfirst.frc.team166.robot.triggers.LiftTrigger;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
+	public static PowerDistributionPanel pdBoard;
 	public static final Wing leftWing = new Wing(RobotMap.solenoid.LeftWing);
 	public static final Wing rightWing = new Wing(RobotMap.solenoid.RightWing);
 	public static final Drive drive = new Drive();
@@ -45,6 +47,7 @@ public class Robot extends IterativeRobot {
 		// which commands extend), subsystems are not guaranteed to be yet.
 		// Thus, their requires() statements may grab null pointers. Bad news.
 		// Don't move it.
+		pdBoard = new PowerDistributionPanel();
 		oi = new OI();
 		claw.begin();
 

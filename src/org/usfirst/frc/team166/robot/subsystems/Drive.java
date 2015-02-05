@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
@@ -15,15 +14,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
+import org.usfirst.frc.team166.robot.Robot;
 import org.usfirst.frc.team166.robot.RobotMap;
 import org.usfirst.frc.team166.robot.commands.drive.DriveWithJoysticks;
 
 public class Drive extends Subsystem {
 	// ROBOTDRIVE INIT
 	final RobotDrive robotDrive;
-
-	// PDP INIT
-	PowerDistributionPanel pdp;
 
 	// RANGEFINDER INITS
 	final AnalogInput frontRangefinder;
@@ -65,9 +62,6 @@ public class Drive extends Subsystem {
 	double joystickScalerRotation;
 
 	public Drive() {
-
-		// POWER DISTRIBUTION PANEL
-		pdp = new PowerDistributionPanel();
 
 		// SPEED CONTROLLER PORTS
 		frontLeftTalon = new Talon(RobotMap.Pwm.FrontLeftDrive);
@@ -176,7 +170,7 @@ public class Drive extends Subsystem {
 	// MOVES THE ROBOT AT A GIVEN SPEED AT A GIVEN ANGLE
 	public void driveAngle(double angle) {
 		robotDrive
-		.mecanumDrive_Polar(Preferences.getInstance().getDouble("DriveAngleSpeed", 0), angle, getGyroOffset());
+				.mecanumDrive_Polar(Preferences.getInstance().getDouble("DriveAngleSpeed", 0), angle, getGyroOffset());
 	}
 
 	// CENTERS THE ROBOT ON THE STEP
@@ -241,14 +235,9 @@ public class Drive extends Subsystem {
 		return gyro.getAngle();
 	}
 
-	// RETURNS THE CURRENT OF THE MOTOR ON PORT 0
-	public double getMotorCurrent() {
-		return pdp.getCurrent(0);
-	}
-
 	// PRINTS THE CURRENT OF THE MOTOR ON PORT 0 TO THE SMARTDASHBOARD
 	public void printPDPAverageCurrent() {
-		SmartDashboard.putNumber("Average Current", pdp.getCurrent(0));
+		SmartDashboard.putNumber("Average Current", Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive));
 	}
 
 	// PRINTS THE ENCODER SPEEDS
