@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
@@ -15,15 +14,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
+import org.usfirst.frc.team166.robot.Robot;
 import org.usfirst.frc.team166.robot.RobotMap;
 import org.usfirst.frc.team166.robot.commands.drive.DriveWithJoysticks;
 
 public class Drive extends Subsystem {
 	// ROBOTDRIVE INIT
 	final RobotDrive robotDrive;
-
-	// PDP INIT
-	PowerDistributionPanel pdp;
 
 	// RANGEFINDER INITS
 	final AnalogInput frontRangefinder;
@@ -65,9 +62,6 @@ public class Drive extends Subsystem {
 	double joystickScalerRotation;
 
 	public Drive() {
-
-		// POWER DISTRIBUTION PANEL
-		pdp = new PowerDistributionPanel();
 
 		// SPEED CONTROLLER PORTS
 		frontLeftTalon = new Talon(RobotMap.Pwm.FrontLeftDrive);
@@ -222,6 +216,17 @@ public class Drive extends Subsystem {
 		return leftUSDistance;
 	}
 
+	// RETURNS WHETHER OR NOT THE DRIVE MOTORS ARE STALLED
+	public boolean isStalled() {
+		return (Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontLeftDrive) > Preferences.getInstance().getDouble(
+				"currentCutoff", 20)
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance().getDouble(
+						"currentCutoff", 20)
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
+						"currentCutoff", 20) || Robot.pdBoard.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences
+				.getInstance().getDouble("currentCutoff", 20));
+	}
+
 	// CHECKS IF THE ULRASONIC DATA IS REASONABLE
 	public boolean isUltrasonicDataGood() {
 		return (getLeftDistance() + getRightDistance() < 30);
@@ -241,14 +246,9 @@ public class Drive extends Subsystem {
 		return gyro.getAngle();
 	}
 
-	// RETURNS THE CURRENT OF THE MOTOR ON PORT 0
-	public double getMotorCurrent() {
-		return pdp.getCurrent(0);
-	}
-
 	// PRINTS THE CURRENT OF THE MOTOR ON PORT 0 TO THE SMARTDASHBOARD
 	public void printPDPAverageCurrent() {
-		SmartDashboard.putNumber("Average Current", pdp.getCurrent(0));
+		SmartDashboard.putNumber("Average Current", Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive));
 	}
 
 	// PRINTS THE ENCODER SPEEDS
