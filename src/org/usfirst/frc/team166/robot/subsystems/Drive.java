@@ -170,7 +170,7 @@ public class Drive extends Subsystem {
 	// MOVES THE ROBOT AT A GIVEN SPEED AT A GIVEN ANGLE
 	public void driveAngle(double angle) {
 		robotDrive
-				.mecanumDrive_Polar(Preferences.getInstance().getDouble("DriveAngleSpeed", 0), angle, getGyroOffset());
+		.mecanumDrive_Polar(Preferences.getInstance().getDouble("DriveAngleSpeed", 0), angle, getGyroOffset());
 	}
 
 	// CENTERS THE ROBOT ON THE STEP
@@ -214,6 +214,17 @@ public class Drive extends Subsystem {
 		leftUSDistance = (leftRangefinder.getAverageVoltage() * USConstant);
 		SmartDashboard.putNumber("Left Distance", leftUSDistance);
 		return leftUSDistance;
+	}
+
+	// RETURNS WHETHER OR NOT THE DRIVE MOTORS ARE STALLED
+	public boolean isStalled() {
+		return (Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontLeftDrive) > Preferences.getInstance().getDouble(
+				"currentCutoff", 20)
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance().getDouble(
+						"currentCutoff", 20)
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
+						"currentCutoff", 20) || Robot.pdBoard.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences
+				.getInstance().getDouble("currentCutoff", 20));
 	}
 
 	// CHECKS IF THE ULRASONIC DATA IS REASONABLE
