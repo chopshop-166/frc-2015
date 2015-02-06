@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class StopToteLift extends Command {
+public class ShutDownToteLift extends Command {
 
-    public StopToteLift() {
+    public ShutDownToteLift() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
