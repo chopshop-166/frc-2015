@@ -13,7 +13,9 @@ import org.usfirst.frc.team166.robot.subsystems.Drive;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
 import org.usfirst.frc.team166.robot.subsystems.LimitSwitchLift;
 import org.usfirst.frc.team166.robot.subsystems.Wing;
-import org.usfirst.frc.team166.robot.triggers.LiftTrigger;
+import org.usfirst.frc.team166.robot.triggers.CarriageTrigger;
+import org.usfirst.frc.team166.robot.triggers.RCLiftStalled;
+import org.usfirst.frc.team166.robot.triggers.ToteLiftStalled;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -34,7 +36,10 @@ public class Robot extends IterativeRobot {
 			RobotMap.solenoid.RCLiftBrake, RobotMap.Encoders.RCLiftA, RobotMap.Encoders.RCLiftB,
 			RobotMap.Switch.LiftUpperLimit, Lift.LimitBoundary.Top);
 	public static final Claw claw = new Claw();
-	private final LiftTrigger liftTrigger = new LiftTrigger();
+
+	private final ToteLiftStalled toteLiftStalled = new ToteLiftStalled();
+	private final RCLiftStalled rcLiftStalled = new RCLiftStalled();
+	private final CarriageTrigger carriageTrigger = new CarriageTrigger();
 	private Command autonomousCommand;
 
 	/**
@@ -54,10 +59,11 @@ public class Robot extends IterativeRobot {
 		// instantiate the command used for the autonomous period
 		autonomousCommand = new Autonomous();
 
-		// Add the command for handling when lifts collide once it's implemented
-		liftTrigger.whenActive(new DetermineLiftCollision());
+		// Connect triggers to commands
+		carriageTrigger.whenActive(new DetermineLiftCollision());
+		rcLiftStalled.whenActive(new );
 
-		// Set the drive subsystem PID controller constants from preferences
+		// Subsystem init methods
 		drive.setPIDConstants();
 		toteLift.liftPIDInit("Tote lift", "Tote Lift PID");
 		rcLift.liftPIDInit("RC lift", "RC Lift PID");

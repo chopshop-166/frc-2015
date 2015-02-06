@@ -1,40 +1,22 @@
 package org.usfirst.frc.team166.robot.commands.lifts;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.StartCommand;
 
 import org.usfirst.frc.team166.robot.Robot;
-import org.usfirst.frc.team166.robot.subsystems.Lift;
 
 /**
  *
  */
-public class DetermineLiftCollision extends Command {
+public class ShutDownRCLift extends Command {
 
-	Lift.WhichCarriagePushing movingCarriage;
-
-	public DetermineLiftCollision() {
+	public ShutDownRCLift() {
+		requires(Robot.rcLift);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		movingCarriage = Lift.collisionMovement(Robot.rcLift.getMoveState(), Robot.toteLift.getMoveState());
-		switch (movingCarriage) {
-		case RC:
-			new StartCommand(new ToteForcedDown());
-			break;
-		case Tote:
-			new StartCommand(new RCForcedUp());
-			break;
-		case Both:
-			new StartCommand(new ShutDownToteLift());
-			new StartCommand(new ShutDownRCLift());
-			break;
-		case None:
-			// Deliberately empty, barren, desolate, devoid of activity, deadsies
-			break;
-		}
+		;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -45,7 +27,7 @@ public class DetermineLiftCollision extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return true;
+		return false;
 	}
 
 	// Called once after isFinished returns true
