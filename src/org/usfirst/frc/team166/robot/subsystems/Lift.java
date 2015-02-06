@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
+import org.usfirst.frc.team166.robot.Robot;
+import org.usfirst.frc.team166.robot.RobotMap;
 
 /**
  *
@@ -83,6 +85,11 @@ public class Lift extends Subsystem {
 
 	public boolean isBoundaryHit() {
 		return boundaryLimit.get();
+	}
+
+	public boolean isLiftStalled() {
+		return Robot.pdBoard.getCurrent(RobotMap.Power.ToteLiftMotor) > Preferences.getInstance().getDouble(
+				"LiftMaxCurrent", 20);
 	}
 
 	public void bePushed() {
