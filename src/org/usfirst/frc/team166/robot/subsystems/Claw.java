@@ -11,47 +11,41 @@ import org.usfirst.frc.team166.robot.RobotMap;
 public class Claw extends Subsystem {
 
 	enum ClawStates {
-		open, close
+		Open, Close
 	}
 
 	ClawStates clawState;
 	public static Solenoid solenoid = new Solenoid(RobotMap.solenoid.ClawSolenoid);
 
+	// open
 	public void open() {
 		solenoid.set(true);
-		this.clawState = ClawStates.open;
+		this.clawState = ClawStates.Open;
 	}
 
+	// close
 	public void close() {
 		solenoid.set(false);
-		this.clawState = ClawStates.close;
+		this.clawState = ClawStates.Close;
 	}
 
+	// command used by trigger V
 	public void Toggle() {
-		if (this.clawState == ClawStates.open) {
+		if (this.clawState == ClawStates.Open) {
 			close();
 		} else {
 			open();
 		}
 	}
 
-	public void begin() {
+	// Measures the Boolean of the claw Solenoid
+	public void setState() {
 		solenoid.get();
-		if (this.clawState == ClawStates.close) {
-			open();
+		if (solenoid.get() == true) {
+			this.clawState = ClawStates.Open;
+		} else {
+			this.clawState = ClawStates.Close;
 		}
-	}
-
-	public void end() {
-		solenoid.get();
-		if (this.clawState == ClawStates.open) {
-
-		}
-	}
-
-	private void start() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
