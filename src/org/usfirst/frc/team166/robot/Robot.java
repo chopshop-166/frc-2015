@@ -54,7 +54,6 @@ public class Robot extends IterativeRobot {
 		// Don't move it.
 		pdBoard = new PowerDistributionPanel();
 		oi = new OI();
-		claw.begin();
 
 		// instantiate the command used for the autonomous period
 		autonomousCommand = new Autonomous();
@@ -67,6 +66,8 @@ public class Robot extends IterativeRobot {
 		drive.setPIDConstants();
 		toteLift.liftPIDInit("Tote lift", "Tote Lift PID");
 		rcLift.liftPIDInit("RC lift", "RC Lift PID");
+		// Set the claw setState
+		claw.setState();
 	}
 
 	@Override
