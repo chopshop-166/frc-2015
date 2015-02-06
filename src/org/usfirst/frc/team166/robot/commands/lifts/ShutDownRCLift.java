@@ -1,43 +1,19 @@
 package org.usfirst.frc.team166.robot.commands.lifts;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-import org.usfirst.frc.team166.robot.Robot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
  */
-public class ShutDownRCLift extends Command {
+public class ShutDownRCLift extends CommandGroup {
 
 	public ShutDownRCLift() {
-		requires(Robot.rcLift);
-	}
 
-	// Called just before this Command runs the first time
-	@Override
-	protected void initialize() {
-		;
-	}
+		this.setInterruptible(false);
 
-	// Called repeatedly when this Command is scheduled to run
-	@Override
-	protected void execute() {
-	}
+		addSequential(new StopRCLift());
+		addSequential(new WaitCommand(1));
 
-	// Make this return true when this Command no longer needs to run execute()
-	@Override
-	protected boolean isFinished() {
-		return false;
-	}
-
-	// Called once after isFinished returns true
-	@Override
-	protected void end() {
-	}
-
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
 	}
 }
