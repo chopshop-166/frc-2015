@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
 import org.usfirst.frc.team166.robot.RobotMap;
-import org.usfirst.frc.team166.robot.commands.autonomous.DriveDirection;
 import org.usfirst.frc.team166.robot.commands.claw.CloseClaw;
 import org.usfirst.frc.team166.robot.commands.claw.OpenClaw;
+import org.usfirst.frc.team166.robot.commands.drive.DriveDirection;
 import org.usfirst.frc.team166.robot.commands.drive.StopDriveMotors;
 import org.usfirst.frc.team166.robot.commands.lifts.LowerRCLift;
 

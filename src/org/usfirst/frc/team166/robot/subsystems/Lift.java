@@ -68,7 +68,7 @@ public class Lift extends Subsystem {
 		setBrake();
 	}
 
-	// Given lift move states, decides which carriage is pushing in a collision, and sets
+	// Given lift move states, decides which carriage is pushing in a collision, and sets WhichCarriageMoving
 	public static WhichCarriagePushing collisionMovement(LiftMovement rcMoveState, LiftMovement toteMoveState) {
 		if (rcMoveState == LiftMovement.Stopped && toteMoveState == LiftMovement.Up)
 			return WhichCarriagePushing.Tote;
@@ -80,6 +80,7 @@ public class Lift extends Subsystem {
 			return WhichCarriagePushing.None;
 	}
 
+	// Set PID constants from preferences
 	public void liftPIDInit() {
 		double p = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftP, 0);
 		double i = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftI, 0);
@@ -89,10 +90,12 @@ public class Lift extends Subsystem {
 		pid.setConstants(p, i, d, f);
 	}
 
+	// Returns whether or not the lift boundary limit switch is hit
 	public boolean isBoundaryHit() {
 		return boundaryLimit.get();
 	}
 
+	// Returns whether or not the lift motor is drawing too much current
 	public boolean isLiftStalled() {
 		return Robot.pdBoard.getCurrent(RobotMap.Power.ToteLiftMotor) > Preferences.getInstance().getDouble(
 				RobotMap.Prefs.LiftMaxCurrent, 20);
@@ -102,10 +105,12 @@ public class Lift extends Subsystem {
 		return movementState;
 	}
 
+	// Activate brake
 	private void setBrake() {
 		brake.set(true);
 	}
 
+	// Deactivate brake
 	public void releaseBrake() {
 		brake.set(false);
 	}
@@ -114,16 +119,13 @@ public class Lift extends Subsystem {
 		encoder.reset();
 	}
 
+	// Get the max of the preference and zero so a negative doesn't change directions
 	private double getLiftSpeed() {
-		// Get the max of the preference and zero so a negative doesn't change directions
 		return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
 	}
 
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
 	@Override
 	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
+
 	}
 }
