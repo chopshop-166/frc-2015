@@ -7,7 +7,7 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class LiftTrigger extends Trigger {
+public class CarriageTrigger extends Trigger {
 
 	@Override
 	public boolean get() {
