@@ -74,7 +74,7 @@ public class RobotMap {
 		public static final String GyroStrafeConstant = "GyroStrafeConstant";
 		public static final String AutoDriveSpeed = "AutoDriveSpeed";
 		public static final String StrafeSpeed = "StrafeSpeed";
-
+		public static final String RightRCWaitTime = "RightRCWaitTime";
 		public static final String LiftDeadzone = "LiftDeadzone";
 		public static final String LiftSpeed = "LiftSpeed";
 		public static final String LiftMaxCurrent = "LiftMaxCurrent";
