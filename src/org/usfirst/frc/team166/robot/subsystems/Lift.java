@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
 import org.usfirst.frc.team166.robot.Robot;
@@ -40,6 +41,10 @@ public class Lift extends Subsystem {
 		boundaryLimit = new DigitalInput(boundaryLimitChannel);
 		subsytemName = subsytem;
 
+		LiveWindow.addActuator(subsytem, "Motor", motor);
+		LiveWindow.addActuator(subsytem, "Brake", brake);
+		LiveWindow.addSensor(subsytem, "Encoder", encoder);
+		LiveWindow.addSensor(subsytem, "Boundary Limit Switch", boundaryLimit);
 		pid = new PIDSpeedController(encoder, motor, subsytemName, "Speed Control");
 	}
 

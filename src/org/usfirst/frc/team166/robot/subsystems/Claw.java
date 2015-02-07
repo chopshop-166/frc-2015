@@ -2,6 +2,7 @@ package org.usfirst.frc.team166.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team166.robot.RobotMap;
 
@@ -14,8 +15,12 @@ public class Claw extends Subsystem {
 		Open, Close
 	}
 
-	ClawStates clawState;
-	public static Solenoid solenoid = new Solenoid(RobotMap.solenoid.ClawSolenoid);
+	private ClawStates clawState;
+	private Solenoid solenoid = new Solenoid(RobotMap.solenoid.ClawSolenoid);
+
+	public Claw() {
+		LiveWindow.addActuator("Claw", "Solenoid", solenoid);
+	}
 
 	// open
 	public void open() {
@@ -40,7 +45,7 @@ public class Claw extends Subsystem {
 
 	// Measures the Boolean of the claw Solenoid
 	public void setState() {
-		solenoid.get();
+
 		if (solenoid.get() == true) {
 			this.clawState = ClawStates.Open;
 		} else {
