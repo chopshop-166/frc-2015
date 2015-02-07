@@ -28,15 +28,14 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	public static PowerDistributionPanel pdBoard;
-	public static final Wing leftWing = new Wing(RobotMap.solenoid.LeftWing);
-	public static final Wing rightWing = new Wing(RobotMap.solenoid.RightWing);
+	public static final Wing leftWing = new Wing("Left Wing", RobotMap.solenoid.LeftWing);
+	public static final Wing rightWing = new Wing("Right Wing", RobotMap.solenoid.RightWing);
 	public static final Drive drive = new Drive();
 	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.solenoid.ToteLiftBrake,
-			RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB, RobotMap.Switch.LiftLowerLimit,
-			Lift.LimitBoundary.Bottom);
+			RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB, RobotMap.Switch.LiftLowerLimit, "Tote Lift");
 	public static final LimitSwitchLift rcLift = new LimitSwitchLift(RobotMap.Pwm.RCLiftMotor,
 			RobotMap.solenoid.RCLiftBrake, RobotMap.Encoders.RCLiftA, RobotMap.Encoders.RCLiftB,
-			RobotMap.Switch.LiftUpperLimit, Lift.LimitBoundary.Top);
+			RobotMap.Switch.LiftUpperLimit, "RC Lift");
 	public static final Claw claw = new Claw();
 
 	private final ToteLiftStalled toteLiftStalled = new ToteLiftStalled();
@@ -65,10 +64,10 @@ public class Robot extends IterativeRobot {
 		toteLiftStalled.whenActive(new ShutDownToteLift());
 		rcLiftStalled.whenActive(new ShutDownRCLift());
 
-		// Subsystem init methods
+		// PID initialization
 		drive.setPIDConstants();
-		toteLift.liftPIDInit("Tote lift", "Tote Lift PID");
-		rcLift.liftPIDInit("RC lift", "RC Lift PID");
+		toteLift.liftPIDInit();
+		rcLift.liftPIDInit();
 
 		// Set the claw setState
 		claw.setState();

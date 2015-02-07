@@ -2,6 +2,7 @@ package org.usfirst.frc.team166.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  *
@@ -9,8 +10,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Wing extends Subsystem {
 	private Solenoid solenoid;
 
-	public Wing(int channel) {
+	public Wing(String subsystem, int channel) {
 		solenoid = new Solenoid(channel);
+		LiveWindow.addActuator(subsystem, "Solenoid", solenoid);
 	}
 
 	public void raise() {
