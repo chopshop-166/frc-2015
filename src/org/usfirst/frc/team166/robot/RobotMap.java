@@ -67,6 +67,7 @@ public class RobotMap {
 
 	// Preference Strings
 	public static class Prefs {
+		public static final String RightRCDirection = "RightRCDirection";
 		public static final String DriveDeadZone = "DriveDeadZone";
 		public static final String DriveScalerX = "DriveScalerX";
 		public static final String DriveScalerY = "DriveScalerY";
