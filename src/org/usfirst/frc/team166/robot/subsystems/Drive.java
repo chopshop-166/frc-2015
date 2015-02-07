@@ -144,11 +144,10 @@ public class Drive extends Subsystem {
 	}
 
 	// STRAFE USING GYRO ASSISTANCE
-	public void strafeWithGyro(StrafeDirection direction) {
+	public void strafeWithGyro(StrafeDirection direction, double speed) {
 		int multiplier = (direction == StrafeDirection.Left) ? -1 : 1;
 		// STRAFE AT SOME POWER WHILE USING THE GYRO TO CORRECT FOR ROTATION
-		robotDrive.mecanumDrive_Cartesian(Preferences.getInstance().getDouble("StrafePower", .25) * multiplier, 0,
-				getGyroOffset(), 0);
+		robotDrive.mecanumDrive_Cartesian(speed * multiplier, 0, getGyroOffset(), 0);
 	}
 
 	// DRIVES FORWARD WITH USING GYRO ASSISTANCE
@@ -168,9 +167,8 @@ public class Drive extends Subsystem {
 	}
 
 	// MOVES THE ROBOT AT A GIVEN SPEED AT A GIVEN ANGLE
-	public void driveAngle(double angle) {
-		robotDrive
-		.mecanumDrive_Polar(Preferences.getInstance().getDouble("DriveAngleSpeed", 0), angle, getGyroOffset());
+	public void driveAngle(double angle, double speed) {
+		robotDrive.mecanumDrive_Polar(speed, angle, getGyroOffset());
 	}
 
 	// CENTERS THE ROBOT ON THE STEP
