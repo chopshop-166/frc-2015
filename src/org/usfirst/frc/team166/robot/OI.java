@@ -1,6 +1,7 @@
 package org.usfirst.frc.team166.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,8 +29,10 @@ public class OI {
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
 
 		button1.whenPressed(new CancelDriveCommand());
-		button3.whileHeld(new StrafeDirection(Drive.StrafeDirection.Left));
-		button4.whileHeld(new StrafeDirection(Drive.StrafeDirection.Right));
+		button3.whileHeld(new StrafeDirection(Drive.StrafeDirection.Left, Preferences.getInstance().getDouble(
+				"StrafePower", .25)));
+		button4.whileHeld(new StrafeDirection(Drive.StrafeDirection.Right, Preferences.getInstance().getDouble(
+				"StrafePower", .25)));
 
 		SmartDashboard.putData("LiftWings", new LiftWings());
 		SmartDashboard.putData("LowerWings", new LowerWings());

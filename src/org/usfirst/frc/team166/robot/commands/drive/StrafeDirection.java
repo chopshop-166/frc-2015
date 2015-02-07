@@ -10,12 +10,15 @@ import org.usfirst.frc.team166.robot.subsystems.Drive;
  */
 public class StrafeDirection extends Command {
 	private Drive.StrafeDirection strafeDirection;
+	double strafeSpeed;
 
-	public StrafeDirection(Drive.StrafeDirection direction) {
+	public StrafeDirection(Drive.StrafeDirection direction, double speed) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.drive);
 		strafeDirection = direction;
+		strafeSpeed = speed;
+
 	}
 
 	// Called just before this Command runs the first time
@@ -26,7 +29,7 @@ public class StrafeDirection extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.drive.strafeWithGyro(strafeDirection);
+		Robot.drive.strafeWithGyro(strafeDirection, strafeSpeed);
 		Robot.drive.printEncoderValues();
 	}
 
