@@ -14,8 +14,8 @@ public class LimitSwitchLift extends Lift {
 	DigitalInput carriageLimit = new DigitalInput(RobotMap.Switch.CarriageRCLiftLimit);
 
 	public LimitSwitchLift(int motorChannel, int brakeChannel, int encoderChannelA, int encoderChannelB,
-			int boundaryLimitChannel, LimitBoundary bound) {
-		super(motorChannel, brakeChannel, encoderChannelA, encoderChannelB, boundaryLimitChannel, bound);
+			int boundaryLimitChannel, String subsystem) {
+		super(motorChannel, brakeChannel, encoderChannelA, encoderChannelB, boundaryLimitChannel, subsystem);
 	}
 
 	public boolean areLiftsInContact() {

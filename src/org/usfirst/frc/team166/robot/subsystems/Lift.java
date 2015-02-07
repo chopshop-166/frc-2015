@@ -15,19 +15,14 @@ import org.usfirst.frc.team166.robot.RobotMap;
  *
  */
 public class Lift extends Subsystem {
-	// Speed controller, solenoid, encoder A and B channel, stop limit switch, limit switch direction
+
 	DigitalInput boundaryLimit;
 	Talon motor;
 	Encoder encoder;
 	Solenoid brake;
-	LimitBoundary limitPosition;
 	LiftMovement movementState;
-
 	PIDSpeedController pid;
-
-	public enum LimitBoundary {
-		Top, Bottom
-	}
+	String subsytemName;
 
 	public enum LiftMovement {
 		Stopped, Up, Down
@@ -38,28 +33,29 @@ public class Lift extends Subsystem {
 	}
 
 	public Lift(int motorChannel, int brakeChannel, int encoderChannelA, int encoderChannelB, int boundaryLimitChannel,
-			LimitBoundary bound) {
+			String subsytem) {
 		motor = new Talon(motorChannel);
 		brake = new Solenoid(brakeChannel);
 		encoder = new Encoder(encoderChannelA, encoderChannelB);
 		boundaryLimit = new DigitalInput(boundaryLimitChannel);
-		limitPosition = bound;
+		subsytemName = subsytem;
 
+		pid = new PIDSpeedController(encoder, motor, subsytemName, "Speed Control");
 	}
 
 	public void moveUp() {
-		releaseLift();
-		pid.set(Preferences.getInstance().getDouble("Move Speed", 0));
+		releaseBrake();
+		pid.set(getLiftSpeed());
 	}
 
 	public void moveDown() {
-		releaseLift();
-		pid.set(-Preferences.getInstance().getDouble("Move Speed", 0));
+		releaseBrake();
+		pid.set(-getLiftSpeed());
 	}
 
 	public void stop() {
 		pid.set(0);
-		brakeLift();
+		setBrake();
 	}
 
 	public static WhichCarriagePushing collisionMovement(LiftMovement rcMoveState, LiftMovement toteMoveState) {
@@ -73,13 +69,12 @@ public class Lift extends Subsystem {
 			return WhichCarriagePushing.None;
 	}
 
-	public void liftPIDInit(String liftName, String controllerName) {
-		double p = Preferences.getInstance().getDouble("Lift P", 0);
-		double i = Preferences.getInstance().getDouble("Lift I", 0);
-		double d = Preferences.getInstance().getDouble("Lift D", 0);
-		double f = Preferences.getInstance().getDouble("Lift F", 0);
+	public void liftPIDInit() {
+		double p = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftP, 0);
+		double i = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftI, 0);
+		double d = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftD, 0);
+		double f = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftF, 0);
 
-		pid = new PIDSpeedController(encoder, motor, liftName, controllerName);
 		pid.setConstants(p, i, d, f);
 	}
 
@@ -89,27 +84,28 @@ public class Lift extends Subsystem {
 
 	public boolean isLiftStalled() {
 		return Robot.pdBoard.getCurrent(RobotMap.Power.ToteLiftMotor) > Preferences.getInstance().getDouble(
-				"LiftMaxCurrent", 20);
-	}
-
-	public void bePushed() {
-		motor.set(Preferences.getInstance().getDouble("Move Speed", 0));
+				RobotMap.Prefs.LiftMaxCurrent, 20);
 	}
 
 	public LiftMovement getMoveState() {
 		return movementState;
 	}
 
-	private void brakeLift() {
+	private void setBrake() {
 		brake.set(true);
 	}
 
-	public void releaseLift() {
+	public void releaseBrake() {
 		brake.set(false);
 	}
 
 	public void resetEncoder() {
 		encoder.reset();
+	}
+
+	private double getLiftSpeed() {
+		// Get the max of the preference and zero so a negative doesn't change directions
+		return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
 	}
 
 	// Put methods for controlling this subsystem
