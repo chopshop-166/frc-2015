@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Wing extends Subsystem {
 	private Solenoid solenoid;
 
-	public Wing(int channel, String subsystem) {
+	public Wing(String subsystem, int channel) {
 		solenoid = new Solenoid(channel);
 		LiveWindow.addActuator(subsystem, "Solenoid", solenoid);
 	}

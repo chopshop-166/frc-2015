@@ -28,8 +28,8 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	public static PowerDistributionPanel pdBoard;
-	public static final Wing leftWing = new Wing(RobotMap.solenoid.LeftWing);
-	public static final Wing rightWing = new Wing(RobotMap.solenoid.RightWing);
+	public static final Wing leftWing = new Wing("Left Wing", RobotMap.solenoid.LeftWing);
+	public static final Wing rightWing = new Wing("Right Wing", RobotMap.solenoid.RightWing);
 	public static final Drive drive = new Drive();
 	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.solenoid.ToteLiftBrake,
 			RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB, RobotMap.Switch.LiftLowerLimit, "Tote Lift");
