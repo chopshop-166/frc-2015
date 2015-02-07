@@ -16,7 +16,9 @@ public class LimitSwitchLift extends Lift {
 
 	public LimitSwitchLift(int motorChannel, int brakeChannel, int encoderChannelA, int encoderChannelB,
 			int boundaryLimitChannel, String subsystem) {
+
 		super(motorChannel, brakeChannel, encoderChannelA, encoderChannelB, boundaryLimitChannel, subsystem);
+		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(RobotMap.Prefs.RCLiftDistPerPulse, 0));
 		LiveWindow.addSensor(subsystem, "Carriage Switch", carriageLimit);
 	}
 

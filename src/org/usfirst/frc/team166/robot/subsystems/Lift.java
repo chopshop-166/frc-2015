@@ -41,6 +41,8 @@ public class Lift extends Subsystem {
 		boundaryLimit = new DigitalInput(boundaryLimitChannel);
 		subsytemName = subsytem;
 
+		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(RobotMap.Prefs.ToteLiftDistPerPulse, 0));
+
 		LiveWindow.addActuator(subsytem, "Motor", motor);
 		LiveWindow.addActuator(subsytem, "Brake", brake);
 		LiveWindow.addSensor(subsytem, "Encoder", encoder);
