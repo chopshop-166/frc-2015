@@ -25,14 +25,17 @@ public class Lift extends Subsystem {
 	PIDSpeedController pid;
 	String subsytemName;
 
+	// This enum describes the movement state of a lift.
 	public enum LiftMovement {
 		Stopped, Up, Down
 	}
 
+	// This enum describes which carriage is pushing during a collision
 	public enum WhichCarriagePushing {
 		RC, Tote, None, Both
 	}
 
+	// Constructor
 	public Lift(int motorChannel, int brakeChannel, int encoderChannelA, int encoderChannelB, int boundaryLimitChannel,
 			String subsytem) {
 		motor = new Talon(motorChannel);
@@ -65,6 +68,7 @@ public class Lift extends Subsystem {
 		setBrake();
 	}
 
+	// Given lift move states, decides which carriage is pushing in a collision, and sets
 	public static WhichCarriagePushing collisionMovement(LiftMovement rcMoveState, LiftMovement toteMoveState) {
 		if (rcMoveState == LiftMovement.Stopped && toteMoveState == LiftMovement.Up)
 			return WhichCarriagePushing.Tote;
