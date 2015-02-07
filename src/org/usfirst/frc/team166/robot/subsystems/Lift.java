@@ -23,7 +23,6 @@ public class Lift extends Subsystem {
 	Solenoid brake;
 	LiftMovement movementState;
 	PIDSpeedController pid;
-	String subsytemName;
 
 	// This enum describes the movement state of a lift.
 	public enum LiftMovement {
@@ -37,20 +36,20 @@ public class Lift extends Subsystem {
 
 	// Constructor
 	public Lift(int motorChannel, int brakeChannel, int encoderChannelA, int encoderChannelB, int boundaryLimitChannel,
-			String subsytem) {
+			String subsystem) {
 		motor = new Talon(motorChannel);
 		brake = new Solenoid(brakeChannel);
 		encoder = new Encoder(encoderChannelA, encoderChannelB);
 		boundaryLimit = new DigitalInput(boundaryLimitChannel);
-		subsytemName = subsytem;
 
 		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(RobotMap.Prefs.ToteLiftDistPerPulse, 0));
 
-		LiveWindow.addActuator(subsytem, "Motor", motor);
-		LiveWindow.addActuator(subsytem, "Brake", brake);
-		LiveWindow.addSensor(subsytem, "Encoder", encoder);
-		LiveWindow.addSensor(subsytem, "Boundary Limit Switch", boundaryLimit);
-		pid = new PIDSpeedController(encoder, motor, subsytemName, "Speed Control");
+		LiveWindow.addActuator(subsystem, "Motor", motor);
+		LiveWindow.addActuator(subsystem, "Brake", brake);
+		LiveWindow.addSensor(subsystem, "Encoder", encoder);
+		LiveWindow.addSensor(subsystem, "Boundary Limit Switch", boundaryLimit);
+		pid = new PIDSpeedController(encoder, motor, subsystem, "Speed Control");
+
 	}
 
 	public void moveUp() {
@@ -68,6 +67,24 @@ public class Lift extends Subsystem {
 		setBrake();
 	}
 
+	// Move lift to given position
+	public void moveLiftToPosition(double position) {
+		if (encoder.getDistance() > position + Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10)) {
+			pid.set(-getLiftSpeed());
+		} else if (encoder.getDistance() < position
+				- Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10)) {
+			pid.set(getLiftSpeed());
+		} else {
+			stop();
+		}
+	}
+
+	public boolean isAtTargetPos(double position) {
+		return (encoder.getDistance() < position
+				+ Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10) && encoder.getDistance() > position
+				- Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10));
+	}
+
 	// Given lift move states, decides which carriage is pushing in a collision, and sets WhichCarriageMoving
 	public static WhichCarriagePushing collisionMovement(LiftMovement rcMoveState, LiftMovement toteMoveState) {
 		if (rcMoveState == LiftMovement.Stopped && toteMoveState == LiftMovement.Up)
@@ -80,12 +97,12 @@ public class Lift extends Subsystem {
 			return WhichCarriagePushing.None;
 	}
 
-	// Set PID constants from preferences
+	// Set Speed PID constants from preferences
 	public void liftPIDInit() {
-		double p = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftP, 0);
-		double i = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftI, 0);
-		double d = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftD, 0);
-		double f = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftF, 0);
+		double p = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeedP, 0);
+		double i = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeedI, 0);
+		double d = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeedD, 0);
+		double f = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeedF, 0);
 
 		pid.setConstants(p, i, d, f);
 	}

@@ -81,10 +81,12 @@ public class RobotMap {
 		public static final String LiftMaxCurrent = "LiftMaxCurrent";
 		public static final String ToteLiftDistPerPulse = "ToteLiftDistPerPulse";
 		public static final String RCLiftDistPerPulse = "RCLiftDistPerPulse";
-		public static final String LiftP = "LiftP";
-		public static final String LiftI = "LiftI";
-		public static final String LiftD = "LiftD";
-		public static final String LiftF = "LiftF";
+		public static final String LiftSpeedP = "LiftSpeedP";
+		public static final String LiftSpeedI = "LiftSpeedI";
+		public static final String LiftSpeedD = "LiftSpeedD";
+		public static final String LiftSpeedF = "LiftSpeedF";
+		public static final String LiftPosTolerance = "LiftPosTolerance";
+		public static final String RCRightLiftPos = "RCRightLiftPos";
 
 		// public static final String XXXXXX = "XXXXXX";
 	}
