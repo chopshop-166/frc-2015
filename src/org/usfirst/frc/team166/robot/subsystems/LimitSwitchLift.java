@@ -16,6 +16,7 @@ public class LimitSwitchLift extends Lift {
 	public LimitSwitchLift(int motorChannel, int brakeChannel, int encoderChannelA, int encoderChannelB,
 			int boundaryLimitChannel, LimitBoundary bound) {
 		super(motorChannel, brakeChannel, encoderChannelA, encoderChannelB, boundaryLimitChannel, bound);
+		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(RobotMap.Prefs.RCLiftDistPerPulse, 0));
 	}
 
 	public boolean areLiftsInContact() {

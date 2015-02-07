@@ -45,6 +45,8 @@ public class Lift extends Subsystem {
 		boundaryLimit = new DigitalInput(boundaryLimitChannel);
 		limitPosition = bound;
 
+		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(RobotMap.Prefs.ToteLiftDistPerPulse, 0));
+
 	}
 
 	public void moveUp() {
