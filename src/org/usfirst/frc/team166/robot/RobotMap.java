@@ -80,6 +80,11 @@ public class RobotMap {
 		public static final String LiftMaxCurrent = "LiftMaxCurrent";
 		public static final String ToteLiftDistPerPulse = "ToteLiftDistPerPulse";
 		public static final String RCLiftDistPerPulse = "RCLiftDistPerPulse";
+		public static final String LiftP = "LiftP";
+		public static final String LiftI = "LiftI";
+		public static final String LiftD = "LiftD";
+		public static final String LiftF = "LiftF";
+
 		// public static final String XXXXXX = "XXXXXX";
 	}
 
