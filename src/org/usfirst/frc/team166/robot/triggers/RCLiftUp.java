@@ -1,9 +1,9 @@
 package org.usfirst.frc.team166.robot.triggers;
 
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 
 import org.usfirst.frc.team166.robot.Robot;
+import org.usfirst.frc.team166.robot.Utility;
 
 /**
  *
@@ -12,6 +12,6 @@ public class RCLiftUp extends Trigger {
 
 	@Override
 	public boolean get() {
-		return Robot.oi.getRCJoystick().getY() > Preferences.getInstance().getDouble("Deadzone", .2);
+		return Utility.isAxisZero(Robot.oi.getRCLiftUpDownAxis());
 	}
 }
