@@ -3,16 +3,17 @@ package org.usfirst.frc.team166.robot.commands.lifts;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team166.robot.Robot;
+import org.usfirst.frc.team166.robot.subsystems.Lift;
 
 /**
  *
  */
-public class MoveRCLiftToPos extends Command {
+public class MoveLiftToPos extends Command {
 
 	private double liftPosition;
 
-	public MoveRCLiftToPos(double position) {
-		requires(Robot.rcLift);
+	public MoveLiftToPos(Lift lift, double position) {
+		requires(lift);
 		liftPosition = position;
 	}
 
