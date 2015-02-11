@@ -1,24 +1,23 @@
-package org.usfirst.frc.team166.robot.commands.drive;
+package org.usfirst.frc.team166.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team166.robot.Robot;
-import org.usfirst.frc.team166.robot.subsystems.Drive;
+import org.usfirst.frc.team166.robot.subsystems.Drive.ForwardBackwardDirection;
 
 /**
  *
  */
-public class StrafeDirection extends Command {
-	private Drive.StrafeDirection strafeDirection;
-	double strafeSpeed;
+public class DriveForwardBackwardDistance extends Command {
+	private double driveSpeed;
+	private ForwardBackwardDirection direction;
+	private int distance;
 
-	public StrafeDirection(Drive.StrafeDirection direction, double speed) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+	public DriveForwardBackwardDistance(double speed, ForwardBackwardDirection desiredDirection, int desiredDistance) {
 		requires(Robot.drive);
-		strafeDirection = direction;
-		strafeSpeed = speed;
-
+		speed = driveSpeed;
+		desiredDirection = direction;
+		desiredDistance = distance;
 	}
 
 	// Called just before this Command runs the first time
@@ -29,8 +28,7 @@ public class StrafeDirection extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.drive.strafeWithGyro(strafeDirection, strafeSpeed);
-		Robot.drive.printEncoderValues();
+		Robot.drive.driveForwardBackwardDistance(driveSpeed, direction, distance);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
