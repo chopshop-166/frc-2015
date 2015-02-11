@@ -87,7 +87,7 @@ public class RobotMap {
 		public static final String LiftSpeedF = "LiftSpeedF";
 		public static final String LiftPosTolerance = "LiftPosTolerance";
 		public static final String RCRightLiftPos = "RCRightLiftPos";
-
+		public static final String RCRightToteLiftPos = "RCRightToteLiftPos";
 		// public static final String XXXXXX = "XXXXXX";
 	}
 
