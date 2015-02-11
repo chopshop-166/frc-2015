@@ -61,6 +61,8 @@ public class Drive extends Subsystem {
 	double joystickScalerX;
 	double joystickScalerY;
 	double joystickScalerRotation;
+	public static final double encoderScaleFactor = 183;
+	public static final int autonomousReverseDistance = 40;
 
 	public Drive() {
 
@@ -128,17 +130,6 @@ public class Drive extends Subsystem {
 					getGyroOffset(), 0);
 		}
 		SmartDashboard.putBoolean("DriveMode", driveMode);
-	}
-
-	public enum StrafeDirection {
-		Left, Right
-	}
-
-	// STRAFE USING GYRO ASSISTANCE
-	public void strafeWithGyro(StrafeDirection direction, double speed) {
-		int multiplier = (direction == StrafeDirection.Left) ? -1 : 1;
-		// STRAFE AT SOME POWER WHILE USING THE GYRO TO CORRECT FOR ROTATION
-		robotDrive.mecanumDrive_Cartesian(speed * multiplier, 0, getGyroOffset(), 0);
 	}
 
 	// DRIVES FORWARD WITH USING GYRO ASSISTANCE
@@ -242,13 +233,30 @@ public class Drive extends Subsystem {
 
 	// PRINTS THE ENCODER SPEEDS
 	public void printEncoderValues() {
-		double inchesTraveled = (frontLeftEncoder.getDistance() / 1024)
-				* (2 * Preferences.getInstance().getDouble("WheelRadius", 3) * Math.PI);
-		SmartDashboard.putNumber("Inches Traveled", inchesTraveled);
 		SmartDashboard.putNumber("Encoder Speed FL", frontLeftEncoder.getRate());
 		SmartDashboard.putNumber("Encoder Speed FR", frontRightEncoder.getRate());
 		SmartDashboard.putNumber("Encoder Speed RR", rearRightEncoder.getRate());
 		SmartDashboard.putNumber("Encoder Speed RL", rearLeftEncoder.getRate());
+	}
+
+	public double getDistanceTraveled(Encoder driveEncoder) {
+		double distanceTraveled = (driveEncoder.getDistance() * encoderScaleFactor);
+		return distanceTraveled;
+	}
+
+	public enum ForwardBackwardDirection {
+		Forward, Backward
+	}
+
+	public void driveForwardBackwardDistance(double speed, ForwardBackwardDirection direction, int distance) {
+		int multiplier = (direction == ForwardBackwardDirection.Backward) ? -1 : 1;
+		double distanceTraveledAverage = (getDistanceTraveled(frontRightEncoder)
+				+ getDistanceTraveled(frontLeftEncoder) + getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder)) / 4;
+		if (distanceTraveledAverage >= distance) {
+			robotDrive.mecanumDrive_Cartesian(0, (speed * multiplier), getGyroOffset(), 0);
+		} else {
+			robotDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
+		}
 	}
 
 	// SETS THE PID CONSTANTS THROUGH PREFERENCES (CURRENTLY UNUSED)
