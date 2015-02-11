@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
-import org.usfirst.frc.team166.robot.Robot;
 import org.usfirst.frc.team166.robot.RobotMap;
 
 /**
@@ -23,6 +22,7 @@ public class Lift extends Subsystem {
 	Solenoid brake;
 	LiftMovement movementState;
 	PIDSpeedController pid;
+	String subsystemName;
 
 	// This enum describes the movement state of a lift.
 	public enum LiftMovement {
@@ -49,7 +49,7 @@ public class Lift extends Subsystem {
 		LiveWindow.addSensor(subsystem, "Encoder", encoder);
 		LiveWindow.addSensor(subsystem, "Boundary Limit Switch", boundaryLimit);
 		pid = new PIDSpeedController(encoder, motor, subsystem, "Speed Control");
-
+		subsystemName = subsystem;
 	}
 
 	public void moveUp() {
@@ -98,11 +98,11 @@ public class Lift extends Subsystem {
 	}
 
 	// Set Speed PID constants from preferences
-	public void liftPIDInit() {
-		double p = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeedP, 0);
-		double i = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeedI, 0);
-		double d = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeedD, 0);
-		double f = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeedF, 0);
+	public void setPIDConstants() {
+		double p = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedP, 0);
+		double i = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedI, 0);
+		double d = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedD, 0);
+		double f = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedF, 0);
 
 		pid.setConstants(p, i, d, f);
 	}
@@ -110,12 +110,6 @@ public class Lift extends Subsystem {
 	// Returns whether or not the lift boundary limit switch is hit
 	public boolean isBoundaryHit() {
 		return boundaryLimit.get();
-	}
-
-	// Returns whether or not the lift motor is drawing too much current
-	public boolean isLiftStalled() {
-		return Robot.pdBoard.getCurrent(RobotMap.Power.ToteLiftMotor) > Preferences.getInstance().getDouble(
-				RobotMap.Prefs.LiftMaxCurrent, 20);
 	}
 
 	public LiftMovement getMoveState() {

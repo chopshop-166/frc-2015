@@ -32,10 +32,10 @@ public class Robot extends IterativeRobot {
 	public static final Wing rightWing = new Wing("Right Wing", RobotMap.solenoid.RightWing);
 	public static final Drive drive = new Drive();
 	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.solenoid.ToteLiftBrake,
-			RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB, RobotMap.Switch.LiftLowerLimit, "Tote Lift");
+			RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB, RobotMap.Switch.LiftLowerLimit, "Tote");
 	public static final LimitSwitchLift rcLift = new LimitSwitchLift(RobotMap.Pwm.RCLiftMotor,
 			RobotMap.solenoid.RCLiftBrake, RobotMap.Encoders.RCLiftA, RobotMap.Encoders.RCLiftB,
-			RobotMap.Switch.LiftUpperLimit, "RC Lift");
+			RobotMap.Switch.LiftUpperLimit, "RC");
 	public static final Claw claw = new Claw();
 
 	private final ToteLiftStalled toteLiftStalled = new ToteLiftStalled();
@@ -66,8 +66,8 @@ public class Robot extends IterativeRobot {
 
 		// PID initialization
 		drive.setPIDConstants();
-		toteLift.liftPIDInit();
-		rcLift.liftPIDInit();
+		toteLift.setPIDConstants();
+		rcLift.setPIDConstants();
 
 		// Set the claw setState
 		claw.setState();
