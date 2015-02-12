@@ -28,8 +28,8 @@ public class DetermineLiftCollision extends Command {
 			new StartCommand(new RCForcedUp());
 			break;
 		case Both:
-			new StartCommand(new StopToteLift());
-			new StartCommand(new StopRCLift());
+			new StartCommand(new StopLift(Robot.toteLift));
+			new StartCommand(new StopLift(Robot.rcLift));
 			break;
 		case None:
 			// Deliberately empty, barren, desolate, devoid of activity, deadsies

@@ -2,7 +2,6 @@ package org.usfirst.frc.team166.robot.commands.lifts;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.usfirst.frc.team166.robot.Robot;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
 
 /**
@@ -11,16 +10,18 @@ import org.usfirst.frc.team166.robot.subsystems.Lift;
 public class MoveLiftToPos extends Command {
 
 	private double liftPosition;
+	private Lift lift;
 
-	public MoveLiftToPos(Lift lift, double position) {
-		requires(lift);
+	public MoveLiftToPos(Lift m_lift, double position) {
+		requires(m_lift);
 		liftPosition = position;
+		lift = m_lift;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.rcLift.moveLiftToPosition(liftPosition);
+		lift.moveLiftToPosition(liftPosition);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -31,13 +32,13 @@ public class MoveLiftToPos extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Robot.rcLift.isAtTargetPos(liftPosition);
+		return lift.isAtTargetPos(liftPosition);
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.rcLift.stop();
+		lift.stop();
 	}
 
 	// Called when another command which requires one or more of the same

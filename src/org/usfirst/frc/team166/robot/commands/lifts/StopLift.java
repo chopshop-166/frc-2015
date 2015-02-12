@@ -2,21 +2,24 @@ package org.usfirst.frc.team166.robot.commands.lifts;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.usfirst.frc.team166.robot.Robot;
+import org.usfirst.frc.team166.robot.subsystems.Lift;
 
 /**
  *
  */
-public class LowerToteLift extends Command {
+public class StopLift extends Command {
 
-	public LowerToteLift() {
-		requires(Robot.toteLift);
+	private Lift lift;
+
+	public StopLift(Lift m_lift) {
+		requires(m_lift);
+		lift = m_lift;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.toteLift.moveDown();
+		lift.stop();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -27,14 +30,12 @@ public class LowerToteLift extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Robot.toteLift.isBoundaryHit();
+		return true;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.toteLift.stop();
-		Robot.toteLift.resetEncoder();
 	}
 
 	// Called when another command which requires one or more of the same
