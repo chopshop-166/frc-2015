@@ -3,20 +3,24 @@ package org.usfirst.frc.team166.robot.commands.lifts;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team166.robot.Robot;
+import org.usfirst.frc.team166.robot.subsystems.Lift;
 
 /**
  *
  */
-public class StopRCLift extends Command {
+public class RaiseLift extends Command {
 
-	public StopRCLift() {
-		requires(Robot.rcLift);
+	private Lift lift;
+
+	public RaiseLift(Lift m_lift) {
+		requires(m_lift);
+		lift = m_lift;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.rcLift.stop();
+		lift.moveUp();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -27,12 +31,13 @@ public class StopRCLift extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return true;
+		return lift.isBoundaryHit() || Robot.rcLift.areLiftsInContact();
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		lift.stop();
 	}
 
 	// Called when another command which requires one or more of the same
