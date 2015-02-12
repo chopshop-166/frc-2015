@@ -67,7 +67,6 @@ public class RobotMap {
 
 	// Preference Strings
 	public static class Prefs {
-		public static final String RightRCDirection = "RightRCDirection";
 		public static final String DriveDeadZone = "DriveDeadZone";
 		public static final String DriveScalerX = "DriveScalerX";
 		public static final String DriveScalerY = "DriveScalerY";
@@ -75,7 +74,13 @@ public class RobotMap {
 		public static final String GyroStrafeConstant = "GyroStrafeConstant";
 		public static final String AutoDriveSpeed = "AutoDriveSpeed";
 		public static final String StrafeSpeed = "StrafeSpeed";
-		public static final String RightRCWaitTime = "RightRCWaitTime";
+		public static final String CenterDistanceConstant = "CenterDistanceConstant";
+		public static final String StalledDriveCurrent = "StalledDriveCurrent";
+		public static final String DriveSpeedP = "DriveSpeedP";
+		public static final String DriveSpeedI = "DriveSpeedI";
+		public static final String DriveSpeedD = "DriveSpeedD";
+		public static final String DriveSpeedF = "DriveSpeedF";
+
 		public static final String LiftDeadzone = "LiftDeadzone";
 		public static final String LiftSpeed = "LiftSpeed";
 		public static final String LiftMaxCurrent = "LiftMaxCurrent";
@@ -86,9 +91,11 @@ public class RobotMap {
 		public static final String LiftSpeedD = "LiftSpeedD";
 		public static final String LiftSpeedF = "LiftSpeedF";
 		public static final String LiftPosTolerance = "LiftPosTolerance";
+
+		public static final String RightRCDirection = "RightRCDirection";
+		public static final String RightRCWaitTime = "RightRCWaitTime";
 		public static final String RCRightLiftPos = "RCRightLiftPos";
 		public static final String RCRightToteLiftPos = "RCRightToteLiftPos";
-		// public static final String XXXXXX = "XXXXXX";
 	}
 
 	// PD Circuit Channels

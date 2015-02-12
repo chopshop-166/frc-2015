@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team166.robot.commands.autonomous.Autonomous;
 import org.usfirst.frc.team166.robot.commands.lifts.DetermineLiftCollision;
-import org.usfirst.frc.team166.robot.commands.lifts.ShutDownRCLift;
-import org.usfirst.frc.team166.robot.commands.lifts.ShutDownToteLift;
+import org.usfirst.frc.team166.robot.commands.lifts.ShutDownLift;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
@@ -32,10 +31,10 @@ public class Robot extends IterativeRobot {
 	public static final Wing rightWing = new Wing("Right Wing", RobotMap.solenoid.RightWing);
 	public static final Drive drive = new Drive();
 	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.solenoid.ToteLiftBrake,
-			RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB, RobotMap.Switch.LiftLowerLimit, "Tote Lift");
+			RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB, RobotMap.Switch.LiftLowerLimit, "Tote");
 	public static final LimitSwitchLift rcLift = new LimitSwitchLift(RobotMap.Pwm.RCLiftMotor,
 			RobotMap.solenoid.RCLiftBrake, RobotMap.Encoders.RCLiftA, RobotMap.Encoders.RCLiftB,
-			RobotMap.Switch.LiftUpperLimit, "RC Lift");
+			RobotMap.Switch.LiftUpperLimit, "RC");
 	public static final Claw claw = new Claw();
 
 	private final ToteLiftStalled toteLiftStalled = new ToteLiftStalled();
@@ -61,13 +60,13 @@ public class Robot extends IterativeRobot {
 
 		// Connect triggers to commands
 		carriageTrigger.whenActive(new DetermineLiftCollision());
-		toteLiftStalled.whenActive(new ShutDownToteLift());
-		rcLiftStalled.whenActive(new ShutDownRCLift());
+		toteLiftStalled.whenActive(new ShutDownLift(Robot.toteLift));
+		rcLiftStalled.whenActive(new ShutDownLift(Robot.rcLift));
 
 		// PID initialization
 		drive.setPIDConstants();
-		toteLift.liftPIDInit();
-		rcLift.liftPIDInit();
+		toteLift.setPIDConstants();
+		rcLift.setPIDConstants();
 
 		// Set the claw setState
 		claw.setState();

@@ -20,6 +20,13 @@ import org.usfirst.frc.team166.robot.Utility;
 import org.usfirst.frc.team166.robot.commands.drive.DriveWithJoysticks;
 
 public class Drive extends Subsystem {
+
+	// Constants
+	private static final double GyroSensitivity = .0125; // V/Deg/Sec
+	private static final double UltrasonicConstant = 102.0408163265306; // inch/V
+	private static final double DistanceNormal = 183;
+	private static final double DistancePerPulse = ((6 * Math.PI) / 1024) / DistanceNormal;
+
 	// ROBOTDRIVE INIT
 	final RobotDrive robotDrive;
 
@@ -49,18 +56,7 @@ public class Drive extends Subsystem {
 	// YAWRATE SENSOR INIT
 	public final Gyro gyro;
 
-	// ULTRASONIC VARIABLES
-	double frontUSDistance;
-	double rightUSDistance;
-	double leftUSDistance;
-	double USConstant = 102.0408163265306;
-	double centerOffsetDistance = 0;
-
-	// DRIVE VARIABLES
-	boolean driveMode = false;
-	double joystickScalerX;
-	double joystickScalerY;
-	double joystickScalerRotation;
+	boolean usingTwist = false;
 
 	public Drive() {
 
@@ -85,20 +81,20 @@ public class Drive extends Subsystem {
 		rearRightEncoder = new Encoder(RobotMap.Encoders.RearRightDriveA, RobotMap.Encoders.RearRightDriveB);
 
 		// ENCODER MATH
-		frontLeftEncoder.setDistancePerPulse(((6 * Math.PI) / 1024) / 183);
+		frontLeftEncoder.setDistancePerPulse(DistancePerPulse);
 		frontLeftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-		frontRightEncoder.setDistancePerPulse(((6 * Math.PI) / 1024) / 183);
+		frontRightEncoder.setDistancePerPulse(DistancePerPulse);
 		frontRightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-		rearLeftEncoder.setDistancePerPulse(((6 * Math.PI) / 1024) / 183);
+		rearLeftEncoder.setDistancePerPulse(DistancePerPulse);
 		rearLeftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-		rearRightEncoder.setDistancePerPulse(((6 * Math.PI) / 1024) / 183);
+		rearRightEncoder.setDistancePerPulse(DistancePerPulse);
 		rearRightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
 
 		// PID SPEED CONTROLLERS
-		frontLeftPID = new PIDSpeedController(frontLeftEncoder, frontLeftTalon, "Drive", "frontLeft");
-		frontRightPID = new PIDSpeedController(frontRightEncoder, frontRightTalon, "Drive", "frontRight");
-		rearLeftPID = new PIDSpeedController(rearLeftEncoder, rearLeftTalon, "Drive", "rearLeft");
-		rearRightPID = new PIDSpeedController(rearRightEncoder, rearRightTalon, "Drive", "rearRight");
+		frontLeftPID = new PIDSpeedController(frontLeftEncoder, frontLeftTalon, "Drive", "Front Left");
+		frontRightPID = new PIDSpeedController(frontRightEncoder, frontRightTalon, "Drive", "Front Right");
+		rearLeftPID = new PIDSpeedController(rearLeftEncoder, rearLeftTalon, "Drive", "Rear Left");
+		rearRightPID = new PIDSpeedController(rearRightEncoder, rearRightTalon, "Drive", "Rear Right");
 
 		// DRIVE DECLARATION
 		robotDrive = new RobotDrive(frontLeftPID, rearLeftPID, frontRightPID, rearRightPID);
@@ -111,43 +107,33 @@ public class Drive extends Subsystem {
 
 	// MECANUMDRIVE USING DEADZONES, GYRO, AND ENCODERS
 	public void mecanumDrive(Joystick stick) {
-		printPDPAverageCurrent();
+
 		// DRIVE FORWARD WITH JOYSTICKS ONLY
 		if (Utility.isAxisZero(Robot.oi.getDriveJoystickRotation())) {
 			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
 					Robot.oi.getDriveJoystickRotation(), 0);
-			driveMode = false;
+			usingTwist = false;
 		} else {
 			// IS THIS THE FIRST TIME IN LOOP?
-			if (driveMode == false) {
+			if (usingTwist == false) {
 				gyro.reset();
 			}
-			driveMode = true;
+			usingTwist = true;
 			// USE THE GYRO FOR ROTATION ASSISTANCE
 			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
 					getGyroOffset(), 0);
 		}
-		SmartDashboard.putBoolean("DriveMode", driveMode);
-	}
-
-	public enum StrafeDirection {
-		Left, Right
-	}
-
-	// STRAFE USING GYRO ASSISTANCE
-	public void strafeWithGyro(StrafeDirection direction, double speed) {
-		int multiplier = (direction == StrafeDirection.Left) ? -1 : 1;
-		// STRAFE AT SOME POWER WHILE USING THE GYRO TO CORRECT FOR ROTATION
-		robotDrive.mecanumDrive_Cartesian(speed * multiplier, 0, getGyroOffset(), 0);
 	}
 
 	// DRIVES FORWARD WITH USING GYRO ASSISTANCE
 	public void driveForwardWithGyro() {
-		robotDrive.mecanumDrive_Cartesian(0, (Preferences.getInstance().getDouble("AutoSpeed", 0)), getGyroOffset(), 0);
+		robotDrive.mecanumDrive_Cartesian(0, (Preferences.getInstance().getDouble(RobotMap.Prefs.AutoDriveSpeed, 0)),
+				getGyroOffset(), 0);
 	}
 
 	private double getGyroOffset() {
-		double gyroOffset = (getGyro() * Preferences.getInstance().getDouble("GyroStrafeConstant", .01111111111));
+		double gyroOffset = (getGyro() * Preferences.getInstance().getDouble(RobotMap.Prefs.GyroStrafeConstant,
+				.01111111111));
 		// IF THE ABOSOLUTE VAL OF THE GYRO OFFSET IS LARGER THAN 1
 		if (Math.abs(gyroOffset) > 1) {
 			// SET THE GYRO OFFSET TO EITHER 1 OR -1
@@ -164,10 +150,11 @@ public class Drive extends Subsystem {
 
 	// CENTERS THE ROBOT ON THE STEP
 	public void centerOnStep() {
-		centerOffsetDistance = getRightDistance() - getLeftDistance();
+		double centerOffsetDistance = getRightDistance() - getLeftDistance();
 		if (isUltrasonicDataGood()) {
 			robotDrive.mecanumDrive_Cartesian(
-					centerOffsetDistance / Preferences.getInstance().getDouble("USCenterDistanceConstant", 27.5), 0,
+					centerOffsetDistance
+							/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
 					getGyroOffset(), 0);
 		} else {
 			stopMotors();
@@ -186,21 +173,21 @@ public class Drive extends Subsystem {
 
 	// RETRIEVES THE DISTANCE THAT THE FRONT ULTRASONIC SENSOR IS FROM AN OBJECT
 	public double getFrontDistance() {
-		frontUSDistance = (frontRangefinder.getAverageVoltage() * USConstant);
+		double frontUSDistance = (frontRangefinder.getAverageVoltage() * UltrasonicConstant);
 		SmartDashboard.putNumber("Front Distance", frontUSDistance);
 		return frontUSDistance;
 	}
 
 	// RETRIEVES THE DISTANCE THAT THE RIGHT ULTRASONIC SENSOR IS FROM AN OBJECT
 	public double getRightDistance() {
-		rightUSDistance = (rightRangefinder.getAverageVoltage() * USConstant);
+		double rightUSDistance = (rightRangefinder.getAverageVoltage() * UltrasonicConstant);
 		SmartDashboard.putNumber("Right Distance", rightUSDistance);
 		return rightUSDistance;
 	}
 
 	// RETRIEVES THE DISTANCE THAT THE LEFT ULTRASONIC SENSOR IS FROM AN OBJECT
 	public double getLeftDistance() {
-		leftUSDistance = (leftRangefinder.getAverageVoltage() * USConstant);
+		double leftUSDistance = (leftRangefinder.getAverageVoltage() * UltrasonicConstant);
 		SmartDashboard.putNumber("Left Distance", leftUSDistance);
 		return leftUSDistance;
 	}
@@ -208,12 +195,13 @@ public class Drive extends Subsystem {
 	// RETURNS WHETHER OR NOT THE DRIVE MOTORS ARE STALLED
 	public boolean isStalled() {
 		return (Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontLeftDrive) > Preferences.getInstance().getDouble(
-				"currentCutoff", 20)
+				RobotMap.Prefs.StalledDriveCurrent, 20)
 				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance().getDouble(
-						"currentCutoff", 20)
+						RobotMap.Prefs.StalledDriveCurrent, 20)
 				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
-						"currentCutoff", 20) || Robot.pdBoard.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences
-				.getInstance().getDouble("currentCutoff", 20));
+						RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
+				.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
+				RobotMap.Prefs.StalledDriveCurrent, 20));
 	}
 
 	// CHECKS IF THE ULRASONIC DATA IS REASONABLE
@@ -224,39 +212,51 @@ public class Drive extends Subsystem {
 	// SETS UP THE GYRO
 	public void initGyro() {
 		gyro.initGyro();
-		gyro.setSensitivity(.0125);
-
+		gyro.setSensitivity(GyroSensitivity);
 	}
 
 	// RETURNS THE ANGLE AND RATE OF THE GYRO
 	public double getGyro() {
-		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
+		double angle = gyro.getAngle();
+		SmartDashboard.putNumber("Gyro Angle", angle);
 		SmartDashboard.putNumber("Gyro Rate", gyro.getRate());
-		return gyro.getAngle();
-	}
-
-	// PRINTS THE CURRENT OF THE MOTOR ON PORT 0 TO THE SMARTDASHBOARD
-	public void printPDPAverageCurrent() {
-		SmartDashboard.putNumber("Average Current", Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive));
+		return angle;
 	}
 
 	// PRINTS THE ENCODER SPEEDS
 	public void printEncoderValues() {
-		double inchesTraveled = (frontLeftEncoder.getDistance() / 1024)
-				* (2 * Preferences.getInstance().getDouble("WheelRadius", 3) * Math.PI);
-		SmartDashboard.putNumber("Inches Traveled", inchesTraveled);
 		SmartDashboard.putNumber("Encoder Speed FL", frontLeftEncoder.getRate());
 		SmartDashboard.putNumber("Encoder Speed FR", frontRightEncoder.getRate());
 		SmartDashboard.putNumber("Encoder Speed RR", rearRightEncoder.getRate());
 		SmartDashboard.putNumber("Encoder Speed RL", rearLeftEncoder.getRate());
 	}
 
+	public double getDistanceTraveled(Encoder driveEncoder) {
+		double distanceTraveled = (driveEncoder.getDistance() * DistanceNormal);
+		return distanceTraveled;
+	}
+
+	public enum ForwardBackwardDirection {
+		Forward, Backward
+	}
+
+	public void driveForwardBackwardDistance(double speed, ForwardBackwardDirection direction, int distance) {
+		int multiplier = (direction == ForwardBackwardDirection.Backward) ? -1 : 1;
+		double distanceTraveledAverage = (getDistanceTraveled(frontRightEncoder)
+				+ getDistanceTraveled(frontLeftEncoder) + getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder)) / 4;
+		if (distanceTraveledAverage >= distance) {
+			robotDrive.mecanumDrive_Cartesian(0, (speed * multiplier), getGyroOffset(), 0);
+		} else {
+			robotDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
+		}
+	}
+
 	// SETS THE PID CONSTANTS THROUGH PREFERENCES (CURRENTLY UNUSED)
 	public void setPIDConstants() {
-		double p = Preferences.getInstance().getDouble("DriveP", 0);
-		double i = Preferences.getInstance().getDouble("DriveI", 0);
-		double d = Preferences.getInstance().getDouble("DriveD", 0);
-		double f = Preferences.getInstance().getDouble("DriveF", 0);
+		double p = Preferences.getInstance().getDouble(RobotMap.Prefs.DriveSpeedP, 0);
+		double i = Preferences.getInstance().getDouble(RobotMap.Prefs.DriveSpeedI, 0);
+		double d = Preferences.getInstance().getDouble(RobotMap.Prefs.DriveSpeedD, 0);
+		double f = Preferences.getInstance().getDouble(RobotMap.Prefs.DriveSpeedF, 0);
 
 		frontLeftPID.setConstants(p, i, d, f);
 		frontRightPID.setConstants(p, i, d, f);
