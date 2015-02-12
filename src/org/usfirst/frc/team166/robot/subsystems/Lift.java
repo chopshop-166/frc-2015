@@ -42,8 +42,6 @@ public class Lift extends Subsystem {
 		encoder = new Encoder(encoderChannelA, encoderChannelB);
 		boundaryLimit = new DigitalInput(boundaryLimitChannel);
 
-		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(RobotMap.Prefs.ToteLiftDistPerPulse, 0));
-
 		LiveWindow.addActuator(subsystem, "Motor", motor);
 		LiveWindow.addActuator(subsystem, "Brake", brake);
 		LiveWindow.addSensor(subsystem, "Encoder", encoder);
@@ -69,10 +67,11 @@ public class Lift extends Subsystem {
 
 	// Move lift to given position
 	public void moveLiftToPosition(double position) {
-		if (encoder.getDistance() > position + Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10)) {
+		double tolerance = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10);
+
+		if (encoder.getDistance() > position + tolerance) {
 			pid.set(-getLiftSpeed());
-		} else if (encoder.getDistance() < position
-				- Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10)) {
+		} else if (encoder.getDistance() < position - tolerance) {
 			pid.set(getLiftSpeed());
 		} else {
 			stop();
@@ -80,9 +79,9 @@ public class Lift extends Subsystem {
 	}
 
 	public boolean isAtTargetPos(double position) {
-		return (encoder.getDistance() < position
-				+ Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10) && encoder.getDistance() > position
-				- Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10));
+		double tolerance = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10);
+
+		return (encoder.getDistance() < position + tolerance && encoder.getDistance() > position - tolerance);
 	}
 
 	// Given lift move states, decides which carriage is pushing in a collision, and sets WhichCarriageMoving
@@ -105,6 +104,9 @@ public class Lift extends Subsystem {
 		double f = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedF, 0);
 
 		pid.setConstants(p, i, d, f);
+
+		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(
+				subsystemName + RobotMap.Prefs.LiftDistPerPulse, 0));
 	}
 
 	// Returns whether or not the lift boundary limit switch is hit

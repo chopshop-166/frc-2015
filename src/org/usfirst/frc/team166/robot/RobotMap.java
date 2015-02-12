@@ -84,8 +84,7 @@ public class RobotMap {
 		public static final String LiftDeadzone = "LiftDeadzone";
 		public static final String LiftSpeed = "LiftSpeed";
 		public static final String LiftMaxCurrent = "LiftMaxCurrent";
-		public static final String ToteLiftDistPerPulse = "ToteLiftDistPerPulse";
-		public static final String RCLiftDistPerPulse = "RCLiftDistPerPulse";
+		public static final String LiftDistPerPulse = "LiftDistPerPulse";
 		public static final String LiftSpeedP = "LiftSpeedP";
 		public static final String LiftSpeedI = "LiftSpeedI";
 		public static final String LiftSpeedD = "LiftSpeedD";
