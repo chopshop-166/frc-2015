@@ -2,6 +2,7 @@ package org.usfirst.frc.team166.robot.commands.lifts;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+import org.usfirst.frc.team166.robot.Robot;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
 
 /**
@@ -32,7 +33,10 @@ public class MoveLiftToPos extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return lift.isAtTargetPos(liftPosition);
+		return lift.isAtTargetPos(liftPosition)
+				|| lift.isBoundaryHit()
+				|| (Robot.rcLift.areLiftsInContact() && Robot.rcLift.isBoundaryHit() || (Robot.rcLift
+						.areLiftsInContact() && Robot.toteLift.isBoundaryHit()));
 	}
 
 	// Called once after isFinished returns true
