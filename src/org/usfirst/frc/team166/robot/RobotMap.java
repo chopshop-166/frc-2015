@@ -9,7 +9,7 @@ public class RobotMap {
 
 	// Driver Controls
 	public static final int DriveJoystick = 0;
-	public static final int DriveJoystickTwistAxis = 3;
+	public static final int DriveJoystickTwistAxis = 2;
 
 	// Co Driver Controls
 	public static final int CopilotController = 1;

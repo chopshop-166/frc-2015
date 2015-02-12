@@ -56,7 +56,6 @@ public class OI {
 
 	public double getDriveJoystickRotation() {
 		double axis = driveJoystick.getRawAxis(RobotMap.DriveJoystickTwistAxis);
-
 		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.DriveDeadZone, 1)) {
 			return (axis * Preferences.getInstance().getDouble(RobotMap.Prefs.DriveScalerRotation, 1));
 		} else {
