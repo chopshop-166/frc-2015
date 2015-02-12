@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.commands.autonomous.Autonomous;
 import org.usfirst.frc.team166.robot.commands.lifts.DetermineLiftCollision;
@@ -26,7 +27,7 @@ import org.usfirst.frc.team166.robot.triggers.ToteLiftStalled;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
-	public static PowerDistributionPanel pdBoard;
+	public static final PowerDistributionPanel pdBoard = new PowerDistributionPanel();
 	public static final Wing leftWing = new Wing("Left Wing", RobotMap.solenoid.LeftWing);
 	public static final Wing rightWing = new Wing("Right Wing", RobotMap.solenoid.RightWing);
 	public static final Drive drive = new Drive();
@@ -37,6 +38,7 @@ public class Robot extends IterativeRobot {
 			RobotMap.Switch.LiftUpperLimit, "RC");
 	public static final Claw claw = new Claw();
 
+	// Triggers
 	private final ToteLiftStalled toteLiftStalled = new ToteLiftStalled();
 	private final RCLiftStalled rcLiftStalled = new RCLiftStalled();
 	private final CarriageTrigger carriageTrigger = new CarriageTrigger();
@@ -52,7 +54,7 @@ public class Robot extends IterativeRobot {
 		// which commands extend), subsystems are not guaranteed to be yet.
 		// Thus, their requires() statements may grab null pointers. Bad news.
 		// Don't move it.
-		pdBoard = new PowerDistributionPanel();
+
 		oi = new OI();
 
 		// instantiate the command used for the autonomous period
@@ -70,6 +72,8 @@ public class Robot extends IterativeRobot {
 
 		// Set the claw setState
 		claw.setState();
+
+		updateSubsystemSmartdashboard();
 	}
 
 	@Override
@@ -85,6 +89,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		updateSubsystemSmartdashboard();
 	}
 
 	@Override
@@ -101,6 +106,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		updateSubsystemSmartdashboard();
 	}
 
 	/**
@@ -122,5 +128,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+	}
+
+	private void updateSubsystemSmartdashboard() {
+		SmartDashboard.putData(leftWing);
+		SmartDashboard.putData(rightWing);
+		SmartDashboard.putData(drive);
+		SmartDashboard.putData(toteLift);
+		SmartDashboard.putData(rcLift);
+		SmartDashboard.putData(claw);
 	}
 }
