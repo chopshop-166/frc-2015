@@ -73,8 +73,6 @@ public class Lift extends Subsystem {
 			pid.set(-getLiftSpeed());
 		} else if (encoder.getDistance() < position - tolerance) {
 			pid.set(getLiftSpeed());
-		} else {
-			stop();
 		}
 	}
 
