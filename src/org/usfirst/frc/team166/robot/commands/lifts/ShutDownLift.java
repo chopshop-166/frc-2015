@@ -10,13 +10,11 @@ import org.usfirst.frc.team166.robot.subsystems.Lift;
  */
 public class ShutDownLift extends CommandGroup {
 
-	private Lift lift;
-
 	public ShutDownLift(Lift m_lift) {
 
 		this.setInterruptible(false);
 
-		addSequential(new StopLift(lift));
+		addSequential(new StopLift(m_lift));
 		addSequential(new WaitCommand(1));
 
 	}
