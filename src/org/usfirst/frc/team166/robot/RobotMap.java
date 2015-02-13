@@ -97,7 +97,7 @@ public class RobotMap {
 
 		public static final String RightRCDirection = "RightRCDirection";
 		public static final String RightRCWaitTime = "RightRCWaitTime";
-		public static final String RCRightLiftPos = "RCRightLiftPos";
+		public static final String RCLiftPos = "RCRightLiftPos";
 		public static final String RCRightToteLiftPos = "RCRightToteLiftPos";
 	}
 
