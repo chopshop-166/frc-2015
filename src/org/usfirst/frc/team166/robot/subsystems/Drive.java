@@ -154,7 +154,7 @@ public class Drive extends Subsystem {
 		if (isUltrasonicDataGood()) {
 			robotDrive.mecanumDrive_Cartesian(
 					centerOffsetDistance
-							/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
+					/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
 					getGyroOffset(), 0);
 		} else {
 			stopMotors();
@@ -198,14 +198,15 @@ public class Drive extends Subsystem {
 				RobotMap.Prefs.StalledDriveCurrent, 20)
 				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance().getDouble(
 						RobotMap.Prefs.StalledDriveCurrent, 20)
-				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
-						RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
-				.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
-				RobotMap.Prefs.StalledDriveCurrent, 20));
+						|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
+								RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
+								.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
+										RobotMap.Prefs.StalledDriveCurrent, 20));
 	}
 
 	// CHECKS IF THE ULRASONIC DATA IS REASONABLE
 	public boolean isUltrasonicDataGood() {
+		// 30 IS THE TOTAL DISTANCE OF THE GAP IN AUTONOMOUS - THE WIDTH OF THE CHASIS
 		return (getLeftDistance() + getRightDistance() < 30);
 	}
 
@@ -250,6 +251,17 @@ public class Drive extends Subsystem {
 			robotDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
 		}
 	}
+
+	// public enum StrafeDirection{
+	// Left, Right
+	// }
+	//
+	// public void strafeLeftUsingUltrasonic(double speed, StrafeDirection direction, int desiredDistanceFromWall) {
+	// int multiplier = (direction == StrafeDirection.Left) ? -1 : 1;
+	// if (getLeftDistance() <= desiredDistanceFromWall) {
+	// RobotDrive.mecanumDrive_Cartesian(Preferences.getInstance().getDouble(""), speed, speed, 0)
+	// }
+	// }
 
 	// SETS THE PID CONSTANTS THROUGH PREFERENCES (CURRENTLY UNUSED)
 	public void setPIDConstants() {

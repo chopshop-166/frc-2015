@@ -9,7 +9,7 @@ public class RobotMap {
 
 	// Driver Controls
 	public static final int DriveJoystick = 0;
-	public static final int DriveJoystickTwistAxis = 3;
+	public static final int DriveJoystickTwistAxis = 2;
 
 	// Co Driver Controls
 	public static final int CopilotController = 1;
@@ -72,7 +72,11 @@ public class RobotMap {
 		public static final String DriveScalerY = "DriveScalerY";
 		public static final String DriveScalerRotation = "DriveScalerRotation";
 		public static final String GyroStrafeConstant = "GyroStrafeConstant";
+		public static final String AutoForwardDistance1 = "AutoForwardDistance1";
+		public static final String AutoForwardDistance2 = "AutoForwardDistance2";
+		public static final String AutoForwardSpeed = "AutoForwardSpeed";
 		public static final String AutoDriveSpeed = "AutoDriveSpeed";
+		public static final String AutoDesiredDistanceToWall = "AutoDesiredDistanceToWall";
 		public static final String StrafeSpeed = "StrafeSpeed";
 		public static final String CenterDistanceConstant = "CenterDistanceConstant";
 		public static final String StalledDriveCurrent = "StalledDriveCurrent";
