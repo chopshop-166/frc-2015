@@ -2,6 +2,7 @@ package org.usfirst.frc.team166.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
@@ -46,6 +47,8 @@ public class Lift extends Subsystem {
 		LiveWindow.addActuator(subsystem, "Brake", brake);
 		LiveWindow.addSensor(subsystem, "Encoder", encoder);
 		LiveWindow.addSensor(subsystem, "Boundary Limit Switch", boundaryLimit);
+
+		encoder.setPIDSourceParameter(PIDSourceParameter.kRate);
 		pid = new PIDSpeedController(encoder, motor, subsystem, "Speed Control");
 		subsystemName = subsystem;
 	}

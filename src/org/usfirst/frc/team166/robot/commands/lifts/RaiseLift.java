@@ -31,7 +31,7 @@ public class RaiseLift extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return lift.isBoundaryHit() || Robot.rcLift.areLiftsInContact();
+		return (Robot.rcLift.areLiftsInContact() && Robot.rcLift.isBoundaryHit()) || lift.isBoundaryHit();
 	}
 
 	// Called once after isFinished returns true
