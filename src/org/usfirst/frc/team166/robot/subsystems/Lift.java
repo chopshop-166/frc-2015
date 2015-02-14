@@ -36,10 +36,10 @@ public class Lift extends Subsystem {
 	}
 
 	// Constructor
-	public Lift(int motorChannel, int pcm, int brakeChannel, int encoderChannelA, int encoderChannelB,
-			int boundaryLimitChannel, String subsystem) {
+	public Lift(int motorChannel, int brakeChannelForward, int brakeChannelReverse, int encoderChannelA,
+			int encoderChannelB, int boundaryLimitChannel, String subsystem) {
 		motor = new Talon(motorChannel);
-		brake = new DoubleSolenoid(pcm, brakeChannel);
+		brake = new DoubleSolenoid(RobotMap.solenoid.Pcm24, brakeChannelForward, brakeChannelReverse);
 		encoder = new Encoder(encoderChannelA, encoderChannelB);
 		boundaryLimit = new DigitalInput(boundaryLimitChannel);
 
