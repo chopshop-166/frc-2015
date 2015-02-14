@@ -20,11 +20,14 @@ public class RobotMap {
 	public static class solenoid {
 		public static final int Pcm24 = 1;
 		public static final int Pcm12 = 0;
-		public static final int ClawSolenoid = 1;
+		public static final int ClawForward = 5;
+		public static final int ClawReverse = 4;
 		public static final int LeftWing = 2;
 		public static final int RightWing = 3;
-		public static final int ToteLiftBrake = 4;
-		public static final int RCLiftBrake = 5;
+		public static final int ToteLiftBrakeForward = 0;
+		public static final int ToteLiftBrakeReverse = 1;
+		public static final int RCLiftBrakeForward = 3;
+		public static final int RCLiftBrakeReverse = 2;
 	}
 
 	// PWM Channels
