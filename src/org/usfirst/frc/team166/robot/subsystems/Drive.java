@@ -123,16 +123,20 @@ public class Drive extends Subsystem {
 		if (!Utility.isAxisZero(Robot.oi.getDriveJoystickRotation())) {
 			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
 					Robot.oi.getDriveJoystickRotation(), 0);
-			usingTwist = false;
-		} else {
+			usingTwist = true;
+		} else if ((!Utility.isAxisZero(Robot.oi.getDriveJoystickLateral()))
+				|| !Utility.isAxisZero((Robot.oi.getDriveJoystickForward()))) {
 			// IS THIS THE FIRST TIME IN LOOP?
-			if (usingTwist == false) {
+			if (usingTwist == true) {
 				gyro.reset();
 			}
-			usingTwist = true;
+			usingTwist = false;
 			// USE THE GYRO FOR ROTATION ASSISTANCE
 			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
 					getGyroOffset(), 0);
+		} else {
+			robotDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
+			gyro.reset();
 		}
 	}
 
@@ -166,7 +170,7 @@ public class Drive extends Subsystem {
 		if (isUltrasonicDataGood()) {
 			robotDrive.mecanumDrive_Cartesian(
 					centerOffsetDistance
-					/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
+							/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
 					getGyroOffset(), 0);
 		} else {
 			stopMotors();
@@ -210,10 +214,10 @@ public class Drive extends Subsystem {
 				RobotMap.Prefs.StalledDriveCurrent, 20)
 				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance().getDouble(
 						RobotMap.Prefs.StalledDriveCurrent, 20)
-						|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
-								RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
-								.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
-										RobotMap.Prefs.StalledDriveCurrent, 20));
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
+						RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
+				.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
+				RobotMap.Prefs.StalledDriveCurrent, 20));
 	}
 
 	// CHECKS IF THE ULRASONIC DATA IS REASONABLE
