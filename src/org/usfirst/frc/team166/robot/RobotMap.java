@@ -22,12 +22,14 @@ public class RobotMap {
 		public static final int Pcm12 = 0;
 		public static final int ClawForward = 5;
 		public static final int ClawReverse = 4;
-		public static final int LeftWing = 2;
-		public static final int RightWing = 3;
-		public static final int ToteLiftBrakeForward = 0;
-		public static final int ToteLiftBrakeReverse = 1;
-		public static final int RCLiftBrakeForward = 3;
-		public static final int RCLiftBrakeReverse = 2;
+		public static final int LeftWingForward = 0;
+		public static final int LeftWingReverse = 1;
+		public static final int RightWingForward = 2;
+		public static final int RightWingReverse = 3;
+		public static final int ToteLiftBrakeForward = 3;
+		public static final int ToteLiftBrakeReverse = 2;
+		public static final int RCLiftBrakeForward = 0;
+		public static final int RCLiftBrakeReverse = 1;
 	}
 
 	// PWM Channels

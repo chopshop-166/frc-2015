@@ -98,7 +98,7 @@ public class Lift extends Subsystem {
 	}
 
 	// Set Speed PID constants from preferences
-	public void setPIDConstants() {
+	public void initLift() {
 		double p = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedP, 0);
 		double i = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedI, 0);
 		double d = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedD, 0);
@@ -108,6 +108,7 @@ public class Lift extends Subsystem {
 
 		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(
 				subsystemName + RobotMap.Prefs.LiftDistPerPulse, 1));
+		setBrake();
 	}
 
 	// Returns whether or not the lift boundary limit switch is hit

@@ -5,8 +5,13 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team166.robot.commands.claw.CloseClaw;
+import org.usfirst.frc.team166.robot.commands.claw.OpenClaw;
 import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
+import org.usfirst.frc.team166.robot.commands.drive.CancelDriveCommand;
 import org.usfirst.frc.team166.robot.commands.drive.DriveDirection;
+import org.usfirst.frc.team166.robot.commands.lifts.ReleaseLiftBrake;
+import org.usfirst.frc.team166.robot.commands.lifts.StopLift;
 import org.usfirst.frc.team166.robot.commands.wings.LiftWings;
 import org.usfirst.frc.team166.robot.commands.wings.LowerWings;
 
@@ -25,9 +30,25 @@ public class OI {
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
 		button3.whileHeld(new DriveDirection(270, Preferences.getInstance().getDouble("StrafePower", .25)));
 		button4.whileHeld(new DriveDirection(90, Preferences.getInstance().getDouble("StrafePower", .25)));
+
+		// Wing commands
 		SmartDashboard.putData("LiftWings", new LiftWings());
 		SmartDashboard.putData("LowerWings", new LowerWings());
+
+		// Claw commands
 		SmartDashboard.putData("Toggle Claw", new ToggleClaw());
+		SmartDashboard.putData("Open claw", new OpenClaw());
+		SmartDashboard.putData("Close claw", new CloseClaw());
+
+		// Lift commands
+		SmartDashboard.putData("Release toteLift brake", new ReleaseLiftBrake(Robot.toteLift));
+		SmartDashboard.putData("Release rcLift brake", new ReleaseLiftBrake(Robot.rcLift));
+		SmartDashboard.putData("Stop toteLift", new StopLift(Robot.toteLift));
+		SmartDashboard.putData("Stop rcLift", new StopLift(Robot.rcLift));
+
+		// Drive commands
+		SmartDashboard.putData("Cancel drive command", new CancelDriveCommand());
+		// SmartDashboard.putData("StrafeRight", new DriveDirection(90, .35));
 	}
 
 	public Joystick getDriveJoystick() {
