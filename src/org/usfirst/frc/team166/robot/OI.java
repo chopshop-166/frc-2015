@@ -48,7 +48,7 @@ public class OI {
 
 		// Drive commands
 		SmartDashboard.putData("Cancel drive command", new CancelDriveCommand());
-		// SmartDashboard.putData("StrafeRight", new DriveDirection(90, .35));
+		SmartDashboard.putData("StrafeRight", new DriveDirection(90, .35));
 	}
 
 	public Joystick getDriveJoystick() {

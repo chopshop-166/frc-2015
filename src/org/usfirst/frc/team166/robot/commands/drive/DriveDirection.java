@@ -14,8 +14,8 @@ public class DriveDirection extends Command {
 	public DriveDirection(double driveAngle, double driveSpeed) {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.drive);
-		driveAngle = angle;
-		driveSpeed = speed;
+		angle = driveAngle;
+		speed = driveSpeed;
 	}
 
 	// Called just before this Command runs the first time

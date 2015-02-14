@@ -120,7 +120,7 @@ public class Drive extends Subsystem {
 	public void mecanumDrive(Joystick stick) {
 
 		// DRIVE FORWARD WITH JOYSTICKS ONLY
-		if (Utility.isAxisZero(Robot.oi.getDriveJoystickRotation())) {
+		if (!Utility.isAxisZero(Robot.oi.getDriveJoystickRotation())) {
 			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
 					Robot.oi.getDriveJoystickRotation(), 0);
 			usingTwist = false;
@@ -156,7 +156,8 @@ public class Drive extends Subsystem {
 
 	// MOVES THE ROBOT AT A GIVEN SPEED AT A GIVEN ANGLE
 	public void driveAngle(double angle, double speed) {
-		robotDrive.mecanumDrive_Polar(speed, angle, getGyroOffset());
+		robotDrive.mecanumDrive_Polar(speed, angle, getGyroOffset()); // You're dumb
+		// robotDrive.mecanumDrive_Cartesian(.5, 0, getGyroOffset(), 0);
 	}
 
 	// CENTERS THE ROBOT ON THE STEP
