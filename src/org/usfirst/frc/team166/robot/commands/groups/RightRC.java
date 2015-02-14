@@ -21,7 +21,7 @@ public class RightRC extends CommandGroup {
 		addSequential(new OpenClaw());
 		addSequential(new MoveLiftToPos(Robot.toteLift, Preferences.getInstance().getDouble(
 				RobotMap.Prefs.RCRightToteLiftPos, 24)));
-		addSequential(new MoveLiftToPos(Robot.RCLiftPos, Preferences.getInstance().getDouble(
+		addSequential(new MoveLiftToPos(Robot.rcLift, Preferences.getInstance().getDouble(
 				RobotMap.Prefs.RCRightToteLiftPos, 30)));
 		addSequential(new WaitCommand(Preferences.getInstance().getDouble(RobotMap.Prefs.RightRCWaitTime, 1)));
 		addParallel(new MoveLiftToPos(Robot.toteLift, Preferences.getInstance().getDouble(
