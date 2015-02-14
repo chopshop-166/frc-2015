@@ -26,8 +26,8 @@ public class RobotMap {
 		public static final int LeftWingReverse = 1;
 		public static final int RightWingForward = 2;
 		public static final int RightWingReverse = 3;
-		public static final int ToteLiftBrakeForward = 3;
-		public static final int ToteLiftBrakeReverse = 2;
+		public static final int ToteLiftBrakeForward = 2;
+		public static final int ToteLiftBrakeReverse = 3;
 		public static final int RCLiftBrakeForward = 0;
 		public static final int RCLiftBrakeReverse = 1;
 	}
@@ -100,6 +100,7 @@ public class RobotMap {
 		public static final String LiftSpeedI = "LiftSpeedI";
 		public static final String LiftSpeedD = "LiftSpeedD";
 		public static final String LiftSpeedF = "LiftSpeedF";
+
 		public static final String LiftPosTolerance = "LiftPosTolerance";
 
 		public static final String RightRCDirection = "RightRCDirection";

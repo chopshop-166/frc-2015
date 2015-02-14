@@ -55,12 +55,12 @@ public class Lift extends Subsystem {
 
 	public void moveUp() {
 		releaseBrake();
-		pid.set(getLiftSpeed());
+		pid.set(-getLiftSpeed());
 	}
 
 	public void moveDown() {
 		releaseBrake();
-		pid.set(-getLiftSpeed());
+		pid.set(getLiftSpeed());
 	}
 
 	public void stop() {
@@ -109,6 +109,7 @@ public class Lift extends Subsystem {
 		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(
 				subsystemName + RobotMap.Prefs.LiftDistPerPulse, 1));
 		setBrake();
+
 	}
 
 	// Returns whether or not the lift boundary limit switch is hit
@@ -136,7 +137,14 @@ public class Lift extends Subsystem {
 
 	// Get the max of the preference and zero so a negative doesn't change directions
 	private double getLiftSpeed() {
-		return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+		if (subsystemName == "Tote") {
+			return -Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+		} else
+			return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+	}
+
+	private void setInvert() {
+
 	}
 
 	@Override

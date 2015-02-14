@@ -10,8 +10,13 @@ import org.usfirst.frc.team166.robot.commands.claw.OpenClaw;
 import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
 import org.usfirst.frc.team166.robot.commands.drive.CancelDriveCommand;
 import org.usfirst.frc.team166.robot.commands.drive.DriveDirection;
+import org.usfirst.frc.team166.robot.commands.lifts.LowerRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.LowerToteLift;
+import org.usfirst.frc.team166.robot.commands.lifts.RaiseRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.RaiseToteLift;
 import org.usfirst.frc.team166.robot.commands.lifts.ReleaseLiftBrake;
-import org.usfirst.frc.team166.robot.commands.lifts.StopLift;
+import org.usfirst.frc.team166.robot.commands.lifts.StopRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.StopToteLift;
 import org.usfirst.frc.team166.robot.commands.wings.LiftWings;
 import org.usfirst.frc.team166.robot.commands.wings.LowerWings;
 
@@ -43,8 +48,12 @@ public class OI {
 		// Lift commands
 		SmartDashboard.putData("Release toteLift brake", new ReleaseLiftBrake(Robot.toteLift));
 		SmartDashboard.putData("Release rcLift brake", new ReleaseLiftBrake(Robot.rcLift));
-		SmartDashboard.putData("Stop toteLift", new StopLift(Robot.toteLift));
-		SmartDashboard.putData("Stop rcLift", new StopLift(Robot.rcLift));
+		SmartDashboard.putData("Stop toteLift", new StopToteLift());
+		SmartDashboard.putData("Stop rcLift", new StopRCLift());
+		SmartDashboard.putData("Move toteLift up", new RaiseToteLift());
+		SmartDashboard.putData("Move rcLift up", new RaiseRCLift());
+		SmartDashboard.putData("Move toteLift down", new LowerToteLift());
+		SmartDashboard.putData("Move rcLift down", new LowerRCLift());
 
 		// Drive commands
 		SmartDashboard.putData("Cancel drive command", new CancelDriveCommand());

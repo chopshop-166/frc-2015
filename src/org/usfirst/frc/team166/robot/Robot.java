@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.commands.autonomous.Autonomous;
 import org.usfirst.frc.team166.robot.commands.lifts.DetermineLiftCollision;
-import org.usfirst.frc.team166.robot.commands.lifts.ShutDownLift;
+import org.usfirst.frc.team166.robot.commands.lifts.ShutDownRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.ShutDownToteLift;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
@@ -65,8 +66,8 @@ public class Robot extends IterativeRobot {
 
 		// Connect triggers to commands
 		carriageTrigger.whenActive(new DetermineLiftCollision());
-		toteLiftStalled.whenActive(new ShutDownLift(Robot.toteLift));
-		rcLiftStalled.whenActive(new ShutDownLift(Robot.rcLift));
+		toteLiftStalled.whenActive(new ShutDownToteLift());
+		rcLiftStalled.whenActive(new ShutDownRCLift());
 
 		// Subsystem initialization
 		drive.setPIDConstants();
