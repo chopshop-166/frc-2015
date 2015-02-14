@@ -31,9 +31,10 @@ public class Robot extends IterativeRobot {
 	public static final Wing leftWing = new Wing("Left Wing", RobotMap.solenoid.LeftWing);
 	public static final Wing rightWing = new Wing("Right Wing", RobotMap.solenoid.RightWing);
 	public static final Drive drive = new Drive();
-	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.solenoid.ToteLiftBrake,
-			RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB, RobotMap.Switch.LiftLowerLimit, "Tote");
-	public static final LimitSwitchLift rcLift = new LimitSwitchLift(RobotMap.Pwm.RCLiftMotor,
+	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.solenoid.Pcm24,
+			RobotMap.solenoid.ToteLiftBrake, RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB,
+			RobotMap.Switch.LiftLowerLimit, "Tote");
+	public static final LimitSwitchLift rcLift = new LimitSwitchLift(RobotMap.Pwm.RCLiftMotor, RobotMap.solenoid.Pcm24,
 			RobotMap.solenoid.RCLiftBrake, RobotMap.Encoders.RCLiftA, RobotMap.Encoders.RCLiftB,
 			RobotMap.Switch.LiftUpperLimit, "RC");
 	public static final Claw claw = new Claw();

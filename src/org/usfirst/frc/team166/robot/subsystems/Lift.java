@@ -1,10 +1,10 @@
 package org.usfirst.frc.team166.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -20,7 +20,7 @@ public class Lift extends Subsystem {
 	DigitalInput boundaryLimit;
 	Talon motor;
 	Encoder encoder;
-	Solenoid brake;
+	DoubleSolenoid brake;
 	LiftMovement movementState;
 	PIDSpeedController pid;
 	String subsystemName;
@@ -36,10 +36,10 @@ public class Lift extends Subsystem {
 	}
 
 	// Constructor
-	public Lift(int motorChannel, int brakeChannel, int encoderChannelA, int encoderChannelB, int boundaryLimitChannel,
-			String subsystem) {
+	public Lift(int motorChannel, int pcm, int brakeChannel, int encoderChannelA, int encoderChannelB,
+			int boundaryLimitChannel, String subsystem) {
 		motor = new Talon(motorChannel);
-		brake = new Solenoid(brakeChannel);
+		brake = new DoubleSolenoid(pcm, brakeChannel);
 		encoder = new Encoder(encoderChannelA, encoderChannelB);
 		boundaryLimit = new DigitalInput(boundaryLimitChannel);
 
@@ -107,7 +107,7 @@ public class Lift extends Subsystem {
 		pid.setConstants(p, i, d, f);
 
 		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(
-				subsystemName + RobotMap.Prefs.LiftDistPerPulse, 0));
+				subsystemName + RobotMap.Prefs.LiftDistPerPulse, 1));
 	}
 
 	// Returns whether or not the lift boundary limit switch is hit
@@ -121,12 +121,12 @@ public class Lift extends Subsystem {
 
 	// Activate brake
 	private void setBrake() {
-		brake.set(true);
+		brake.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	// Deactivate brake
 	public void releaseBrake() {
-		brake.set(false);
+		brake.set(DoubleSolenoid.Value.kForward);
 	}
 
 	public void resetEncoder() {
