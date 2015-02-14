@@ -1,7 +1,7 @@
 package org.usfirst.frc.team166.robot.commands.lifts;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.StartCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.Robot;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
@@ -22,17 +22,21 @@ public class DetermineLiftCollision extends Command {
 		movingCarriage = Lift.collisionMovement(Robot.rcLift.getMoveState(), Robot.toteLift.getMoveState());
 		switch (movingCarriage) {
 		case RC:
-			new StartCommand(new ToteForcedDown());
+			new ToteForcedDown().start();
+			SmartDashboard.putString("Moving lift: ", "RC");
 			break;
 		case Tote:
-			new StartCommand(new RCForcedUp());
+			new RCForcedUp().start();
+			SmartDashboard.putString("Moving lift: ", "Tote");
 			break;
 		case Both:
-			new StartCommand(new StopToteLift());
-			new StartCommand(new StopRCLift());
+			new StopToteLift().start();
+			new StopRCLift().start();
+			SmartDashboard.putString("Moving lift: ", "Both");
 			break;
 		case None:
 			// Deliberately empty, barren, desolate, devoid of activity, deadsies
+			SmartDashboard.putString("Moving lift: ", "None");
 			break;
 		}
 	}

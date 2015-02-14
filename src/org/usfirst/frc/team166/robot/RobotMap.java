@@ -52,8 +52,8 @@ public class RobotMap {
 		public static final int FrontRightDriveB = 11;
 		public static final int RearRightDriveA = 14;
 		public static final int RearRightDriveB = 15;
-		public static final int RCLiftA = 18;
-		public static final int RCLiftB = 19;
+		public static final int RCLiftA = 19;
+		public static final int RCLiftB = 18;
 		public static final int ToteLiftA = 22;
 		public static final int ToteLiftB = 23;
 	}
