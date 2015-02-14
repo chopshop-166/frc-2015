@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
@@ -24,7 +25,7 @@ public class Drive extends Subsystem {
 	// Constants
 	private static final double GyroSensitivity = .0125; // V/Deg/Sec
 	private static final double UltrasonicConstant = 102.0408163265306; // inch/V
-	private static final double DistanceNormal = 183;
+	private static final double DistanceNormal = 91.5;
 	private static final double DistancePerPulse = ((6 * Math.PI) / 1024) / DistanceNormal;
 
 	// ROBOTDRIVE INIT
@@ -103,6 +104,16 @@ public class Drive extends Subsystem {
 		// MOTOR INVERSIONS
 		robotDrive.setInvertedMotor(MotorType.kFrontRight, true);
 		robotDrive.setInvertedMotor(MotorType.kRearRight, true);
+
+		LiveWindow.addActuator("Drive", "Front Left Talon", frontLeftTalon);
+		LiveWindow.addActuator("Drive", "Front Right Talon", frontRightTalon);
+		LiveWindow.addActuator("Drive", "Rear Left Talon", rearLeftTalon);
+		LiveWindow.addActuator("Drive", "Rear Right Talon", rearRightTalon);
+
+		LiveWindow.addSensor("Drive Encoders", "Front Left Encoder", frontLeftEncoder);
+		LiveWindow.addSensor("Drive Encoders", "Front Right Encoder", frontRightEncoder);
+		LiveWindow.addSensor("Drive Encoders", "Rear Left Encoder", rearLeftEncoder);
+		LiveWindow.addSensor("Drive Encoders", "Rear Right Encoder", rearRightEncoder);
 	}
 
 	// MECANUMDRIVE USING DEADZONES, GYRO, AND ENCODERS
