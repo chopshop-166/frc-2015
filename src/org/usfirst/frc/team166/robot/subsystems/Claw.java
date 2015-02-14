@@ -1,6 +1,6 @@
 package org.usfirst.frc.team166.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -16,21 +16,23 @@ public class Claw extends Subsystem {
 	}
 
 	private ClawStates clawState;
-	private Solenoid solenoid = new Solenoid(RobotMap.solenoid.ClawSolenoid);
+	private DoubleSolenoid solenoid = new DoubleSolenoid(RobotMap.solenoid.Pcm24, RobotMap.solenoid.ClawForward,
+			RobotMap.solenoid.ClawReverse);
 
 	public Claw() {
+
 		LiveWindow.addActuator("Claw", "Solenoid", solenoid);
 	}
 
 	// open
 	public void open() {
-		solenoid.set(true);
+		solenoid.set(DoubleSolenoid.Value.kForward);
 		this.clawState = ClawStates.Open;
 	}
 
 	// close
 	public void close() {
-		solenoid.set(false);
+		solenoid.set(DoubleSolenoid.Value.kReverse);
 		this.clawState = ClawStates.Close;
 	}
 
@@ -46,7 +48,7 @@ public class Claw extends Subsystem {
 	// Measures the Boolean of the claw Solenoid
 	public void setState() {
 
-		if (solenoid.get() == true) {
+		if (solenoid.get() == DoubleSolenoid.Value.kForward) {
 			this.clawState = ClawStates.Open;
 		} else {
 			this.clawState = ClawStates.Close;

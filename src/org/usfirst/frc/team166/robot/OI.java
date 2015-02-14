@@ -24,7 +24,7 @@ public class OI {
 		JoystickButton button3 = new JoystickButton(driveJoystick, 3);
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
 		button3.whileHeld(new DriveDirection(270, Preferences.getInstance().getDouble("StrafePower", .25)));
-		button4.whileHeld(new DriveDirection(270, Preferences.getInstance().getDouble("StrafePower", .25)));
+		button4.whileHeld(new DriveDirection(90, Preferences.getInstance().getDouble("StrafePower", .25)));
 		SmartDashboard.putData("LiftWings", new LiftWings());
 		SmartDashboard.putData("LowerWings", new LowerWings());
 		SmartDashboard.putData("Toggle Claw", new ToggleClaw());
@@ -56,7 +56,6 @@ public class OI {
 
 	public double getDriveJoystickRotation() {
 		double axis = driveJoystick.getRawAxis(RobotMap.DriveJoystickTwistAxis);
-
 		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.DriveDeadZone, 1)) {
 			return (axis * Preferences.getInstance().getDouble(RobotMap.Prefs.DriveScalerRotation, 1));
 		} else {

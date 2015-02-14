@@ -12,9 +12,10 @@ public class LimitSwitchLift extends Lift {
 
 	DigitalInput carriageLimit = new DigitalInput(RobotMap.Switch.CarriageRCLiftLimit);
 
-	public LimitSwitchLift(int motorChannel, int brakeChannel, int encoderChannelA, int encoderChannelB,
-			int boundaryLimitChannel, String subsystem) {
-		super(motorChannel, brakeChannel, encoderChannelA, encoderChannelB, boundaryLimitChannel, subsystem);
+	public LimitSwitchLift(int motorChannel, int brakeChannelForward, int brakeChannelReverse, int encoderChannelA,
+			int encoderChannelB, int boundaryLimitChannel, String subsystem) {
+		super(motorChannel, brakeChannelForward, brakeChannelReverse, encoderChannelA, encoderChannelB,
+				boundaryLimitChannel, subsystem);
 		LiveWindow.addSensor(subsystem, "Carriage Switch", carriageLimit);
 	}
 

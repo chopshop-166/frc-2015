@@ -9,7 +9,7 @@ public class RobotMap {
 
 	// Driver Controls
 	public static final int DriveJoystick = 0;
-	public static final int DriveJoystickTwistAxis = 3;
+	public static final int DriveJoystickTwistAxis = 2;
 
 	// Co Driver Controls
 	public static final int CopilotController = 1;
@@ -18,43 +18,48 @@ public class RobotMap {
 
 	// Solenoid Channels
 	public static class solenoid {
-		public static final int ClawSolenoid = 1;
+		public static final int Pcm24 = 1;
+		public static final int Pcm12 = 0;
+		public static final int ClawForward = 5;
+		public static final int ClawReverse = 4;
 		public static final int LeftWing = 2;
 		public static final int RightWing = 3;
-		public static final int ToteLiftBrake = 4;
-		public static final int RCLiftBrake = 5;
+		public static final int ToteLiftBrakeForward = 0;
+		public static final int ToteLiftBrakeReverse = 1;
+		public static final int RCLiftBrakeForward = 3;
+		public static final int RCLiftBrakeReverse = 2;
 	}
 
 	// PWM Channels
 	public static class Pwm {
-		public static final int FrontLeftDrive = 2;
-		public static final int RearLeftDrive = 0;
-		public static final int FrontRightDrive = 3;
-		public static final int RearRightDrive = 1;
+		public static final int FrontLeftDrive = 1;
+		public static final int RearLeftDrive = 2;
+		public static final int FrontRightDrive = 0;
+		public static final int RearRightDrive = 3;
 		public static final int ToteLiftMotor = 4;
 		public static final int RCLiftMotor = 5;
 	}
 
 	// Encoder (Digital Input) Channels
 	public static class Encoders {
-		public static final int FrontLeftDriveA = 4;
-		public static final int FrontLeftDriveB = 5;
-		public static final int RearLeftDriveA = 0;
-		public static final int RearLeftDriveB = 1;
-		public static final int FrontRightDriveA = 6;
-		public static final int FrontRightDriveB = 7;
-		public static final int RearRightDriveA = 2;
-		public static final int RearRightDriveB = 3;
-		public static final int RCLiftA = 12;
-		public static final int RCLiftB = 13;
-		public static final int ToteLiftA = 14;
-		public static final int ToteLiftB = 15;
+		public static final int FrontLeftDriveA = 12;
+		public static final int FrontLeftDriveB = 13;
+		public static final int RearLeftDriveA = 16;
+		public static final int RearLeftDriveB = 17;
+		public static final int FrontRightDriveA = 10;
+		public static final int FrontRightDriveB = 11;
+		public static final int RearRightDriveA = 14;
+		public static final int RearRightDriveB = 15;
+		public static final int RCLiftA = 18;
+		public static final int RCLiftB = 19;
+		public static final int ToteLiftA = 22;
+		public static final int ToteLiftB = 23;
 	}
 
 	public static class Switch {
-		public static final int CarriageRCLiftLimit = 8;
-		public static final int LiftUpperLimit = 9;
-		public static final int LiftLowerLimit = 10;
+		public static final int CarriageRCLiftLimit = 7;
+		public static final int LiftUpperLimit = 8;
+		public static final int LiftLowerLimit = 9;
 	}
 
 	// Analog Inputs
@@ -72,7 +77,11 @@ public class RobotMap {
 		public static final String DriveScalerY = "DriveScalerY";
 		public static final String DriveScalerRotation = "DriveScalerRotation";
 		public static final String GyroStrafeConstant = "GyroStrafeConstant";
+		public static final String AutoForwardDistance1 = "AutoForwardDistance1";
+		public static final String AutoForwardDistance2 = "AutoForwardDistance2";
+		public static final String AutoForwardSpeed = "AutoForwardSpeed";
 		public static final String AutoDriveSpeed = "AutoDriveSpeed";
+		public static final String AutoDesiredDistanceToWall = "AutoDesiredDistanceToWall";
 		public static final String StrafeSpeed = "StrafeSpeed";
 		public static final String CenterDistanceConstant = "CenterDistanceConstant";
 		public static final String StalledDriveCurrent = "StalledDriveCurrent";
@@ -99,11 +108,11 @@ public class RobotMap {
 
 	// PD Circuit Channels
 	public class Power {
-		public static final int FrontLeftDrive = -1;
-		public static final int RearLeftDrive = -1;
-		public static final int FrontRightDrive = -1;
-		public static final int RearRightDrive = -1;
-		public static final int ToteLiftMotor = -1;
-		public static final int RCLiftMotor = -1;
+		public static final int FrontLeftDrive = 2;
+		public static final int RearLeftDrive = 14;
+		public static final int FrontRightDrive = 0;
+		public static final int RearRightDrive = 15;
+		public static final int ToteLiftMotor = 2;
+		public static final int RCLiftMotor = 1;
 	}
 }
