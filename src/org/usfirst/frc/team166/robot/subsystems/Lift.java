@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
 import org.usfirst.frc.team166.robot.RobotMap;
@@ -19,11 +20,11 @@ public class Lift extends Subsystem {
 
 	DigitalInput boundaryLimit;
 	Talon motor;
-	Encoder encoder;
+	public Encoder encoder;
 	DoubleSolenoid brake;
-	LiftMovement movementState;
+	LiftMovement movementState = LiftMovement.Stopped;
 	PIDSpeedController pid;
-	String subsystemName;
+	public String subsystemName;
 
 	// This enum describes the movement state of a lift.
 	public enum LiftMovement {
@@ -54,18 +55,27 @@ public class Lift extends Subsystem {
 	}
 
 	public void moveUp() {
+		movementState = LiftMovement.Up;
 		releaseBrake();
-		pid.set(getLiftSpeed());
+		pid.set(-getLiftSpeed());
+		SmartDashboard.putString(subsystemName + "Move state", enumToString());
+		SmartDashboard.putNumber(subsystemName, encoder.getRate());
 	}
 
 	public void moveDown() {
+		movementState = LiftMovement.Down;
 		releaseBrake();
-		pid.set(-getLiftSpeed());
+		pid.set(getLiftSpeed());
+		SmartDashboard.putString(subsystemName + "Move state", enumToString());
+		SmartDashboard.putNumber(subsystemName, encoder.getRate());
 	}
 
 	public void stop() {
+		movementState = LiftMovement.Stopped;
 		pid.set(0);
 		setBrake();
+		SmartDashboard.putString(subsystemName + "Move state", enumToString());
+
 	}
 
 	// Move lift to given position
@@ -91,6 +101,7 @@ public class Lift extends Subsystem {
 			return WhichCarriagePushing.Tote;
 		else if (rcMoveState == LiftMovement.Down && toteMoveState == LiftMovement.Stopped)
 			return WhichCarriagePushing.RC;
+
 		else if (rcMoveState == LiftMovement.Down && toteMoveState == LiftMovement.Up)
 			return WhichCarriagePushing.Both;
 		else
@@ -98,7 +109,7 @@ public class Lift extends Subsystem {
 	}
 
 	// Set Speed PID constants from preferences
-	public void setPIDConstants() {
+	public void initLift() {
 		double p = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedP, 0);
 		double i = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedI, 0);
 		double d = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedD, 0);
@@ -107,7 +118,9 @@ public class Lift extends Subsystem {
 		pid.setConstants(p, i, d, f);
 
 		encoder.setDistancePerPulse(Preferences.getInstance().getDouble(
-				subsystemName + RobotMap.Prefs.LiftDistPerPulse, 1));
+				subsystemName + RobotMap.Prefs.LiftDistPerPulse, .00022222));
+		setBrake();
+
 	}
 
 	// Returns whether or not the lift boundary limit switch is hit
@@ -130,12 +143,31 @@ public class Lift extends Subsystem {
 	}
 
 	public void resetEncoder() {
-		encoder.reset();
+		// encoder.reset();
 	}
 
 	// Get the max of the preference and zero so a negative doesn't change directions
 	private double getLiftSpeed() {
-		return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+		if (subsystemName == "Tote") {
+			return -Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+		} else
+			return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+	}
+
+	private String enumToString() {
+		switch (movementState) {
+		case Stopped:
+			return "Stopped";
+		case Up:
+			return "Up";
+		case Down:
+			return "Down";
+		}
+		return "None";
+	}
+
+	private void printEncoderValues() {
+		SmartDashboard.putNumber(subsystemName, encoder.getRate());
 	}
 
 	@Override

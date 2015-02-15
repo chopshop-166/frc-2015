@@ -22,12 +22,14 @@ public class RobotMap {
 		public static final int Pcm12 = 0;
 		public static final int ClawForward = 5;
 		public static final int ClawReverse = 4;
-		public static final int LeftWing = 2;
-		public static final int RightWing = 3;
-		public static final int ToteLiftBrakeForward = 0;
-		public static final int ToteLiftBrakeReverse = 1;
-		public static final int RCLiftBrakeForward = 3;
-		public static final int RCLiftBrakeReverse = 2;
+		public static final int LeftWingForward = 0;
+		public static final int LeftWingReverse = 1;
+		public static final int RightWingForward = 2;
+		public static final int RightWingReverse = 3;
+		public static final int ToteLiftBrakeForward = 2;
+		public static final int ToteLiftBrakeReverse = 3;
+		public static final int RCLiftBrakeForward = 0;
+		public static final int RCLiftBrakeReverse = 1;
 	}
 
 	// PWM Channels
@@ -50,10 +52,10 @@ public class RobotMap {
 		public static final int FrontRightDriveB = 11;
 		public static final int RearRightDriveA = 14;
 		public static final int RearRightDriveB = 15;
-		public static final int RCLiftA = 18;
-		public static final int RCLiftB = 19;
-		public static final int ToteLiftA = 22;
-		public static final int ToteLiftB = 23;
+		public static final int RCLiftA = 19;
+		public static final int RCLiftB = 18;
+		public static final int ToteLiftA = 23;
+		public static final int ToteLiftB = 22;
 	}
 
 	public static class Switch {
@@ -98,6 +100,7 @@ public class RobotMap {
 		public static final String LiftSpeedI = "LiftSpeedI";
 		public static final String LiftSpeedD = "LiftSpeedD";
 		public static final String LiftSpeedF = "LiftSpeedF";
+
 		public static final String LiftPosTolerance = "LiftPosTolerance";
 
 		public static final String RightRCDirection = "RightRCDirection";

@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.commands.autonomous.Autonomous;
 import org.usfirst.frc.team166.robot.commands.lifts.DetermineLiftCollision;
-import org.usfirst.frc.team166.robot.commands.lifts.ShutDownLift;
+import org.usfirst.frc.team166.robot.commands.lifts.ShutDownRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.ShutDownToteLift;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
@@ -28,8 +29,10 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	public static final PowerDistributionPanel pdBoard = new PowerDistributionPanel();
-	public static final Wing leftWing = new Wing("Left Wing", RobotMap.solenoid.LeftWing);
-	public static final Wing rightWing = new Wing("Right Wing", RobotMap.solenoid.RightWing);
+	public static final Wing leftWing = new Wing("Left Wing", RobotMap.solenoid.LeftWingForward,
+			RobotMap.solenoid.LeftWingReverse);
+	public static final Wing rightWing = new Wing("Right Wing", RobotMap.solenoid.RightWingForward,
+			RobotMap.solenoid.RightWingReverse);
 	public static final Drive drive = new Drive();
 	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.solenoid.ToteLiftBrakeForward,
 			RobotMap.solenoid.ToteLiftBrakeReverse, RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB,
@@ -63,18 +66,19 @@ public class Robot extends IterativeRobot {
 
 		// Connect triggers to commands
 		carriageTrigger.whenActive(new DetermineLiftCollision());
-		toteLiftStalled.whenActive(new ShutDownLift(Robot.toteLift));
-		rcLiftStalled.whenActive(new ShutDownLift(Robot.rcLift));
+		toteLiftStalled.whenActive(new ShutDownToteLift());
+		rcLiftStalled.whenActive(new ShutDownRCLift());
 
-		// PID initialization
+		// Subsystem initialization
 		drive.setPIDConstants();
-		toteLift.setPIDConstants();
-		rcLift.setPIDConstants();
+		toteLift.initLift();
+		rcLift.initLift();
 
 		// Set the claw setState
 		claw.setState();
 
 		updateSubsystemSmartdashboard();
+
 	}
 
 	@Override

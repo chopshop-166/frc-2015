@@ -20,6 +20,6 @@ public class LimitSwitchLift extends Lift {
 	}
 
 	public boolean areLiftsInContact() {
-		return carriageLimit.get();
+		return !carriageLimit.get();
 	}
 }
