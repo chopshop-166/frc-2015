@@ -25,6 +25,8 @@ public class Lift extends Subsystem {
 	LiftMovement movementState = LiftMovement.Stopped;
 	PIDSpeedController pid;
 	public String subsystemName;
+	double rcLiftUpDownAxis;
+	double toteLiftUpDownAxis;
 
 	// This enum describes the movement state of a lift.
 	public enum LiftMovement {
@@ -77,6 +79,24 @@ public class Lift extends Subsystem {
 		SmartDashboard.putString(subsystemName + "Move state", enumToString());
 
 	}
+
+	// public void copilotControl() {
+	// if (subsystemName == "RC") {
+	// rcLiftUpDownAxis = Robot.oi.getRCLiftUpDownAxis();
+	// if (rcLiftUpDownAxis > 0) {
+	// new RaiseRCLift().start();
+	// } else if (rcLiftUpDownAxis < 0) {
+	// new LowerRCLift().start();
+	// } else if (subsystemName == "Tote") {
+	// toteLiftUpDownAxis = Robot.oi.getToteLiftUpDownAxis();
+	// if (toteLiftUpDownAxis > 0) {
+	// new RaiseToteLift().start();
+	// } else if (toteLiftUpDownAxis < 0) {
+	// new LowerToteLift().start();
+	// }
+	// }
+	// }
+	// }
 
 	// Move lift to given position
 	public void moveLiftToPosition(double position) {

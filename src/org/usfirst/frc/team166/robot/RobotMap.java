@@ -13,8 +13,8 @@ public class RobotMap {
 
 	// Co Driver Controls
 	public static final int CopilotController = 1;
-	public static final int RcLiftUpDownAxis = 2;
-	public static final int ToteLiftUpDownAxis = 4;
+	public static final int RcLiftUpDownAxis = 5;
+	public static final int ToteLiftUpDownAxis = 1;
 
 	// Solenoid Channels
 	public static class solenoid {
