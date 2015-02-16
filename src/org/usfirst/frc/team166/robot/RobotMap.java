@@ -15,6 +15,7 @@ public class RobotMap {
 	public static final int CopilotController = 1;
 	public static final int RcLiftUpDownAxis = 5;
 	public static final int ToteLiftUpDownAxis = 1;
+	public static final int RightXboxTrigger = 3;
 
 	// Solenoid Channels
 	public static class solenoid {
@@ -52,10 +53,10 @@ public class RobotMap {
 		public static final int FrontRightDriveB = 11;
 		public static final int RearRightDriveA = 14;
 		public static final int RearRightDriveB = 15;
-		public static final int RCLiftA = 19;
-		public static final int RCLiftB = 18;
-		public static final int ToteLiftA = 23;
-		public static final int ToteLiftB = 22;
+		public static final int RCLiftA = 18;
+		public static final int RCLiftB = 19;
+		public static final int ToteLiftA = 22;
+		public static final int ToteLiftB = 23;
 	}
 
 	public static class Switch {
@@ -100,6 +101,7 @@ public class RobotMap {
 		public static final String LiftSpeedI = "LiftSpeedI";
 		public static final String LiftSpeedD = "LiftSpeedD";
 		public static final String LiftSpeedF = "LiftSpeedF";
+		public static final String RightXboxTriggerDeadzone = "RightXboxTriggerDeadzone";
 
 		public static final String LiftPosTolerance = "LiftPosTolerance";
 

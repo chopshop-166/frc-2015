@@ -8,7 +8,12 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.commands.autonomous.Autonomous;
+import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
 import org.usfirst.frc.team166.robot.commands.lifts.DetermineLiftCollision;
+import org.usfirst.frc.team166.robot.commands.lifts.LowerRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.LowerToteLift;
+import org.usfirst.frc.team166.robot.commands.lifts.RaiseRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.RaiseToteLift;
 import org.usfirst.frc.team166.robot.commands.lifts.ShutDownRCLift;
 import org.usfirst.frc.team166.robot.commands.lifts.ShutDownToteLift;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
@@ -16,9 +21,14 @@ import org.usfirst.frc.team166.robot.subsystems.Drive;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
 import org.usfirst.frc.team166.robot.subsystems.LimitSwitchLift;
 import org.usfirst.frc.team166.robot.subsystems.Wing;
+import org.usfirst.frc.team166.robot.triggers.ActuateClaw;
 import org.usfirst.frc.team166.robot.triggers.CarriageTrigger;
+import org.usfirst.frc.team166.robot.triggers.RCLiftDown;
 import org.usfirst.frc.team166.robot.triggers.RCLiftStalled;
+import org.usfirst.frc.team166.robot.triggers.RCLiftUp;
+import org.usfirst.frc.team166.robot.triggers.ToteLiftDown;
 import org.usfirst.frc.team166.robot.triggers.ToteLiftStalled;
+import org.usfirst.frc.team166.robot.triggers.ToteLiftUp;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -46,6 +56,13 @@ public class Robot extends IterativeRobot {
 	private final ToteLiftStalled toteLiftStalled = new ToteLiftStalled();
 	private final RCLiftStalled rcLiftStalled = new RCLiftStalled();
 	private final CarriageTrigger carriageTrigger = new CarriageTrigger();
+
+	private final RCLiftUp rcLiftUp = new RCLiftUp();
+	private final RCLiftDown rcLiftDown = new RCLiftDown();
+	private final ToteLiftUp toteLiftUp = new ToteLiftUp();
+	private final ToteLiftDown toteLiftDown = new ToteLiftDown();
+	private final ActuateClaw actuateClaw = new ActuateClaw();
+
 	private Command autonomousCommand;
 
 	/**
@@ -59,15 +76,22 @@ public class Robot extends IterativeRobot {
 		// Thus, their requires() statements may grab null pointers. Bad news.
 		// Don't move it.
 
+		// instantiate the command used for the autonomous period
 		oi = new OI();
 
-		// instantiate the command used for the autonomous period
 		autonomousCommand = new Autonomous();
 
 		// Connect triggers to commands
 		carriageTrigger.whenActive(new DetermineLiftCollision());
 		toteLiftStalled.whenActive(new ShutDownToteLift());
 		rcLiftStalled.whenActive(new ShutDownRCLift());
+
+		// Copilot Control Triggers
+		rcLiftUp.whileActive(new RaiseRCLift());
+		rcLiftDown.whileActive(new LowerRCLift());
+		toteLiftUp.whileActive(new RaiseToteLift());
+		toteLiftDown.whileActive(new LowerToteLift());
+		actuateClaw.whenActive(new ToggleClaw());
 
 		// Subsystem initialization
 		drive.setPIDConstants();
