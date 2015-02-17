@@ -158,6 +158,10 @@ public class Drive extends Subsystem {
 		}
 	}
 
+	public void resetGyro() {
+		gyro.reset();
+	}
+
 	// MOVES THE ROBOT AT A GIVEN SPEED AT A GIVEN ANGLE
 	public void driveAngle(double angle, double speed) {
 		robotDrive.mecanumDrive_Polar(speed, angle, getGyroOffset()); // You're dumb
@@ -258,10 +262,10 @@ public class Drive extends Subsystem {
 	}
 
 	public void driveForwardBackwardDistance(double speed, ForwardBackwardDirection direction, int distance) {
-		int multiplier = (direction == ForwardBackwardDirection.Backward) ? -1 : 1;
+		int multiplier = (direction == ForwardBackwardDirection.Backward) ? 1 : -1;
 		double distanceTraveledAverage = (getDistanceTraveled(frontRightEncoder)
 				+ getDistanceTraveled(frontLeftEncoder) + getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder)) / 4;
-		if (distanceTraveledAverage >= distance) {
+		if (distanceTraveledAverage <= distance) {
 			robotDrive.mecanumDrive_Cartesian(0, (speed * multiplier), getGyroOffset(), 0);
 		} else {
 			robotDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
@@ -298,6 +302,19 @@ public class Drive extends Subsystem {
 		frontRightPID.reset();
 		rearLeftPID.reset();
 		rearRightPID.reset();
+	}
+
+	public double getEncoderDistance() {
+		double distanceTraveledAverage = (getDistanceTraveled(frontRightEncoder)
+				+ getDistanceTraveled(frontLeftEncoder) + getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder)) / 4;
+		return distanceTraveledAverage;
+	}
+
+	public void resetEncoders() {
+		frontRightEncoder.reset();
+		frontLeftEncoder.reset();
+		rearRightEncoder.reset();
+		rearLeftEncoder.reset();
 	}
 
 	@Override

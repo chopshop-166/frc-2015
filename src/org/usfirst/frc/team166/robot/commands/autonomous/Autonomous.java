@@ -8,7 +8,6 @@ import org.usfirst.frc.team166.robot.commands.drive.DriveDirection;
 import org.usfirst.frc.team166.robot.commands.groups.InitLiftEncoders;
 import org.usfirst.frc.team166.robot.commands.wings.RaiseLeftWing;
 import org.usfirst.frc.team166.robot.commands.wings.RaiseRightWing;
-import org.usfirst.frc.team166.robot.subsystems.Drive.ForwardBackwardDirection;
 
 /**
  *
@@ -23,10 +22,12 @@ public class Autonomous extends CommandGroup {
 		addSequential(new DriveDirection(0, Preferences.getInstance().getDouble("DriveAngleSpeed", 0)), .5);
 		addSequential(new RaiseLeftWing());
 		addParallel(new RaiseRightWing());
-		addSequential(new DriveForwardBackwardDistance(autoForwardSpeed, ForwardBackwardDirection.Forward, Preferences
-				.getInstance().getInt(RobotMap.Prefs.AutoForwardDistance1, 40)));
-		addSequential(new AutonomousStrafe(-.25));
-		addSequential(new DriveForwardBackwardDistance(autoForwardSpeed, ForwardBackwardDirection.Forward, Preferences
-				.getInstance().getInt(RobotMap.Prefs.AutoForwardDistance2, 50)));
+		// addSequential(new DriveForwardBackwardDistance(autoForwardSpeed, ForwardBackwardDirection.Forward,
+		// Preferences
+		// .getInstance().getInt(RobotMap.Prefs.AutoForwardDistance1, 40)));
+		// addSequential(new AutonomousStrafe(-.25));
+		// addSequential(new DriveForwardBackwardDistance(autoForwardSpeed, ForwardBackwardDirection.Forward,
+		// Preferences
+		// .getInstance().getInt(RobotMap.Prefs.AutoForwardDistance2, 50)));
 	}
 }
