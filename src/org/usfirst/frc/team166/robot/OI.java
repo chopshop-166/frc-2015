@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team166.robot.commands.autonomous.DriveForwardBackwardDistance;
 import org.usfirst.frc.team166.robot.commands.claw.CloseClaw;
 import org.usfirst.frc.team166.robot.commands.claw.OpenClaw;
 import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
@@ -63,6 +64,7 @@ public class OI {
 		// Drive commands
 		SmartDashboard.putData("Cancel drive command", new CancelDriveCommand());
 		SmartDashboard.putData("StrafeRight", new DriveDirection(90, .35));
+		SmartDashboard.putData("DriveForwardBackwardDirection", new DriveForwardBackwardDistance(.2, 0, 24));
 	}
 
 	public Joystick getDriveJoystick() {

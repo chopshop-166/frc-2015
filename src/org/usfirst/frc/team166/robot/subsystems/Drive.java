@@ -158,6 +158,10 @@ public class Drive extends Subsystem {
 		}
 	}
 
+	public void resetGyro() {
+		gyro.reset();
+	}
+
 	// MOVES THE ROBOT AT A GIVEN SPEED AT A GIVEN ANGLE
 	public void driveAngle(double angle, double speed) {
 		robotDrive.mecanumDrive_Polar(speed, angle, getGyroOffset()); // You're dumb
@@ -170,7 +174,7 @@ public class Drive extends Subsystem {
 		if (isUltrasonicDataGood()) {
 			robotDrive.mecanumDrive_Cartesian(
 					centerOffsetDistance
-							/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
+					/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
 					getGyroOffset(), 0);
 		} else {
 			stopMotors();
@@ -214,10 +218,10 @@ public class Drive extends Subsystem {
 				RobotMap.Prefs.StalledDriveCurrent, 20)
 				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance().getDouble(
 						RobotMap.Prefs.StalledDriveCurrent, 20)
-				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
-						RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
-				.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
-				RobotMap.Prefs.StalledDriveCurrent, 20));
+						|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
+								RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
+								.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
+										RobotMap.Prefs.StalledDriveCurrent, 20));
 	}
 
 	// CHECKS IF THE ULRASONIC DATA IS REASONABLE
@@ -257,27 +261,7 @@ public class Drive extends Subsystem {
 		Forward, Backward
 	}
 
-	public void driveForwardBackwardDistance(double speed, ForwardBackwardDirection direction, int distance) {
-		int multiplier = (direction == ForwardBackwardDirection.Backward) ? -1 : 1;
-		double distanceTraveledAverage = (getDistanceTraveled(frontRightEncoder)
-				+ getDistanceTraveled(frontLeftEncoder) + getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder)) / 4;
-		if (distanceTraveledAverage >= distance) {
-			robotDrive.mecanumDrive_Cartesian(0, (speed * multiplier), getGyroOffset(), 0);
-		} else {
-			robotDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
-		}
-	}
-
-	// public enum StrafeDirection{
-	// Left, Right
-	// }
-	//
-	// public void strafeLeftUsingUltrasonic(double speed, StrafeDirection direction, int desiredDistanceFromWall) {
-	// int multiplier = (direction == StrafeDirection.Left) ? -1 : 1;
-	// if (getLeftDistance() <= desiredDistanceFromWall) {
-	// RobotDrive.mecanumDrive_Cartesian(Preferences.getInstance().getDouble(""), speed, speed, 0)
-	// }
-	// }
+	// andrew is dumb
 
 	// SETS THE PID CONSTANTS THROUGH PREFERENCES (CURRENTLY UNUSED)
 	public void setPIDConstants() {
@@ -298,6 +282,20 @@ public class Drive extends Subsystem {
 		frontRightPID.reset();
 		rearLeftPID.reset();
 		rearRightPID.reset();
+	}
+
+	public double getEncoderDistance() {
+		double distanceTraveledAverage = (getDistanceTraveled(frontRightEncoder)
+				+ getDistanceTraveled(frontLeftEncoder) + getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder))
+				/ 4 * DistanceNormal;
+		return distanceTraveledAverage;
+	}
+
+	public void resetEncoders() {
+		frontRightEncoder.reset();
+		frontLeftEncoder.reset();
+		rearRightEncoder.reset();
+		rearLeftEncoder.reset();
 	}
 
 	@Override
