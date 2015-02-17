@@ -41,5 +41,6 @@ public class RaiseToteLift extends Command {
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
+		Robot.toteLift.stop();
 	}
 }

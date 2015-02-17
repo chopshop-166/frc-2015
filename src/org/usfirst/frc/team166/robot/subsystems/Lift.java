@@ -25,6 +25,8 @@ public class Lift extends Subsystem {
 	LiftMovement movementState = LiftMovement.Stopped;
 	PIDSpeedController pid;
 	public String subsystemName;
+	double rcLiftUpDownAxis;
+	double toteLiftUpDownAxis;
 
 	// This enum describes the movement state of a lift.
 	public enum LiftMovement {

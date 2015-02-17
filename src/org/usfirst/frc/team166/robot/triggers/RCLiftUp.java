@@ -1,9 +1,9 @@
 package org.usfirst.frc.team166.robot.triggers;
 
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.Robot;
-import org.usfirst.frc.team166.robot.Utility;
 
 /**
  *
@@ -12,6 +12,7 @@ public class RCLiftUp extends Trigger {
 
 	@Override
 	public boolean get() {
-		return Utility.isAxisZero(Robot.oi.getRCLiftUpDownAxis());
+		SmartDashboard.putNumber("RCLift up-down axis", Robot.oi.getRCLiftUpDownAxis());
+		return (Robot.oi.getRCLiftUpDownAxis() < 0);
 	}
 }
