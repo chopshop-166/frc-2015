@@ -17,6 +17,8 @@ public class RobotMap {
 	public static final int ToteLiftUpDownAxis = 1;
 	public static final int RightXboxTrigger = 3;
 	public static final int XboxBButton = 1;
+	public static final int XboxRightStickButton = 10;
+	public static final int XboxLeftStickButton = 9;
 
 	// Solenoid Channels
 	public static class solenoid {
@@ -97,6 +99,7 @@ public class RobotMap {
 		public static final String LiftEncoderMin = "LiftEncoderMin";
 		public static final String LiftDeadzone = "LiftDeadzone";
 		public static final String LiftSpeed = "LiftSpeed";
+		public static final String SlowLiftSpeed = "SlowLiftSpeed";
 		public static final String LiftMaxCurrent = "LiftMaxCurrent";
 		public static final String LiftDistPerPulse = "LiftDistPerPulse";
 		public static final String LiftSpeedP = "LiftSpeedP";

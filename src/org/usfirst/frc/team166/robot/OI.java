@@ -15,6 +15,10 @@ import org.usfirst.frc.team166.robot.commands.lifts.LowerToteLift;
 import org.usfirst.frc.team166.robot.commands.lifts.RaiseRCLift;
 import org.usfirst.frc.team166.robot.commands.lifts.RaiseToteLift;
 import org.usfirst.frc.team166.robot.commands.lifts.ReleaseLiftBrake;
+import org.usfirst.frc.team166.robot.commands.lifts.SlowLowerRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.SlowLowerToteLift;
+import org.usfirst.frc.team166.robot.commands.lifts.SlowRaiseRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.SlowRaiseToteLift;
 import org.usfirst.frc.team166.robot.commands.lifts.StopRCLift;
 import org.usfirst.frc.team166.robot.commands.lifts.StopToteLift;
 import org.usfirst.frc.team166.robot.commands.wings.LiftWings;
@@ -29,6 +33,9 @@ public class OI {
 	private final Joystick driveJoystick;
 	private final Joystick copilotController;
 
+	private final JoystickButton xboxRightStickButton;
+	private final JoystickButton xboxLeftStickButton;
+
 	public OI() {
 
 		driveJoystick = new Joystick(RobotMap.DriveJoystick);
@@ -36,6 +43,8 @@ public class OI {
 		JoystickButton button3 = new JoystickButton(driveJoystick, 3);
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
 		JoystickButton xboxBButton = new JoystickButton(copilotController, RobotMap.XboxBButton);
+		xboxRightStickButton = new JoystickButton(copilotController, RobotMap.XboxRightStickButton);
+		xboxLeftStickButton = new JoystickButton(copilotController, RobotMap.XboxLeftStickButton);
 
 		button3.whileHeld(new DriveDirection(270, Preferences.getInstance().getDouble("StrafePower", .25)));
 		button4.whileHeld(new DriveDirection(90, Preferences.getInstance().getDouble("StrafePower", .25)));
@@ -59,6 +68,10 @@ public class OI {
 		SmartDashboard.putData("Move rcLift up", new RaiseRCLift());
 		SmartDashboard.putData("Move toteLift down", new LowerToteLift());
 		SmartDashboard.putData("Move rcLift down", new LowerRCLift());
+		SmartDashboard.putData("Slow move toteLiftUp", new SlowRaiseToteLift());
+		SmartDashboard.putData("Slow move rcLiftUp", new SlowRaiseRCLift());
+		SmartDashboard.putData("Slow move toteLiftDown", new SlowLowerToteLift());
+		SmartDashboard.putData("Slow move rcLiftDown", new SlowLowerRCLift());
 
 		// Drive commands
 		SmartDashboard.putData("Cancel drive command", new CancelDriveCommand());
@@ -120,6 +133,14 @@ public class OI {
 
 	public double getRightXboxTrigger() {
 		return (copilotController.getRawAxis(RobotMap.RightXboxTrigger));
+	}
+
+	public boolean getRightXboxStickButton() {
+		return xboxRightStickButton.get();
+	}
+
+	public boolean getLeftXboxStickButton() {
+		return xboxLeftStickButton.get();
 	}
 
 }

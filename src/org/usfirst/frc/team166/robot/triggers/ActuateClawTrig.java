@@ -9,7 +9,7 @@ import org.usfirst.frc.team166.robot.RobotMap;
 /**
  *
  */
-public class ActuateClaw extends Trigger {
+public class ActuateClawTrig extends Trigger {
 
 	@Override
 	public boolean get() {
