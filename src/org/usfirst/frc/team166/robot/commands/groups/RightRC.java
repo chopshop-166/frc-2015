@@ -23,7 +23,6 @@ public class RightRC extends CommandGroup {
 				RobotMap.Prefs.RCRightToteLiftPos, 24)));
 		addSequential(new MoveLiftToPos(Robot.rcLift, Preferences.getInstance().getDouble(
 				RobotMap.Prefs.RCRightToteLiftPos, 30)));
-		addSequential(new WaitCommand(Preferences.getInstance().getDouble(RobotMap.Prefs.RightRCWaitTime, 1)));
 		addParallel(new MoveLiftToPos(Robot.toteLift, Preferences.getInstance().getDouble(
 				RobotMap.Prefs.RCRightToteLiftPos, 0)));
 		addParallel(new DriveDirection(180, Preferences.getInstance().getDouble(RobotMap.Prefs.RightRCDirection, 0)));
