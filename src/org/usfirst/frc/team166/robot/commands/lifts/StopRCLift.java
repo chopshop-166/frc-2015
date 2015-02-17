@@ -2,24 +2,21 @@ package org.usfirst.frc.team166.robot.commands.lifts;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.usfirst.frc.team166.robot.subsystems.Lift;
+import org.usfirst.frc.team166.robot.Robot;
 
 /**
  *
  */
-public class StopLift extends Command {
+public class StopRCLift extends Command {
 
-	private Lift lift;
-
-	public StopLift(Lift m_lift) {
-		requires(m_lift);
-		lift = m_lift;
+	public StopRCLift() {
+		requires(Robot.rcLift);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		lift.stop();
+		Robot.rcLift.stop();
 	}
 
 	// Called repeatedly when this Command is scheduled to run

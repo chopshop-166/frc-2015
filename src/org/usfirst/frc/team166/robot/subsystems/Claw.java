@@ -20,7 +20,7 @@ public class Claw extends Subsystem {
 			RobotMap.solenoid.ClawReverse);
 
 	public Claw() {
-
+		this.clawState = ClawStates.Open; // Added by Matt since claw starts as open, not closed.
 		LiveWindow.addActuator("Claw", "Solenoid", solenoid);
 	}
 
@@ -41,7 +41,8 @@ public class Claw extends Subsystem {
 		if (this.clawState == ClawStates.Open) {
 			close();
 		} else {
-			open();
+			open(); // Only worked before since this is an "else" not and "else if": The claw was open to start
+			// and was "opened" again (nothing happened), then the second time it would actually close.
 		}
 	}
 

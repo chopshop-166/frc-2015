@@ -32,9 +32,13 @@ public class PIDSpeedController implements SpeedController {
 		// Never Used
 	}
 
+	public double getSetpoint() {
+		return controller.getSetpoint();
+	}
+
 	@Override
 	public double get() {
-		return controller.getSetpoint();
+		return controller.get();
 	}
 
 	@Override

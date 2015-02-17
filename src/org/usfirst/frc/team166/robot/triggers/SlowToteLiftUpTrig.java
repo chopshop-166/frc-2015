@@ -3,15 +3,15 @@ package org.usfirst.frc.team166.robot.triggers;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 
 import org.usfirst.frc.team166.robot.Robot;
-import org.usfirst.frc.team166.robot.Utility;
 
 /**
  *
  */
-public class RCLiftDown extends Trigger {
+public class SlowToteLiftUpTrig extends Trigger {
 
 	@Override
 	public boolean get() {
-		return Utility.isAxisZero(Robot.oi.getRCLiftUpDownAxis());
+		return (Robot.oi.getToteLiftUpDownAxis() < 0) && (Robot.oi.getLeftXboxStickButton());
+
 	}
 }

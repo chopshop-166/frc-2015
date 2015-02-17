@@ -120,19 +120,23 @@ public class Drive extends Subsystem {
 	public void mecanumDrive(Joystick stick) {
 
 		// DRIVE FORWARD WITH JOYSTICKS ONLY
-		if (Utility.isAxisZero(Robot.oi.getDriveJoystickRotation())) {
+		if (!Utility.isAxisZero(Robot.oi.getDriveJoystickRotation())) {
 			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
 					Robot.oi.getDriveJoystickRotation(), 0);
-			usingTwist = false;
-		} else {
+			usingTwist = true;
+		} else if ((!Utility.isAxisZero(Robot.oi.getDriveJoystickLateral()))
+				|| !Utility.isAxisZero((Robot.oi.getDriveJoystickForward()))) {
 			// IS THIS THE FIRST TIME IN LOOP?
-			if (usingTwist == false) {
+			if (usingTwist == true) {
 				gyro.reset();
 			}
-			usingTwist = true;
+			usingTwist = false;
 			// USE THE GYRO FOR ROTATION ASSISTANCE
 			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
 					getGyroOffset(), 0);
+		} else {
+			robotDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
+			gyro.reset();
 		}
 	}
 
@@ -154,9 +158,14 @@ public class Drive extends Subsystem {
 		}
 	}
 
+	public void resetGyro() {
+		gyro.reset();
+	}
+
 	// MOVES THE ROBOT AT A GIVEN SPEED AT A GIVEN ANGLE
 	public void driveAngle(double angle, double speed) {
-		robotDrive.mecanumDrive_Polar(speed, angle, getGyroOffset());
+		robotDrive.mecanumDrive_Polar(speed, angle, getGyroOffset()); // You're dumb
+		// robotDrive.mecanumDrive_Cartesian(.5, 0, getGyroOffset(), 0);
 	}
 
 	// CENTERS THE ROBOT ON THE STEP
@@ -252,27 +261,7 @@ public class Drive extends Subsystem {
 		Forward, Backward
 	}
 
-	public void driveForwardBackwardDistance(double speed, ForwardBackwardDirection direction, int distance) {
-		int multiplier = (direction == ForwardBackwardDirection.Backward) ? -1 : 1;
-		double distanceTraveledAverage = (getDistanceTraveled(frontRightEncoder)
-				+ getDistanceTraveled(frontLeftEncoder) + getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder)) / 4;
-		if (distanceTraveledAverage >= distance) {
-			robotDrive.mecanumDrive_Cartesian(0, (speed * multiplier), getGyroOffset(), 0);
-		} else {
-			robotDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
-		}
-	}
-
-	// public enum StrafeDirection{
-	// Left, Right
-	// }
-	//
-	// public void strafeLeftUsingUltrasonic(double speed, StrafeDirection direction, int desiredDistanceFromWall) {
-	// int multiplier = (direction == StrafeDirection.Left) ? -1 : 1;
-	// if (getLeftDistance() <= desiredDistanceFromWall) {
-	// RobotDrive.mecanumDrive_Cartesian(Preferences.getInstance().getDouble(""), speed, speed, 0)
-	// }
-	// }
+	// andrew is dumb
 
 	// SETS THE PID CONSTANTS THROUGH PREFERENCES (CURRENTLY UNUSED)
 	public void setPIDConstants() {
@@ -293,6 +282,20 @@ public class Drive extends Subsystem {
 		frontRightPID.reset();
 		rearLeftPID.reset();
 		rearRightPID.reset();
+	}
+
+	public double getEncoderDistance() {
+		double distanceTraveledAverage = (getDistanceTraveled(frontRightEncoder)
+				+ getDistanceTraveled(frontLeftEncoder) + getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder))
+				/ 4 * DistanceNormal;
+		return distanceTraveledAverage;
+	}
+
+	public void resetEncoders() {
+		frontRightEncoder.reset();
+		frontLeftEncoder.reset();
+		rearRightEncoder.reset();
+		rearLeftEncoder.reset();
 	}
 
 	@Override

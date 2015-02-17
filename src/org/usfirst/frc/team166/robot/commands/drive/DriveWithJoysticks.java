@@ -1,6 +1,7 @@
 package org.usfirst.frc.team166.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.Robot;
 
@@ -17,6 +18,7 @@ public class DriveWithJoysticks extends Command {
 	@Override
 	protected void initialize() {
 		Robot.drive.setPIDConstants();
+		Robot.drive.resetEncoders();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -28,6 +30,7 @@ public class DriveWithJoysticks extends Command {
 		Robot.drive.getFrontDistance();
 		Robot.drive.getRightDistance();
 		Robot.drive.getLeftDistance();
+		SmartDashboard.putNumber("Distance Traveled", Robot.drive.getEncoderDistance());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

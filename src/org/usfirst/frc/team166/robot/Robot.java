@@ -7,17 +7,36 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team166.robot.commands.autonomous.Autonomous;
+import org.usfirst.frc.team166.robot.commands.autonomous.AlternateAutonomous;
+import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
 import org.usfirst.frc.team166.robot.commands.lifts.DetermineLiftCollision;
-import org.usfirst.frc.team166.robot.commands.lifts.ShutDownLift;
+import org.usfirst.frc.team166.robot.commands.lifts.LowerRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.LowerToteLift;
+import org.usfirst.frc.team166.robot.commands.lifts.RaiseRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.RaiseToteLift;
+import org.usfirst.frc.team166.robot.commands.lifts.ShutDownRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.ShutDownToteLift;
+import org.usfirst.frc.team166.robot.commands.lifts.SlowLowerRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.SlowLowerToteLift;
+import org.usfirst.frc.team166.robot.commands.lifts.SlowRaiseRCLift;
+import org.usfirst.frc.team166.robot.commands.lifts.SlowRaiseToteLift;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
 import org.usfirst.frc.team166.robot.subsystems.LimitSwitchLift;
 import org.usfirst.frc.team166.robot.subsystems.Wing;
+import org.usfirst.frc.team166.robot.triggers.ActuateClawTrig;
 import org.usfirst.frc.team166.robot.triggers.CarriageTrigger;
+import org.usfirst.frc.team166.robot.triggers.RCLiftDownTrig;
 import org.usfirst.frc.team166.robot.triggers.RCLiftStalled;
+import org.usfirst.frc.team166.robot.triggers.RCLiftUpTrig;
+import org.usfirst.frc.team166.robot.triggers.SlowRCLiftDownTrig;
+import org.usfirst.frc.team166.robot.triggers.SlowRCLiftUpTrig;
+import org.usfirst.frc.team166.robot.triggers.SlowToteLiftDownTrig;
+import org.usfirst.frc.team166.robot.triggers.SlowToteLiftUpTrig;
+import org.usfirst.frc.team166.robot.triggers.ToteLiftDownTrig;
 import org.usfirst.frc.team166.robot.triggers.ToteLiftStalled;
+import org.usfirst.frc.team166.robot.triggers.ToteLiftUpTrig;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -28,8 +47,10 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	public static final PowerDistributionPanel pdBoard = new PowerDistributionPanel();
-	public static final Wing leftWing = new Wing("Left Wing", RobotMap.solenoid.LeftWing);
-	public static final Wing rightWing = new Wing("Right Wing", RobotMap.solenoid.RightWing);
+	public static final Wing leftWing = new Wing("Left Wing", RobotMap.solenoid.LeftWingForward,
+			RobotMap.solenoid.LeftWingReverse);
+	public static final Wing rightWing = new Wing("Right Wing", RobotMap.solenoid.RightWingForward,
+			RobotMap.solenoid.RightWingReverse);
 	public static final Drive drive = new Drive();
 	public static final Lift toteLift = new Lift(RobotMap.Pwm.ToteLiftMotor, RobotMap.solenoid.ToteLiftBrakeForward,
 			RobotMap.solenoid.ToteLiftBrakeReverse, RobotMap.Encoders.ToteLiftA, RobotMap.Encoders.ToteLiftB,
@@ -43,6 +64,18 @@ public class Robot extends IterativeRobot {
 	private final ToteLiftStalled toteLiftStalled = new ToteLiftStalled();
 	private final RCLiftStalled rcLiftStalled = new RCLiftStalled();
 	private final CarriageTrigger carriageTrigger = new CarriageTrigger();
+
+	private final RCLiftUpTrig rcLiftUp = new RCLiftUpTrig();
+	private final RCLiftDownTrig rcLiftDown = new RCLiftDownTrig();
+	private final ToteLiftUpTrig toteLiftUp = new ToteLiftUpTrig();
+	private final ToteLiftDownTrig toteLiftDown = new ToteLiftDownTrig();
+
+	private final SlowRCLiftUpTrig slowRCLiftUp = new SlowRCLiftUpTrig();
+	private final SlowRCLiftDownTrig slowRCLiftDown = new SlowRCLiftDownTrig();
+	private final SlowToteLiftUpTrig slowToteLiftUp = new SlowToteLiftUpTrig();
+	private final SlowToteLiftDownTrig slowToteLiftDown = new SlowToteLiftDownTrig();
+	private final ActuateClawTrig actuateClaw = new ActuateClawTrig();
+
 	private Command autonomousCommand;
 
 	/**
@@ -56,25 +89,36 @@ public class Robot extends IterativeRobot {
 		// Thus, their requires() statements may grab null pointers. Bad news.
 		// Don't move it.
 
+		// instantiate the command used for the autonomous period
 		oi = new OI();
 
-		// instantiate the command used for the autonomous period
-		autonomousCommand = new Autonomous();
+		autonomousCommand = new AlternateAutonomous();
 
 		// Connect triggers to commands
-		carriageTrigger.whenActive(new DetermineLiftCollision());
-		toteLiftStalled.whenActive(new ShutDownLift(Robot.toteLift));
-		rcLiftStalled.whenActive(new ShutDownLift(Robot.rcLift));
+		carriageTrigger.whileActive(new DetermineLiftCollision());
+		toteLiftStalled.whenActive(new ShutDownToteLift());
+		rcLiftStalled.whenActive(new ShutDownRCLift());
 
-		// PID initialization
+		// Copilot Control Triggers
+		rcLiftUp.whileActive(new RaiseRCLift());
+		rcLiftDown.whileActive(new LowerRCLift());
+		toteLiftUp.whileActive(new RaiseToteLift());
+		toteLiftDown.whileActive(new LowerToteLift());
+
+		slowRCLiftUp.whileActive(new SlowRaiseRCLift());
+		slowRCLiftDown.whileActive(new SlowLowerRCLift());
+		slowToteLiftUp.whileActive(new SlowRaiseToteLift());
+		slowToteLiftDown.whileActive(new SlowLowerToteLift());
+		actuateClaw.whenActive(new ToggleClaw());
+
+		// Subsystem initialization
 		drive.setPIDConstants();
-		toteLift.setPIDConstants();
-		rcLift.setPIDConstants();
-
-		// Set the claw setState
+		toteLift.initLift();
+		rcLift.initLift();
 		claw.setState();
 
 		updateSubsystemSmartdashboard();
+
 	}
 
 	@Override
