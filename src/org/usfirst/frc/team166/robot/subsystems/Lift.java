@@ -56,6 +56,7 @@ public class Lift extends Subsystem {
 		subsystemName = subsystem;
 	}
 
+	// DON'T FORGET THAT MATT IS DUMB TOO
 	public void moveUp() {
 		movementState = LiftMovement.Up;
 		releaseBrake();

@@ -25,7 +25,6 @@ public class DriveForwardBackwardDistance extends Command {
 	protected void initialize() {
 		Robot.drive.resetGyro();
 		Robot.drive.resetEncoders();
-		Robot.drive.driveAngle(direction, driveSpeed);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -33,12 +32,13 @@ public class DriveForwardBackwardDistance extends Command {
 	protected void execute() {
 		// Robot.drive.driveForwardBackwardDistance(driveSpeed, direction, distance);
 		SmartDashboard.putNumber("Distance Traveled Command", Robot.drive.getEncoderDistance());
+		Robot.drive.driveAngle(direction, driveSpeed);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return (Robot.drive.getEncoderDistance() > 24);
+		return (Robot.drive.getEncoderDistance() > distance);
 	}
 
 	// Called once after isFinished returns true
