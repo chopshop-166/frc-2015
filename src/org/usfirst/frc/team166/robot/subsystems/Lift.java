@@ -80,24 +80,6 @@ public class Lift extends Subsystem {
 
 	}
 
-	// public void copilotControl() {
-	// if (subsystemName == "RC") {
-	// rcLiftUpDownAxis = Robot.oi.getRCLiftUpDownAxis();
-	// if (rcLiftUpDownAxis > 0) {
-	// new RaiseRCLift().start();
-	// } else if (rcLiftUpDownAxis < 0) {
-	// new LowerRCLift().start();
-	// } else if (subsystemName == "Tote") {
-	// toteLiftUpDownAxis = Robot.oi.getToteLiftUpDownAxis();
-	// if (toteLiftUpDownAxis > 0) {
-	// new RaiseToteLift().start();
-	// } else if (toteLiftUpDownAxis < 0) {
-	// new LowerToteLift().start();
-	// }
-	// }
-	// }
-	// }
-
 	// Move lift to given position
 	public void moveLiftToPosition(double position) {
 		double tolerance = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10);

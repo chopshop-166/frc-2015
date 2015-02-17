@@ -30,8 +30,8 @@ public class DetermineLiftCollision extends Command {
 			SmartDashboard.putString("Moving lift: ", "Tote");
 			break;
 		case Both:
-			new StopToteLift().start();
-			new StopRCLift().start();
+			Robot.rcLift.stop();
+			Robot.toteLift.stop();
 			SmartDashboard.putString("Moving lift: ", "Both");
 			break;
 		case None:

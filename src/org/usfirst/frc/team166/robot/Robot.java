@@ -82,7 +82,7 @@ public class Robot extends IterativeRobot {
 		autonomousCommand = new Autonomous();
 
 		// Connect triggers to commands
-		carriageTrigger.whenActive(new DetermineLiftCollision());
+		carriageTrigger.whileActive(new DetermineLiftCollision());
 		toteLiftStalled.whenActive(new ShutDownToteLift());
 		rcLiftStalled.whenActive(new ShutDownRCLift());
 

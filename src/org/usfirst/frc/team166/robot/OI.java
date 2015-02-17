@@ -35,9 +35,12 @@ public class OI {
 		copilotController = new Joystick(RobotMap.CopilotController);
 		JoystickButton button3 = new JoystickButton(driveJoystick, 3);
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
+		JoystickButton xboxBButton = new JoystickButton(copilotController, RobotMap.XboxBButton);
+
 		button3.whileHeld(new DriveDirection(270, Preferences.getInstance().getDouble("StrafePower", .25)));
 		button4.whileHeld(new DriveDirection(90, Preferences.getInstance().getDouble("StrafePower", .25)));
-
+		// xboxBButton.whenPressed(new StopRCLift());
+		// xboxBButton.whenPressed(new StopToteLift());
 		// Wing commands
 		SmartDashboard.putData("LiftWings", new LiftWings());
 		SmartDashboard.putData("LowerWings", new LowerWings());
@@ -118,4 +121,5 @@ public class OI {
 	public double getRightXboxTrigger() {
 		return (copilotController.getRawAxis(RobotMap.RightXboxTrigger));
 	}
+
 }
