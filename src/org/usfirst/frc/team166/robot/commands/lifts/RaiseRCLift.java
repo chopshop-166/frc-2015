@@ -1,7 +1,6 @@
 package org.usfirst.frc.team166.robot.commands.lifts;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.Robot;
 
@@ -23,8 +22,7 @@ public class RaiseRCLift extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		SmartDashboard.putNumber(Robot.rcLift.subsystemName, Robot.rcLift.encoder.getRate());
-
+		Robot.rcLift.printEncoderValues();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

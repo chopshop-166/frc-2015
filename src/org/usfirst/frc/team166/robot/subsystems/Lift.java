@@ -20,7 +20,7 @@ public class Lift extends Subsystem {
 
 	DigitalInput boundaryLimit;
 	Talon motor;
-	public Encoder encoder;
+	Encoder encoder;
 	DoubleSolenoid brake;
 	LiftMovement movementState = LiftMovement.Stopped;
 	PIDSpeedController pid;
@@ -166,8 +166,14 @@ public class Lift extends Subsystem {
 		return "None";
 	}
 
-	private void printEncoderValues() {
+	public void printEncoderValues() {
 		SmartDashboard.putNumber(subsystemName, encoder.getRate());
+	}
+
+	public boolean isMotorStuck(Lift lift) {
+		return (Math.abs(lift.encoder.getRate()) < Math.abs(Preferences.getInstance().getDouble(
+				RobotMap.Prefs.LiftEncoderMin, 1)))
+				&& Math.abs(pid.get()) > 0;
 	}
 
 	@Override

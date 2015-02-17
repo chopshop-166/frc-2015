@@ -92,6 +92,7 @@ public class RobotMap {
 		public static final String DriveSpeedD = "DriveSpeedD";
 		public static final String DriveSpeedF = "DriveSpeedF";
 
+		public static final String LiftEncoderMin = "LiftEncoderMin";
 		public static final String LiftDeadzone = "LiftDeadzone";
 		public static final String LiftSpeed = "LiftSpeed";
 		public static final String LiftMaxCurrent = "LiftMaxCurrent";
