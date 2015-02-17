@@ -65,10 +65,26 @@ public class Lift extends Subsystem {
 		SmartDashboard.putNumber(subsystemName, encoder.getRate());
 	}
 
+	public void slowMoveUp() {
+		movementState = LiftMovement.Up;
+		releaseBrake();
+		pid.set(-getSlowLiftSpeed());
+		SmartDashboard.putString(subsystemName + "Move state", enumToString());
+		SmartDashboard.putNumber(subsystemName, encoder.getRate());
+	}
+
 	public void moveDown() {
 		movementState = LiftMovement.Down;
 		releaseBrake();
 		pid.set(getLiftSpeed());
+		SmartDashboard.putString(subsystemName + "Move state", enumToString());
+		SmartDashboard.putNumber(subsystemName, encoder.getRate());
+	}
+
+	public void slowMoveDown() {
+		movementState = LiftMovement.Down;
+		releaseBrake();
+		pid.set(getSlowLiftSpeed());
 		SmartDashboard.putString(subsystemName + "Move state", enumToString());
 		SmartDashboard.putNumber(subsystemName, encoder.getRate());
 	}
@@ -155,6 +171,13 @@ public class Lift extends Subsystem {
 			return -Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
 		} else
 			return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+	}
+
+	private double getSlowLiftSpeed() {
+		if (subsystemName == "Tote") {
+			return -Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.SlowLiftSpeed, 0), 0);
+		} else
+			return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.SlowLiftSpeed, 0), 0);
 	}
 
 	private String enumToString() {

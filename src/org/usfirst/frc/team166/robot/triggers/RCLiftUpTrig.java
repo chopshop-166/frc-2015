@@ -8,7 +8,7 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class RCLiftUp extends Trigger {
+public class RCLiftUpTrig extends Trigger {
 
 	@Override
 	public boolean get() {

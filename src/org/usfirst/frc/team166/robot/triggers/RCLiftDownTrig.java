@@ -8,11 +8,11 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class ToteLiftDown extends Trigger {
+public class RCLiftDownTrig extends Trigger {
 
 	@Override
 	public boolean get() {
-		SmartDashboard.putNumber("ToteLift up-down axis", Robot.oi.getRCLiftUpDownAxis());
-		return (Robot.oi.getToteLiftUpDownAxis() > 0);
+		SmartDashboard.putNumber("RCLift up-down axis", Robot.oi.getRCLiftUpDownAxis());
+		return (Robot.oi.getRCLiftUpDownAxis() > 0);
 	}
 }
