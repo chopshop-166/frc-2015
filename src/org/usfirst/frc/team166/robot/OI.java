@@ -11,6 +11,7 @@ import org.usfirst.frc.team166.robot.commands.claw.OpenClaw;
 import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
 import org.usfirst.frc.team166.robot.commands.drive.CancelDriveCommand;
 import org.usfirst.frc.team166.robot.commands.drive.DriveDirection;
+import org.usfirst.frc.team166.robot.commands.drive.ToggleDriveSlowSpeed;
 import org.usfirst.frc.team166.robot.commands.lifts.LowerRCLift;
 import org.usfirst.frc.team166.robot.commands.lifts.LowerToteLift;
 import org.usfirst.frc.team166.robot.commands.lifts.RaiseRCLift;
@@ -41,14 +42,17 @@ public class OI {
 
 		driveJoystick = new Joystick(RobotMap.DriveJoystick);
 		copilotController = new Joystick(RobotMap.CopilotController);
+
 		JoystickButton button3 = new JoystickButton(driveJoystick, 3);
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
-		JoystickButton xboxBButton = new JoystickButton(copilotController, RobotMap.XboxBButton);
+		JoystickButton driverTrigger = new JoystickButton(driveJoystick, 0);
 		xboxRightStickButton = new JoystickButton(copilotController, RobotMap.XboxRightStickButton);
 		xboxLeftStickButton = new JoystickButton(copilotController, RobotMap.XboxLeftStickButton);
 
 		button3.whileHeld(new DriveDirection(270, Preferences.getInstance().getDouble("StrafePower", .25)));
 		button4.whileHeld(new DriveDirection(90, Preferences.getInstance().getDouble("StrafePower", .25)));
+		driverTrigger.whenPressed(new ToggleDriveSlowSpeed());
+
 		// xboxBButton.whenPressed(new StopRCLift());
 		// xboxBButton.whenPressed(new StopToteLift());
 		// Wing commands
@@ -88,7 +92,8 @@ public class OI {
 		double axis = driveJoystick.getY();
 
 		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.DriveDeadZone, 1)) {
-			return (axis * Preferences.getInstance().getDouble(RobotMap.Prefs.DriveScalerY, 1));
+			return (axis * Robot.drive.DriveSpeedModifier * Preferences.getInstance().getDouble(
+					RobotMap.Prefs.DriveScalerY, 1));
 		} else {
 			return 0;
 		}
@@ -98,7 +103,8 @@ public class OI {
 		double axis = driveJoystick.getX();
 
 		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.DriveDeadZone, 1)) {
-			return (axis * Preferences.getInstance().getDouble(RobotMap.Prefs.DriveScalerX, 1));
+			return (axis * Robot.drive.DriveSpeedModifier * Preferences.getInstance().getDouble(
+					RobotMap.Prefs.DriveScalerX, 1));
 		} else {
 			return 0;
 		}
@@ -107,7 +113,8 @@ public class OI {
 	public double getDriveJoystickRotation() {
 		double axis = driveJoystick.getRawAxis(RobotMap.DriveJoystickTwistAxis);
 		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.DriveDeadZone, 1)) {
-			return (axis * Preferences.getInstance().getDouble(RobotMap.Prefs.DriveScalerRotation, 1));
+			return (axis * Robot.drive.DriveSpeedModifier * Preferences.getInstance().getDouble(
+					RobotMap.Prefs.DriveScalerRotation, 1));
 		} else {
 			return 0;
 		}
