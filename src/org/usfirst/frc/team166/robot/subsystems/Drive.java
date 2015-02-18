@@ -170,6 +170,11 @@ public class Drive extends Subsystem {
 		// robotDrive.mecanumDrive_Cartesian(.5, 0, getGyroOffset(), 0);
 	}
 
+	public void turn90Left() {
+		double rotationSpeed = -.1 - ((90 - getGyro()) * (.2 / 90));
+		robotDrive.mecanumDrive_Cartesian(0, 0, rotationSpeed, 0);
+	}
+
 	// CENTERS THE ROBOT ON THE STEP
 	public void centerOnStep() {
 		double centerOffsetDistance = getRightDistance() - getLeftDistance();

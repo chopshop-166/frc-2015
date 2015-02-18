@@ -18,7 +18,9 @@ public class AlternateAutonomous extends CommandGroup {
 		addSequential(new RaiseRCLift(), 3);
 		addParallel(new RaiseRCLift());
 		addSequential(new DriveForwardBackwardDistance(.2, 0, 20));
-		addSequential(new RaiseToteLift(), 3);
+		addParallel(new RaiseToteLift(), 3);
+		addSequential(new TurnLeftToAngle());
+		addSequential(new DriveForwardBackwardDistance(.25, 0, 30));
 
 	}
 }
