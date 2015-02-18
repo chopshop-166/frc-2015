@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.commands.autonomous.RCToteAutonomous;
-import org.usfirst.frc.team166.robot.commands.autonomous.StepRCAutonomous;
 import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
 import org.usfirst.frc.team166.robot.commands.lifts.DetermineLiftCollision;
 import org.usfirst.frc.team166.robot.commands.lifts.LowerRCLift;
@@ -96,8 +95,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		// Add options and default for autonomous chooser
+
+		// autoChooser.addObject("Retrieve RCs", new StepRCAutonomous()); UNTESTED
 		autoChooser.addObject("Tote and RC auto", new RCToteAutonomous());
-		autoChooser.addObject("Retrieve RCs", new StepRCAutonomous());
 		autoChooser.addDefault("Tote and RC auto", new RCToteAutonomous());
 
 		autonomousCommand = (Command) autoChooser.getSelected();
