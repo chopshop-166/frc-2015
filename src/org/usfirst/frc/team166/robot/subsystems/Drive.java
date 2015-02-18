@@ -169,8 +169,8 @@ public class Drive extends Subsystem {
 	}
 
 	public void turn90Left() {
-		double rotationSpeed = -.1 - ((90 - getGyro()) * (.2 / 90));
-		robotDrive.mecanumDrive_Cartesian(0, 0, rotationSpeed, 0);
+		double rotationSpeed = ((90 - getGyro()) * (.2 / 90));
+		robotDrive.mecanumDrive_Cartesian(0, 0, -rotationSpeed, 0);
 	}
 
 	// CENTERS THE ROBOT ON THE STEP
@@ -290,9 +290,8 @@ public class Drive extends Subsystem {
 	}
 
 	public double getEncoderDistance() {
-		double distanceTraveledAverage = (getDistanceTraveled(frontRightEncoder)
-				+ getDistanceTraveled(frontLeftEncoder) + getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder))
-				/ 4 * DistanceNormal;
+		double distanceTraveledAverage = (-getDistanceTraveled(frontRightEncoder)
+				+ getDistanceTraveled(frontLeftEncoder) + -getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder)) / 4;
 		return distanceTraveledAverage;
 	}
 
