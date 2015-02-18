@@ -28,6 +28,8 @@ public class Drive extends Subsystem {
 	private static final double DistanceNormal = 91.5;
 	private static final double DistancePerPulse = ((6 * Math.PI) / 1024) / DistanceNormal;
 
+	// Slow Speed Global Var
+	public double DriveSpeedModifier = 1.0;
 	// ROBOTDRIVE INIT
 	final RobotDrive robotDrive;
 
