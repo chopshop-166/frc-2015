@@ -27,7 +27,7 @@ public class TurnLeftToAngle extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return (-90 <= Robot.drive.getGyro());
+		return (-80 > Robot.drive.getGyro());
 	}
 
 	// Called once after isFinished returns true

@@ -5,11 +5,9 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.commands.autonomous.RCToteAutonomous;
-import org.usfirst.frc.team166.robot.commands.autonomous.StepRCAutonomous;
 import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
 import org.usfirst.frc.team166.robot.commands.lifts.DetermineLiftCollision;
 import org.usfirst.frc.team166.robot.commands.lifts.LowerRCLift;
@@ -48,7 +46,7 @@ import org.usfirst.frc.team166.robot.triggers.ToteLiftUpTrig;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
-	public static SendableChooser autoChooser;
+	// public static SendableChooser autoChooser;
 	public static final PowerDistributionPanel pdBoard = new PowerDistributionPanel();
 	public static final Wing leftWing = new Wing("Left Wing", RobotMap.solenoid.LeftWingForward,
 			RobotMap.solenoid.LeftWingReverse);
@@ -96,12 +94,12 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		// Add options and default for autonomous chooser
-		autoChooser.addObject("Tote and RC auto", new RCToteAutonomous());
-		autoChooser.addObject("Retrieve RCs", new StepRCAutonomous());
-		autoChooser.addDefault("Tote and RC auto", new RCToteAutonomous());
-
-		autonomousCommand = (Command) autoChooser.getSelected();
-
+		// autoChooser.addObject("Tote and RC auto", new RCToteAutonomous());
+		// autoChooser.addObject("Retrieve RCs", new StepRCAutonomous());
+		// autoChooser.addDefault("Tote and RC auto", new RCToteAutonomous());
+		//
+		// autonomousCommand = (Command) autoChooser.getSelected();
+		autonomousCommand = (new RCToteAutonomous());
 		// Connect triggers to commands
 		carriageTrigger.whileActive(new DetermineLiftCollision());
 		toteLiftStalled.whenActive(new ShutDownToteLift());
@@ -134,6 +132,7 @@ public class Robot extends IterativeRobot {
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
+		Robot.drive.resetIntegral();
 	}
 
 	/**
@@ -151,6 +150,7 @@ public class Robot extends IterativeRobot {
 		// continue until interrupted by another command, remove this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		Robot.drive.resetIntegral();
 	}
 
 	/**
