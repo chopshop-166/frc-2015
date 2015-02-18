@@ -12,10 +12,10 @@ import org.usfirst.frc.team166.robot.commands.wings.RaiseRightWing;
 /**
  *
  */
-public class Autonomous extends CommandGroup {
+public class StepRCAutonomous extends CommandGroup {
 	double autoForwardSpeed = Preferences.getInstance().getDouble(RobotMap.Prefs.AutoForwardSpeed, 0.3);
 
-	public Autonomous() {
+	public StepRCAutonomous() {
 		addParallel(new InitLiftEncoders());
 		addSequential(new DriveToStep());
 		addSequential(new CenterOnStep(), 3.0);

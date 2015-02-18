@@ -10,9 +10,9 @@ import org.usfirst.frc.team166.robot.commands.lifts.RaiseToteLift;
 /**
  *
  */
-public class AlternateAutonomous extends CommandGroup {
+public class RCToteAutonomous extends CommandGroup {
 
-	public AlternateAutonomous() {
+	public RCToteAutonomous() {
 		addParallel(new LowerToteLift());
 		addSequential(new CloseClaw());
 		addSequential(new RaiseRCLift(), 3);
