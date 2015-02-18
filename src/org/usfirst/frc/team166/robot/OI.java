@@ -12,6 +12,7 @@ import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
 import org.usfirst.frc.team166.robot.commands.drive.CancelDriveCommand;
 import org.usfirst.frc.team166.robot.commands.drive.DriveDirection;
 import org.usfirst.frc.team166.robot.commands.drive.ToggleDriveSlowSpeed;
+import org.usfirst.frc.team166.robot.commands.groups.RightRC;
 import org.usfirst.frc.team166.robot.commands.lifts.LowerRCLift;
 import org.usfirst.frc.team166.robot.commands.lifts.LowerToteLift;
 import org.usfirst.frc.team166.robot.commands.lifts.RaiseRCLift;
@@ -45,12 +46,15 @@ public class OI {
 
 		JoystickButton button3 = new JoystickButton(driveJoystick, 3);
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
+		JoystickButton rightRCButton = new JoystickButton(driveJoystick, RobotMap.RightRCButton);
 		JoystickButton driverTrigger = new JoystickButton(driveJoystick, 0);
+
 		xboxRightStickButton = new JoystickButton(copilotController, RobotMap.XboxRightStickButton);
 		xboxLeftStickButton = new JoystickButton(copilotController, RobotMap.XboxLeftStickButton);
 
 		button3.whileHeld(new DriveDirection(270, Preferences.getInstance().getDouble("StrafePower", .25)));
 		button4.whileHeld(new DriveDirection(90, Preferences.getInstance().getDouble("StrafePower", .25)));
+		rightRCButton.whenPressed(new RightRC());
 		driverTrigger.whenPressed(new ToggleDriveSlowSpeed());
 
 		// xboxBButton.whenPressed(new StopRCLift());
@@ -82,6 +86,7 @@ public class OI {
 		SmartDashboard.putData("Cancel drive command", new CancelDriveCommand());
 		SmartDashboard.putData("StrafeRight", new DriveDirection(90, .35));
 		SmartDashboard.putData("DriveForwardBackwardDirection", new DriveForwardBackwardDistance(.2, 0, 24));
+		SmartDashboard.putData("Right RC", new RightRC());
 	}
 
 	public Joystick getDriveJoystick() {
