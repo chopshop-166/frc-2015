@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team166.robot.commands.autonomous.CenterOnStep;
 import org.usfirst.frc.team166.robot.commands.autonomous.DriveForwardBackwardDistance;
 import org.usfirst.frc.team166.robot.commands.claw.CloseClaw;
 import org.usfirst.frc.team166.robot.commands.claw.OpenClaw;
@@ -46,7 +47,7 @@ public class OI {
 
 		JoystickButton button3 = new JoystickButton(driveJoystick, 3);
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
-		JoystickButton rightRCButton = new JoystickButton(driveJoystick, RobotMap.RightRCButton);
+		JoystickButton button2 = new JoystickButton(driveJoystick, RobotMap.centerAtStepButton);
 		JoystickButton driverTrigger = new JoystickButton(driveJoystick, 0);
 
 		xboxRightStickButton = new JoystickButton(copilotController, RobotMap.XboxRightStickButton);
@@ -54,7 +55,7 @@ public class OI {
 
 		button3.whileHeld(new DriveDirection(270, Preferences.getInstance().getDouble("StrafePower", .25)));
 		button4.whileHeld(new DriveDirection(90, Preferences.getInstance().getDouble("StrafePower", .25)));
-		rightRCButton.whenPressed(new RightRC());
+		button2.whenPressed(new CenterOnStep());
 		driverTrigger.whenPressed(new ToggleDriveSlowSpeed());
 
 		// xboxBButton.whenPressed(new StopRCLift());
