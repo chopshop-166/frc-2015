@@ -17,14 +17,14 @@ public class RCToteAutonomous extends CommandGroup {
 		addSequential(new OpenClaw());
 		addParallel(new LowerToteLift());
 		addSequential(new CloseClaw());
-		addSequential(new RaiseRCLift(), 3);
-		addParallel(new RaiseRCLift());
+		addSequential(new RaiseRCLift(), 2);
+		addParallel(new RaiseRCLift(), 2);
 		addSequential(new DriveForwardBackwardDistance(.2, 0, 30));
 		addParallel(new DriveForwardBackwardDistance(.1, 0, 10));
 		addSequential(new RaiseToteLift(), 1);
 		addParallel(new RaiseToteLift(), 1);
 		addSequential(new TurnLeftToAngle());
-		addSequential(new DriveForwardBackwardDistance(.3, 0, 120));// was 110
+		addSequential(new DriveForwardBackwardDistance(.3, 0, 120));
 		addSequential(new TurnLeftToAngle());
 
 	}
