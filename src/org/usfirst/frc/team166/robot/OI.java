@@ -129,7 +129,7 @@ public class OI {
 	public double getRCLiftUpDownAxis() {
 		double axis = copilotController.getRawAxis(RobotMap.RcLiftUpDownAxis);
 
-		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.LiftDeadzone, 1)) {
+		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.LiftDeadzone, .25)) {
 			return axis;
 		} else {
 			return 0;
@@ -139,7 +139,7 @@ public class OI {
 	public double getToteLiftUpDownAxis() {
 		double axis = copilotController.getRawAxis(RobotMap.ToteLiftUpDownAxis);
 
-		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.LiftDeadzone, 1)) {
+		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.LiftDeadzone, .25)) {
 			return axis;
 		} else {
 			return 0;

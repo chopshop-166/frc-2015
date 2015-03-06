@@ -134,7 +134,7 @@ public class Lift extends Subsystem {
 		double d = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedD, 0);
 		double f = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedF, 0);
 
-		pid.setConstants(p, i, d, f);
+		pid.setConstants(.25, .75, 0, .95);
 
 		// encoder.setDistancePerPulse(Preferences.getInstance().getDouble(
 		// subsystemName + RobotMap.Prefs.LiftDistPerPulse, .000611111));
