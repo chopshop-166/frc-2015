@@ -48,7 +48,7 @@ public class OI {
 		JoystickButton button3 = new JoystickButton(driveJoystick, 3);
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
 		JoystickButton button2 = new JoystickButton(driveJoystick, RobotMap.centerAtStepButton);
-		JoystickButton driverTrigger = new JoystickButton(driveJoystick, 0);
+		JoystickButton driverTrigger = new JoystickButton(driveJoystick, 1);
 
 		xboxRightStickButton = new JoystickButton(copilotController, RobotMap.XboxRightStickButton);
 		xboxLeftStickButton = new JoystickButton(copilotController, RobotMap.XboxLeftStickButton);
