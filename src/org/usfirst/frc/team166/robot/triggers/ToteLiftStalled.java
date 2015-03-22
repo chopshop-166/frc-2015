@@ -13,8 +13,10 @@ public class ToteLiftStalled extends Trigger {
 
 	@Override
 	public boolean get() {
+		// return Robot.pdBoard.getCurrent(RobotMap.Power.ToteLiftMotor) > Preferences.getInstance().getDouble(
+		// RobotMap.Prefs.LiftMaxCurrent, 20)
+		// || Robot.rcLift.isMotorStuck(Robot.rcLift);
 		return Robot.pdBoard.getCurrent(RobotMap.Power.ToteLiftMotor) > Preferences.getInstance().getDouble(
-				RobotMap.Prefs.LiftMaxCurrent, 20)
-				|| Robot.rcLift.isMotorStuck(Robot.rcLift);
+				RobotMap.Prefs.LiftMaxCurrent, 20);
 	}
 }

@@ -10,8 +10,8 @@ import org.usfirst.frc.team166.robot.Robot;
 public class ToggleDriveSlowSpeed extends Command {
 
 	public ToggleDriveSlowSpeed() {
-		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drive);
+		// Does not require a subsystem because the command only changes a software value
+		// and does not actuate anything on the robot
 	}
 
 	// Called just before this Command runs the first time
