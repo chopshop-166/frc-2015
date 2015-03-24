@@ -8,8 +8,11 @@ import org.usfirst.frc.team166.robot.Robot;
  *
  */
 public class TurnLeftToAngle extends Command {
-	public TurnLeftToAngle() {
+	private double desiredAngle;
+
+	public TurnLeftToAngle(double angle) {
 		requires(Robot.drive);
+		desiredAngle = angle;
 	}
 
 	// Called just before this Command runs the first time
@@ -21,13 +24,14 @@ public class TurnLeftToAngle extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.drive.turn90Left();
+		// Robot.drive.turn90Left();
+		Robot.drive.turnLeftAngle(desiredAngle);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return (-80 > Robot.drive.getGyro());
+		return (-Math.abs(desiredAngle) > Robot.drive.getGyro());
 	}
 
 	// Called once after isFinished returns true
