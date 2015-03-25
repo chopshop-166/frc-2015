@@ -94,8 +94,9 @@ public class OI {
 		double axis = driveJoystick.getX();
 
 		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.DriveDeadZone, 1)) {
-			return (axis * Robot.drive.DriveSpeedModifier * Preferences.getInstance().getDouble(
-					RobotMap.Prefs.DriveScalerX, 1));
+			// return (axis * Robot.drive.DriveSpeedModifier * Preferences.getInstance().getDouble(
+			// RobotMap.Prefs.DriveScalerX, .5));
+			return (axis * Robot.drive.DriveSpeedModifier * .5);
 		} else {
 			return 0;
 		}
@@ -104,8 +105,9 @@ public class OI {
 	public double getDriveJoystickRotation() {
 		double axis = driveJoystick.getRawAxis(RobotMap.DriveJoystickTwistAxis);
 		if (Math.abs(axis) > Preferences.getInstance().getDouble(RobotMap.Prefs.DriveDeadZone, 1)) {
-			return (axis * Robot.drive.DriveSpeedModifier * Preferences.getInstance().getDouble(
-					RobotMap.Prefs.DriveScalerRotation, 1));
+			// return (axis * Robot.drive.DriveSpeedModifier * Preferences.getInstance().getDouble(
+			// RobotMap.Prefs.DriveScalerRotation, 1));
+			return (axis * Robot.drive.DriveSpeedModifier * .4);
 		} else {
 			return 0;
 		}

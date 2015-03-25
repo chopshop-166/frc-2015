@@ -134,18 +134,18 @@ public class Lift extends Subsystem {
 		double d = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedD, 0);
 		double f = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedF, 0);
 
-		pid.setConstants(.25, .75, 0, .95);
+		pid.setConstants(.1, .75, 0, .95);
 
 		// encoder.setDistancePerPulse(Preferences.getInstance().getDouble(
 		// subsystemName + RobotMap.Prefs.LiftDistPerPulse, .000611111));
-		encoder.setDistancePerPulse(.0006111111);
+		encoder.setDistancePerPulse(0.000143);
 		setBrake();
 
 	}
 
 	// Returns whether or not the lift boundary limit switch is hit
 	public boolean isBoundaryHit() {
-		return boundaryLimit.get();
+		return !boundaryLimit.get();
 	}
 
 	public LiftMovement getMoveState() {
@@ -153,7 +153,7 @@ public class Lift extends Subsystem {
 	}
 
 	// Activate brake
-	private void setBrake() {
+	protected void setBrake() {
 		brake.set(DoubleSolenoid.Value.kReverse);
 	}
 
@@ -169,9 +169,11 @@ public class Lift extends Subsystem {
 	// Get the max of the preference and zero so a negative doesn't change directions
 	private double getLiftSpeed() {
 		if (subsystemName == "Tote") {
-			return -Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+			// return -Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+			return -.65;
 		} else
-			return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+			// return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+			return .65;
 	}
 
 	private double getSlowLiftSpeed() {
