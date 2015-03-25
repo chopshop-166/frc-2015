@@ -107,6 +107,7 @@ public class RobotMap {
 		public static final String LiftSpeedI = "LiftSpeedI";
 		public static final String LiftSpeedD = "LiftSpeedD";
 		public static final String LiftSpeedF = "LiftSpeedF";
+
 		public static final String RightXboxTriggerDeadzone = "RightXboxTriggerDeadzone";
 
 		public static final String LiftPosTolerance = "LiftPosTolerance";

@@ -94,12 +94,14 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		// Add options and default for autonomous chooser
+
 		// autoChooser.addObject("Tote and RC auto", new RCToteAutonomous());
 		// autoChooser.addObject("Retrieve RCs", new StepRCAutonomous());
 		// autoChooser.addDefault("Tote and RC auto", new RCToteAutonomous());
 		//
 		// autonomousCommand = (Command) autoChooser.getSelected();
 		autonomousCommand = (new RCToteAutonomous());
+
 		// Connect triggers to commands
 		carriageTrigger.whileActive(new DetermineLiftCollision());
 		toteLiftStalled.whenActive(new ShutDownToteLift());
