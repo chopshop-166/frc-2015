@@ -133,6 +133,10 @@ public class OI {
 		}
 	}
 
+	public double getLeftXboxTrigger() {
+		return (copilotController.getRawAxis(RobotMap.LeftXboxTrigger));
+	}
+
 	public double getRightXboxTrigger() {
 		return (copilotController.getRawAxis(RobotMap.RightXboxTrigger));
 	}

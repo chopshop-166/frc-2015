@@ -16,6 +16,7 @@ public class RobotMap {
 	public static final int CopilotController = 1;
 	public static final int RcLiftUpDownAxis = 5;
 	public static final int ToteLiftUpDownAxis = 1;
+	public static final int LeftXboxTrigger = 2;
 	public static final int RightXboxTrigger = 3;
 	public static final int XboxBButton = 1;
 	public static final int XboxRightStickButton = 10;

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
+import org.usfirst.frc.team166.robot.Robot;
 import org.usfirst.frc.team166.robot.RobotMap;
 
 /**
@@ -27,6 +28,8 @@ public class Lift extends Subsystem {
 	public String subsystemName;
 	double rcLiftUpDownAxis;
 	double toteLiftUpDownAxis;
+	double slowSpeed = .3;
+	double fastSpeed = .65;
 
 	// This enum describes the movement state of a lift.
 	public enum LiftMovement {
@@ -56,11 +59,27 @@ public class Lift extends Subsystem {
 		subsystemName = subsystem;
 	}
 
-	// DON'T FORGET THAT MATT IS DUMB TOO
+	public double getPIDSetpoint() {
+		if (Robot.oi.getLeftXboxTrigger() > .75) {
+			return slowSpeed;
+		} else {
+			return fastSpeed;
+		}
+	}
+
+	public void updatePIDSetpoint(int direction) {
+		if (movementState != LiftMovement.Stopped) {
+			pid.set(direction * getPIDSetpoint());
+		} else {
+			pid.set(0);
+		}
+
+	}
+
 	public void moveUp() {
 		movementState = LiftMovement.Up;
 		releaseBrake();
-		pid.set(-getLiftSpeed());
+		updatePIDSetpoint(0);
 		SmartDashboard.putString(subsystemName + "Move state", enumToString());
 		SmartDashboard.putNumber(subsystemName, encoder.getRate());
 	}
@@ -76,7 +95,7 @@ public class Lift extends Subsystem {
 	public void moveDown() {
 		movementState = LiftMovement.Down;
 		releaseBrake();
-		pid.set(getLiftSpeed());
+		updatePIDSetpoint(0);
 		SmartDashboard.putString(subsystemName + "Move state", enumToString());
 		SmartDashboard.putNumber(subsystemName, encoder.getRate());
 	}
