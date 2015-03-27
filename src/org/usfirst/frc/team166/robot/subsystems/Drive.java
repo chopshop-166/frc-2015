@@ -181,7 +181,7 @@ public class Drive extends Subsystem {
 	}
 
 	public void turnLeftAngle(double angle) {
-		double rotationSpeed = ((Math.abs(angle) + getGyro()) * (.2 / Math.abs(angle)));
+		double rotationSpeed = ((Math.abs(angle) + getGyro()) * (.4 / Math.abs(angle)));
 		robotDrive.mecanumDrive_Cartesian(0, 0, -rotationSpeed, 0);
 	}
 
@@ -191,7 +191,7 @@ public class Drive extends Subsystem {
 		if (isUltrasonicDataGood()) {
 			robotDrive.mecanumDrive_Cartesian(
 					centerOffsetDistance
-					/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
+							/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
 					getGyroOffset(), 0);
 		} else {
 			stopMotors();
@@ -235,10 +235,10 @@ public class Drive extends Subsystem {
 				RobotMap.Prefs.StalledDriveCurrent, 20)
 				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance().getDouble(
 						RobotMap.Prefs.StalledDriveCurrent, 20)
-						|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
-								RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
-								.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
-										RobotMap.Prefs.StalledDriveCurrent, 20));
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
+						RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
+				.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
+				RobotMap.Prefs.StalledDriveCurrent, 20));
 	}
 
 	// CHECKS IF THE ULRASONIC DATA IS REASONABLE
