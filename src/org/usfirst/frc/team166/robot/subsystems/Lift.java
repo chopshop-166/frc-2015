@@ -29,7 +29,7 @@ public class Lift extends Subsystem {
 	double rcLiftUpDownAxis;
 	double toteLiftUpDownAxis;
 	double slowSpeed = .3;
-	double fastSpeed = .65;
+	double fastSpeed = .5;
 
 	// This enum describes the movement state of a lift.
 	public enum LiftMovement {
