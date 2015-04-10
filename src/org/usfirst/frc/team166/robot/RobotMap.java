@@ -10,7 +10,8 @@ public class RobotMap {
 	// Driver Controls
 	public static final int DriveJoystick = 0;
 	public static final int DriveJoystickTwistAxis = 2;
-	public static final int centerAtStepButton = 2;
+	public static final int DriveJoystickSliderAxis = 3;
+	public static final int centerOnToteButton = 2;
 
 	// Co Driver Controls
 	public static final int CopilotController = 1;
@@ -73,9 +74,13 @@ public class RobotMap {
 	// Analog Inputs
 	public static class Analog {
 		public static final int Gryo = 0;
-		public static final int FrontRangeFinder = 1;
-		public static final int RightRangeFinder = 2;
-		public static final int LeftRangeFinder = 3;
+
+		// CHANGE THE FOLLOWING PORTS WHEN SENSORS ARE INSTALLED
+		public static final int LeftAngleIR = 2;
+		public static final int RightAngleIR = 3;
+		public static final int LeftCenterIR = 1;
+		public static final int RightCenterIR = 7;
+
 	}
 
 	// Preference Strings

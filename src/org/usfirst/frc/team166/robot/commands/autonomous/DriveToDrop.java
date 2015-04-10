@@ -7,29 +7,28 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class CenterOnStep extends Command {
+public class DriveToDrop extends Command {
 
-	public CenterOnStep() {
+	public DriveToDrop() {
 		requires(Robot.drive);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.drive.setPIDConstants();
+
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
-		// Robot.drive.centerOnStep(); //removed With the removal of CenterOnStep();
+	protected void execute() {// 1.3 is 2.5 and 9 is 17in
+		Robot.drive.centerOnTote();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		// return Robot.drive.isCentered();
-		return false;
+		return (Robot.drive.distanceToTote() < 1.5); // slightly larger than 1.3 to compensate for coasting
 	}
 
 	// Called once after isFinished returns true
