@@ -19,7 +19,7 @@ public class RobotMap {
 	public static final int ToteLiftUpDownAxis = 1;
 	public static final int LeftXboxTrigger = 2;
 	public static final int RightXboxTrigger = 3;
-	public static final int XboxBButton = 1;
+	public static final int XboxAButton = 1;
 	public static final int XboxRightStickButton = 10;
 	public static final int XboxLeftStickButton = 9;
 
@@ -27,10 +27,12 @@ public class RobotMap {
 	public static class solenoid {
 		public static final int Pcm24 = 1;
 		public static final int Pcm12 = 0;
+		public static final int JankForward = 0;
+		public static final int JankReverse = 1;
 		public static final int ClawForward = 5;
 		public static final int ClawReverse = 4;
-		public static final int LeftWingForward = 0;
-		public static final int LeftWingReverse = 1;
+		public static final int LeftWingForward = 6;
+		public static final int LeftWingReverse = 7;
 		public static final int RightWingForward = 2;
 		public static final int RightWingReverse = 3;
 		public static final int ToteLiftBrakeForward = 2;

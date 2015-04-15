@@ -1,4 +1,4 @@
-package org.usfirst.frc.team166.robot.commands.drive;
+package org.usfirst.frc.team166.robot.commands.jankshank;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -7,37 +7,34 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class MoveToDropDistance extends Command {
-	private double speed;
+public class JankOff extends Command {
 
-	public MoveToDropDistance(double driveSpeed) {
+	public JankOff() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drive);
-		speed = driveSpeed;
+		// eg. requires(chassis);
+		requires(Robot.jankshank);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.drive.resetGyro();
+		Robot.jankshank.open();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.drive.driveAngle(180, speed);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return (Robot.drive.distanceToTote() > 5);
+		return true;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-
 	}
 
 	// Called when another command which requires one or more of the same

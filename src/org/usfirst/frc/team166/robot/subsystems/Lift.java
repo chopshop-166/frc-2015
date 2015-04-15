@@ -29,7 +29,7 @@ public class Lift extends Subsystem {
 	double rcLiftUpDownAxis;
 	double toteLiftUpDownAxis;
 	double slowSpeed = .3;
-	double fastSpeed = .5;
+	double fastSpeed = .75;
 
 	// This enum describes the movement state of a lift.
 	public enum LiftMovement {
@@ -116,10 +116,14 @@ public class Lift extends Subsystem {
 
 	}
 
+	public enum LiftDirection {
+		up, down
+	}
+
 	// Move lift to given position
 	public void moveLiftToPosition(double position) {
-		double tolerance = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10);
-
+		// double tolerance = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10);
+		double tolerance = 0;
 		if (encoder.getDistance() > position + tolerance) {
 			pid.set(-getLiftSpeed());
 		} else if (encoder.getDistance() < position - tolerance) {
@@ -128,7 +132,8 @@ public class Lift extends Subsystem {
 	}
 
 	public boolean isAtTargetPos(double position) {
-		double tolerance = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10);
+		// double tolerance = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10);
+		double tolerance = 1;
 
 		return (encoder.getDistance() < position + tolerance && encoder.getDistance() > position - tolerance);
 	}
