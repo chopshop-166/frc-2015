@@ -20,8 +20,16 @@ public class RobotMap {
 	public static final int LeftXboxTrigger = 2;
 	public static final int RightXboxTrigger = 3;
 	public static final int XboxAButton = 1;
+	public static final int XboxBButton = 2;
+	public static final int XboxXButton = 3;
+	public static final int XboxYButton = 4;
 	public static final int XboxRightStickButton = 10;
 	public static final int XboxLeftStickButton = 9;
+	public static final int XboxRightBumper = 6;
+
+	// Magic Distance Numbers
+	public static final double PickUpToteDistance = .615;
+	public static final double DropTotesDistance = .85;
 
 	// Solenoid Channels
 	public static class solenoid {
@@ -77,7 +85,6 @@ public class RobotMap {
 	public static class Analog {
 		public static final int Gryo = 0;
 
-		// CHANGE THE FOLLOWING PORTS WHEN SENSORS ARE INSTALLED
 		public static final int LeftAngleIR = 2;
 		public static final int RightAngleIR = 3;
 		public static final int LeftCenterIR = 1;
@@ -135,4 +142,5 @@ public class RobotMap {
 		public static final int ToteLiftMotor = 2;
 		public static final int RCLiftMotor = 1;
 	}
+
 }

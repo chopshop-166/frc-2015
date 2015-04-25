@@ -31,7 +31,7 @@ public class CenterOnTote extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return ((Robot.drive.distanceToTote() < .85) && (Robot.drive.isCentered == true));
+		return ((Robot.drive.distanceToTote() < 1.1) && (Robot.drive.isCentered == true));
 	}
 
 	// Called once after isFinished returns true

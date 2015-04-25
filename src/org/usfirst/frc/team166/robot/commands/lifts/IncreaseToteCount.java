@@ -2,26 +2,20 @@ package org.usfirst.frc.team166.robot.commands.lifts;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.usfirst.frc.team166.robot.subsystems.Lift;
+import org.usfirst.frc.team166.robot.Robot;
 
 /**
  *
  */
-public class MoveLiftToPos extends Command {
+public class IncreaseToteCount extends Command {
 
-	private double liftPosition;
-	private Lift lift;
-
-	public MoveLiftToPos(Lift m_lift, double position) {
-		requires(m_lift);
-		liftPosition = position;
-		lift = m_lift;
+	public IncreaseToteCount() {
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		lift.moveLiftToPosition(liftPosition);
+		Robot.toteCount += 1;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -33,16 +27,11 @@ public class MoveLiftToPos extends Command {
 	@Override
 	protected boolean isFinished() {
 		return true;
-		// return lift.hasMovedDistance(liftPosition)
-		// || lift.isBoundaryHit()
-		// || (Robot.rcLift.areLiftsInContact() && Robot.rcLift.isBoundaryHit() || (Robot.rcLift
-		// .areLiftsInContact() && Robot.toteLift.isBoundaryHit()));
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		lift.stop();
 	}
 
 	// Called when another command which requires one or more of the same

@@ -88,6 +88,8 @@ public class Robot extends IterativeRobot {
 
 	private Command autonomousCommand;
 
+	public static double toteCount;
+
 	/**
 	 * This function is run when the robot is first started up and should be used for any initialization code.
 	 */
@@ -98,6 +100,8 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Paper Weight", new NothingAutonomous());
 
 		SmartDashboard.putData("Autonomous", autoChooser);
+
+		toteCount = 0;
 		// This MUST be here. If the OI creates Commands (which it very likely
 		// will), constructing it during the construction of CommandBase (from
 		// which commands extend), subsystems are not guaranteed to be yet.

@@ -13,8 +13,8 @@ public class AutoJank extends CommandGroup {
 	public AutoJank() {
 
 		addSequential(new ToggleShank());
-		addSequential(new DriveForwardBackwardDistance(0, 0, 50), .5);
-		addSequential(new DriveForwardBackwardDistance(.75, 0, 75));
+		addSequential(new DriveForwardBackwardDistance(0, 0, 50), 0.85);
+		addSequential(new DriveForwardBackwardDistance(.75, 0, 70));
 		addSequential(new ToggleShank());
 		addSequential(new ToggleClaw());
 		// addSequential(new TurnLeftToAngle(90));

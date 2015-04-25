@@ -28,6 +28,11 @@ public class DriveWithJoysticks extends Command {
 		Robot.drive.printEncoderValues();
 		Robot.drive.getGyro();
 		Robot.drive.printIRDistance();
+		Robot.drive.printRightLeftDistances();
+		Robot.toteLift.printToteCount();
+		Robot.rcLift.printLiftState();
+		Robot.rcLift.printPIDOutput();
+		Robot.rcLift.printEncoderSpeed();
 		SmartDashboard.putNumber("Distance Traveled", Robot.drive.getEncoderDistance());
 		SmartDashboard.putNumber("Distance To Tote", Robot.drive.distanceToTote());
 	}

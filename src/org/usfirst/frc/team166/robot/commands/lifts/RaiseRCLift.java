@@ -37,6 +37,7 @@ public class RaiseRCLift extends Command {
 	protected void end() {
 		Robot.rcLift.stop();
 		Robot.rcLift.resetEncoder();
+		Robot.rcLift.updatePIDSetpoint(0);
 	}
 
 	// Called when another command which requires one or more of the same

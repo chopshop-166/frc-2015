@@ -204,6 +204,31 @@ public class Drive extends Subsystem {
 		robotDrive.mecanumDrive_Cartesian(0, 0, rotationSpeed + .1, 0);
 	}
 
+	public void printRightLeftDistances() {
+		double voltage;
+		double distanceRight;
+		double distanceLeft;
+		double rotationalOutput = 0;
+		double translationalOutput = 0;
+
+		voltage = rightCenterIR.getVoltage() * 2.5;
+		distanceRight = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		SmartDashboard.putNumber("Distance Right", distanceRight);
+		voltage = leftCenterIR.getVoltage() * 1.3;
+		distanceLeft = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		SmartDashboard.putNumber("Distance Left", distanceLeft);
+
+		if (distanceRight - distanceLeft > 2) {
+			SmartDashboard.putString("Centering State", "Moving Left");
+		} else if (distanceLeft - distanceRight > 1.25) {
+			SmartDashboard.putString("Centering State", "Moving Right");
+		} else { // only rotate if you are centered
+			SmartDashboard.putString("Centering State", "Centered");
+		}
+
+		SmartDashboard.putNumber("Distance To Tote", distanceToTote());
+	}
+
 	// CENTERS THE ROBOT ON THE STEP
 	public void centerOnTote() {
 		double voltage;
@@ -218,7 +243,7 @@ public class Drive extends Subsystem {
 		voltage = leftCenterIR.getVoltage() * 1.3;
 		distanceLeft = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
 		SmartDashboard.putNumber("Distance Left", distanceLeft);
-		if (distanceRight - distanceLeft > .5) {
+		if (distanceRight - distanceLeft > 2) {
 			isCentered = false;
 			translationalOutput = -.125; // move left
 			SmartDashboard.putString("Centering State", "Moving Left");
@@ -305,10 +330,10 @@ public class Drive extends Subsystem {
 				RobotMap.Prefs.StalledDriveCurrent, 20)
 				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance().getDouble(
 						RobotMap.Prefs.StalledDriveCurrent, 20)
-						|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
-								RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
-								.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
-										RobotMap.Prefs.StalledDriveCurrent, 20));
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
+						RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
+				.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
+				RobotMap.Prefs.StalledDriveCurrent, 20));
 	}
 
 	// SETS UP THE GYRO
