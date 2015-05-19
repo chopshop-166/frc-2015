@@ -26,6 +26,7 @@ import org.usfirst.frc.team166.robot.commands.lifts.SlowRaiseRCLift;
 import org.usfirst.frc.team166.robot.commands.lifts.SlowRaiseToteLift;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
+import org.usfirst.frc.team166.robot.subsystems.JankShank;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
 import org.usfirst.frc.team166.robot.subsystems.LimitSwitchLift;
 import org.usfirst.frc.team166.robot.subsystems.Wing;
@@ -64,6 +65,7 @@ public class Robot extends IterativeRobot {
 			RobotMap.solenoid.RCLiftBrakeForward, RobotMap.solenoid.RCLiftBrakeReverse, RobotMap.Encoders.RCLiftA,
 			RobotMap.Encoders.RCLiftB, RobotMap.Switch.LiftUpperLimit, "RC");
 	public static final Claw claw = new Claw();
+	public static final JankShank jankShank = new JankShank();
 
 	// Triggers
 	private final ToteLiftStalled toteLiftStalled = new ToteLiftStalled();
@@ -86,6 +88,8 @@ public class Robot extends IterativeRobot {
 
 	private Command autonomousCommand;
 
+	public static double toteCount;
+
 	/**
 	 * This function is run when the robot is first started up and should be used for any initialization code.
 	 */
@@ -96,6 +100,8 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Paper Weight", new NothingAutonomous());
 
 		SmartDashboard.putData("Autonomous", autoChooser);
+
+		toteCount = 0;
 		// This MUST be here. If the OI creates Commands (which it very likely
 		// will), constructing it during the construction of CommandBase (from
 		// which commands extend), subsystems are not guaranteed to be yet.

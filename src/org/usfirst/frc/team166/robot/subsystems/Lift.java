@@ -36,6 +36,10 @@ public class Lift extends Subsystem {
 		Stopped, Up, Down
 	}
 
+	public enum LiftDirection {
+		up, down
+	}
+
 	// This enum describes which carriage is pushing during a collision
 	public enum WhichCarriagePushing {
 		RC, Tote, None, Both
@@ -127,10 +131,8 @@ public class Lift extends Subsystem {
 		}
 	}
 
-	public boolean isAtTargetPos(double position) {
-		double tolerance = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10);
-
-		return (encoder.getDistance() < position + tolerance && encoder.getDistance() > position - tolerance);
+	public double getEncoderDistance() {
+		return encoder.getDistance();
 	}
 
 	// Given lift move states, decides which carriage is pushing in a collision, and sets WhichCarriageMoving
@@ -162,6 +164,18 @@ public class Lift extends Subsystem {
 
 	}
 
+	public void printToteCount() {
+		SmartDashboard.putNumber("Tote Count:", Robot.toteCount);
+	}
+
+	public void printPIDOutput() {
+		SmartDashboard.putNumber("PID Output", pid.get());
+	}
+
+	public void zeroPIDOutput() {
+		pid.pidWrite(0.0);
+	}
+
 	// Returns whether or not the lift boundary limit switch is hit
 	public boolean isBoundaryHit() {
 		return !boundaryLimit.get();
@@ -169,6 +183,10 @@ public class Lift extends Subsystem {
 
 	public LiftMovement getMoveState() {
 		return movementState;
+	}
+
+	public void printLiftState() {
+		SmartDashboard.putString("Movement State", enumToString());
 	}
 
 	// Activate brake
@@ -182,7 +200,7 @@ public class Lift extends Subsystem {
 	}
 
 	public void resetEncoder() {
-		// encoder.reset();
+		encoder.reset();
 	}
 
 	// Get the max of the preference and zero so a negative doesn't change directions
@@ -224,8 +242,12 @@ public class Lift extends Subsystem {
 				&& Math.abs(pid.get()) > 0;
 	}
 
+	public void printEncoderSpeed() {
+		SmartDashboard.putNumber("Lift Encoder Speed", encoder.getRate());
+	}
+
 	@Override
 	public void initDefaultCommand() {
-
+		// setDefaultCommand(new ZeroPIDOutput());
 	}
 }
