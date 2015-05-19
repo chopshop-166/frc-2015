@@ -9,7 +9,6 @@ import org.usfirst.frc.team166.robot.commands.autonomous.StackTwoTotes;
 import org.usfirst.frc.team166.robot.commands.drive.CenterOnTote;
 import org.usfirst.frc.team166.robot.commands.drive.DriveDirection;
 import org.usfirst.frc.team166.robot.commands.drive.MoveToDropDistance;
-import org.usfirst.frc.team166.robot.commands.jankshank.ToggleShank;
 import org.usfirst.frc.team166.robot.commands.lifts.ReleaseLiftBrake;
 import org.usfirst.frc.team166.robot.commands.lifts.StopRCLift;
 import org.usfirst.frc.team166.robot.commands.lifts.StopToteLift;
@@ -36,17 +35,15 @@ public class OI {
 		JoystickButton button2 = new JoystickButton(driveJoystick, RobotMap.centerOnToteButton);
 		JoystickButton driverTrigger = new JoystickButton(driveJoystick, 1);
 		JoystickButton button14 = new JoystickButton(driveJoystick, 14);
-		JoystickButton xboxAButton = new JoystickButton(copilotController, RobotMap.XboxAButton);
 
 		xboxRightStickButton = new JoystickButton(copilotController, RobotMap.XboxRightStickButton);
 		xboxLeftStickButton = new JoystickButton(copilotController, RobotMap.XboxLeftStickButton);
 
 		button3.whileHeld(new DriveDirection(270, Preferences.getInstance().getDouble("StrafePower", .25)));
 		button4.whileHeld(new DriveDirection(90, Preferences.getInstance().getDouble("StrafePower", .25)));
-		driverTrigger.whileHeld(new CenterOnTote());
+		driverTrigger.whenPressed(new CenterOnTote());
 		button2.whenPressed(new StackTwoTotes());
 		button14.whenPressed(new MoveToDropDistance(.1));
-		xboxAButton.whenPressed(new ToggleShank());
 		// driverTrigger.whenPressed(new ToggleDriveSlowSpeed());
 
 		// xboxBButton.whenPressed(new StopRCLift());

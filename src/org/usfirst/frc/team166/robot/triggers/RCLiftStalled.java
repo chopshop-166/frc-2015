@@ -17,6 +17,6 @@ public class RCLiftStalled extends Trigger {
 		// || Robot.rcLift.isMotorStuck(Robot.rcLift);
 		// return Robot.pdBoard.getCurrent(RobotMap.Power.RCLiftMotor) > Preferences.getInstance().getDouble(
 		// RobotMap.Prefs.LiftMaxCurrent, 20);
-		return (Robot.pdBoard.getCurrent(RobotMap.Power.RCLiftMotor) > 9001);
+		return (Robot.pdBoard.getCurrent(RobotMap.Power.RCLiftMotor) > 40);
 	}
 }
