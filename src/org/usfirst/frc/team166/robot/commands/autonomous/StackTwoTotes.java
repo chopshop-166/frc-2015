@@ -24,11 +24,11 @@ public class StackTwoTotes extends CommandGroup {
 		addSequential(new DriveToDrop());
 		addSequential(new LowerToteLift(), .75);
 		addParallel(new LowerToteLift());
-		addSequential(new DriveForwardBackwardDistance(.15, 180, 5));
+		addSequential(new DriveForwardBackwardDistance(.11, 180, 5));
 		addSequential(new CenterOnTote(), 2.5);
 		// addSequential(new DriveDirection(0, .1), .5);
 		// addParallel(new DriveDirection(0, .1), .5);
 		addSequential(new RaiseToteLift(), 1);
-		addSequential(new DriveForwardBackwardDistance(.15, 180, 10));
+		addSequential(new DriveForwardBackwardDistance(.11, 180, 10));
 	}
 }

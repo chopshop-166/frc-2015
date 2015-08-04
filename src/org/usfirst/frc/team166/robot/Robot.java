@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.commands.autonomous.NothingAutonomous;
-import org.usfirst.frc.team166.robot.commands.autonomous.RCToteAutonomous;
+import org.usfirst.frc.team166.robot.commands.autonomous.PickUpTwoTotes;
 import org.usfirst.frc.team166.robot.commands.autonomous.ToteAndRCAutonomous;
 import org.usfirst.frc.team166.robot.commands.autonomous.ToteOrRCAutonomous;
 import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
@@ -117,7 +117,10 @@ public class Robot extends IterativeRobot {
 		// autoChooser.addObject("Retrieve RCs", new StepRCAutonomous());
 		// autoChooser.addDefault("Tote and RC auto", new RCToteAutonomous());
 		// autonomousCommand = (Command) autoChooser.getSelected();
-		autonomousCommand = (new RCToteAutonomous());
+		// autonomousCommand = (new AutoJank());
+		// autonomousCommand = (new NothingAutonomous());
+		autonomousCommand = (new PickUpTwoTotes());
+		// autonomousCommand = null;
 		// Connect triggers to commands
 		carriageTrigger.whileActive(new DetermineLiftCollision());
 		toteLiftStalled.whenActive(new ShutDownToteLift());
@@ -147,7 +150,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = (Command) autoChooser.getSelected();
+		// autonomousCommand = (Command) autoChooser.getSelected();
 
 		if (autonomousCommand != null)
 			autonomousCommand.start();

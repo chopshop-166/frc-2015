@@ -16,7 +16,7 @@ public class JankShank extends Subsystem {
 	}
 
 	private JankStates jankState;
-	private DoubleSolenoid solenoid = new DoubleSolenoid(RobotMap.solenoid.Pcm24, RobotMap.solenoid.JankForward,
+	private DoubleSolenoid solenoid = new DoubleSolenoid(RobotMap.solenoid.Pcm12, RobotMap.solenoid.JankForward,
 			RobotMap.solenoid.JankReverse);
 
 	public JankShank() {
