@@ -237,21 +237,21 @@ public class Drive extends Subsystem {
 		double rotationalOutput = 0;
 		double translationalOutput = 0;
 
-		voltage = rightCenterIR.getVoltage() * 2.5;
+		voltage = rightCenterIR.getVoltage(); // removed *2.5
 		distanceRight = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
 		SmartDashboard.putNumber("Distance Right", distanceRight);
-		voltage = leftCenterIR.getVoltage() * 1.3;
+		voltage = leftCenterIR.getVoltage(); // removed * 1.3
 		distanceLeft = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
 		SmartDashboard.putNumber("Distance Left", distanceLeft);
 		if (distanceRight - distanceLeft > 2) {
 			isCentered = false;
 			translationalOutput = -.125; // move left
 			SmartDashboard.putString("Centering State", "Moving Left");
-		} else if (distanceLeft - distanceRight > 1.25) {
+		} else if (distanceLeft - distanceRight > 2) { // was 1.25
 			isCentered = false;
 			translationalOutput = .125; // move right"
 			SmartDashboard.putString("Centering State", "Moving Right");
-		} else { // only rotate if you are centered
+		} else if (((distanceRight + distanceLeft) / 2) < 10) { // only rotate if you are centered
 			SmartDashboard.putString("Centering State", "Centered");
 			isCentered = true;
 			double angleError = getIRDistance(IRSensor.rightAngle) - getIRDistance(IRSensor.leftAngle);
@@ -317,7 +317,7 @@ public class Drive extends Subsystem {
 		distance = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
 		SmartDashboard.putNumber("leftCenter IR", distance);
 		SmartDashboard.putNumber("leftCenter Voltage", voltage);
-		voltage = rightCenterIR.getVoltage() * 2.5;
+		voltage = rightCenterIR.getVoltage(); // removed * 2.5
 		distance = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
 		SmartDashboard.putNumber("rightCenter IR", distance);
 		SmartDashboard.putNumber("rightCenter Voltage", voltage);

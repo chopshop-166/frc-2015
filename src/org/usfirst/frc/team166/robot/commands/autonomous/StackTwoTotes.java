@@ -19,7 +19,7 @@ public class StackTwoTotes extends CommandGroup {
 		addSequential(new CenterOnTote(), 2.5);
 		// addSequential(new DriveDirection(0, .1), .5);
 		// addParallel(new DriveDirection(0, .1), .5);
-		addSequential(new RaiseToteLift(), 1.5);
+		addSequential(new RaiseToteLift(), 1.65);
 		addSequential(new DriveForwardBackwardDistance(.15, 0, 10)); // all of these were .1 before
 		addSequential(new DriveToDrop());
 		addSequential(new LowerToteLift(), .75);
