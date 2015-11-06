@@ -1,10 +1,8 @@
 package org.usfirst.frc.team166.robot.commands.autonomous;
 
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team166.robot.Robot;
-import org.usfirst.frc.team166.robot.RobotMap;
 
 /**
  *
@@ -33,8 +31,7 @@ public class AutonomousStrafe extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return (Robot.drive.getLeftDistance() <= Preferences.getInstance().getDouble(
-				RobotMap.Prefs.AutoDesiredDistanceToWall, 50));
+		return (false); // changed with the removal of getLeftDistance();
 	}
 
 	// Called once after isFinished returns true

@@ -10,16 +10,26 @@ public class RobotMap {
 	// Driver Controls
 	public static final int DriveJoystick = 0;
 	public static final int DriveJoystickTwistAxis = 2;
-	public static final int centerAtStepButton = 2;
+	public static final int DriveJoystickSliderAxis = 3;
+	public static final int centerOnToteButton = 2;
 
 	// Co Driver Controls
 	public static final int CopilotController = 1;
 	public static final int RcLiftUpDownAxis = 5;
 	public static final int ToteLiftUpDownAxis = 1;
+	public static final int LeftXboxTrigger = 2;
 	public static final int RightXboxTrigger = 3;
-	public static final int XboxBButton = 1;
+	public static final int XboxAButton = 1;
+	public static final int XboxBButton = 2;
+	public static final int XboxXButton = 3;
+	public static final int XboxYButton = 4;
 	public static final int XboxRightStickButton = 10;
 	public static final int XboxLeftStickButton = 9;
+	public static final int XboxRightBumper = 6;
+
+	// Magic Distance Numbers
+	public static final double PickUpToteDistance = .615;
+	public static final double DropTotesDistance = .85;
 
 	// Solenoid Channels
 	public static class solenoid {
@@ -27,6 +37,8 @@ public class RobotMap {
 		public static final int Pcm12 = 0;
 		public static final int ClawForward = 5;
 		public static final int ClawReverse = 4;
+		public static final int JankForward = 0;
+		public static final int JankReverse = 1;
 		public static final int LeftWingForward = 0;
 		public static final int LeftWingReverse = 1;
 		public static final int RightWingForward = 2;
@@ -72,9 +84,12 @@ public class RobotMap {
 	// Analog Inputs
 	public static class Analog {
 		public static final int Gryo = 0;
-		public static final int FrontRangeFinder = 1;
-		public static final int RightRangeFinder = 2;
-		public static final int LeftRangeFinder = 3;
+
+		public static final int LeftAngleIR = 2;
+		public static final int RightAngleIR = 3;
+		public static final int LeftCenterIR = 1;
+		public static final int RightCenterIR = 7;
+
 	}
 
 	// Preference Strings
@@ -127,4 +142,5 @@ public class RobotMap {
 		public static final int ToteLiftMotor = 2;
 		public static final int RCLiftMotor = 1;
 	}
+
 }

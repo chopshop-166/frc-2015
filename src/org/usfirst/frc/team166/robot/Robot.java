@@ -5,9 +5,12 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team166.robot.commands.autonomous.RCToteAutonomous;
+import org.usfirst.frc.team166.robot.commands.autonomous.NothingAutonomous;
+import org.usfirst.frc.team166.robot.commands.autonomous.ToteAndRCAutonomous;
+import org.usfirst.frc.team166.robot.commands.autonomous.ToteOrRCAutonomous;
 import org.usfirst.frc.team166.robot.commands.claw.ToggleClaw;
 import org.usfirst.frc.team166.robot.commands.lifts.DetermineLiftCollision;
 import org.usfirst.frc.team166.robot.commands.lifts.LowerRCLift;
@@ -22,6 +25,7 @@ import org.usfirst.frc.team166.robot.commands.lifts.SlowRaiseRCLift;
 import org.usfirst.frc.team166.robot.commands.lifts.SlowRaiseToteLift;
 import org.usfirst.frc.team166.robot.subsystems.Claw;
 import org.usfirst.frc.team166.robot.subsystems.Drive;
+import org.usfirst.frc.team166.robot.subsystems.JankShank;
 import org.usfirst.frc.team166.robot.subsystems.Lift;
 import org.usfirst.frc.team166.robot.subsystems.LimitSwitchLift;
 import org.usfirst.frc.team166.robot.subsystems.Wing;
@@ -60,6 +64,7 @@ public class Robot extends IterativeRobot {
 			RobotMap.solenoid.RCLiftBrakeForward, RobotMap.solenoid.RCLiftBrakeReverse, RobotMap.Encoders.RCLiftA,
 			RobotMap.Encoders.RCLiftB, RobotMap.Switch.LiftUpperLimit, "RC");
 	public static final Claw claw = new Claw();
+	public static final JankShank jankShank = new JankShank();
 
 	// Triggers
 	private final ToteLiftStalled toteLiftStalled = new ToteLiftStalled();
@@ -77,13 +82,25 @@ public class Robot extends IterativeRobot {
 	private final SlowToteLiftDownTrig slowToteLiftDown = new SlowToteLiftDownTrig();
 	private final ActuateClawTrig actuateClaw = new ActuateClawTrig();
 
+	// Auto Chooser
+	private SendableChooser autoChooser = new SendableChooser();
+
 	private Command autonomousCommand;
+
+	public static double toteCount;
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+		autoChooser.addDefault("Tote AND RC", new ToteAndRCAutonomous());
+		autoChooser.addObject("Tote OR RC", new ToteOrRCAutonomous());
+		autoChooser.addObject("Paper Weight", new NothingAutonomous());
+
+		SmartDashboard.putData("Autonomous", autoChooser);
+
+		toteCount = 0;
 		// This MUST be here. If the OI creates Commands (which it very likely
 		// will), constructing it during the construction of CommandBase (from
 		// which commands extend), subsystems are not guaranteed to be yet.
@@ -98,10 +115,12 @@ public class Robot extends IterativeRobot {
 		// autoChooser.addObject("Tote and RC auto", new RCToteAutonomous());
 		// autoChooser.addObject("Retrieve RCs", new StepRCAutonomous());
 		// autoChooser.addDefault("Tote and RC auto", new RCToteAutonomous());
-		//
 		// autonomousCommand = (Command) autoChooser.getSelected();
-		autonomousCommand = (new RCToteAutonomous());
-
+		// autonomousCommand = (new AutoJank());
+		// autonomousCommand = (new NothingAutonomous());
+		// autonomousCommand = (new StackTwoTotes());
+		autonomousCommand = (new ToteOrRCAutonomous());
+		// autonomousCommand = null;
 		// Connect triggers to commands
 		carriageTrigger.whileActive(new DetermineLiftCollision());
 		toteLiftStalled.whenActive(new ShutDownToteLift());
@@ -131,7 +150,8 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		// schedule the autonomous command (example)
+		// autonomousCommand = (Command) autoChooser.getSelected();
+
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 		Robot.drive.resetIntegral();

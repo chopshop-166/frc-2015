@@ -22,7 +22,7 @@ public class CenterOnStep extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.drive.centerOnStep();
+		// Robot.drive.centerOnStep(); //removed With the removal of CenterOnStep();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

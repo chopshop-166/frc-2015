@@ -22,6 +22,7 @@ public class RaiseToteLift extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		Robot.toteLift.updatePIDSetpoint(1);
 		Robot.toteLift.printEncoderValues();
 	}
 
@@ -35,6 +36,7 @@ public class RaiseToteLift extends Command {
 	@Override
 	protected void end() {
 		Robot.toteLift.stop();
+		Robot.toteLift.resetEncoder();
 	}
 
 	// Called when another command which requires one or more of the same
@@ -42,5 +44,6 @@ public class RaiseToteLift extends Command {
 	@Override
 	protected void interrupted() {
 		Robot.toteLift.stop();
+		Robot.rcLift.resetEncoder();
 	}
 }

@@ -30,13 +30,24 @@ public class Drive extends Subsystem {
 
 	// Slow Speed Global Var
 	public double DriveSpeedModifier = 1.0;
+	public boolean isCentered = false;
+
+	// IR Sensor Constants
+	public double seeNothingDifference = 2.0;
+
 	// ROBOTDRIVE INIT
 	final RobotDrive robotDrive;
 
 	// RANGEFINDER INITS
-	final AnalogInput frontRangefinder;
-	final AnalogInput leftRangefinder;
-	final AnalogInput rightRangefinder;
+	final AnalogInput leftCenterIR;
+	final AnalogInput rightCenterIR;
+	final AnalogInput rightAngleIR;
+	final AnalogInput leftAngleIR;
+
+	// IR enums
+	public enum IRSensor {
+		leftCenter, rightCenter, leftAngle, rightAngle;
+	}
 
 	// PID CONTROLLER INITS
 	final PIDSpeedController frontLeftPID;
@@ -70,9 +81,11 @@ public class Drive extends Subsystem {
 		rearRightTalon = new Talon(RobotMap.Pwm.RearRightDrive);
 
 		// ULTRASONIC SENSORS
-		frontRangefinder = new AnalogInput(RobotMap.Analog.FrontRangeFinder);
-		rightRangefinder = new AnalogInput(RobotMap.Analog.RightRangeFinder);
-		leftRangefinder = new AnalogInput(RobotMap.Analog.LeftRangeFinder);
+		leftAngleIR = new AnalogInput(RobotMap.Analog.LeftAngleIR);
+		rightAngleIR = new AnalogInput(RobotMap.Analog.RightAngleIR);
+
+		leftCenterIR = new AnalogInput(RobotMap.Analog.LeftCenterIR);
+		rightCenterIR = new AnalogInput(RobotMap.Analog.RightCenterIR);
 
 		// YAWRATE SENSOR
 		gyro = new Gyro(RobotMap.Analog.Gryo);
@@ -123,8 +136,9 @@ public class Drive extends Subsystem {
 
 		// DRIVE FORWARD WITH JOYSTICKS ONLY
 		if (!Utility.isAxisZero(Robot.oi.getDriveJoystickRotation())) {
-			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
-					Robot.oi.getDriveJoystickRotation(), 0);
+			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral() * Robot.oi.getDriveJoystickSlider(),
+					Robot.oi.getDriveJoystickForward() * Robot.oi.getDriveJoystickSlider(),
+					Robot.oi.getDriveJoystickRotation() * Robot.oi.getDriveJoystickSlider(), 0);
 			usingTwist = true;
 		} else if ((!Utility.isAxisZero(Robot.oi.getDriveJoystickLateral()))
 				|| !Utility.isAxisZero((Robot.oi.getDriveJoystickForward()))) {
@@ -134,8 +148,8 @@ public class Drive extends Subsystem {
 			}
 			usingTwist = false;
 			// USE THE GYRO FOR ROTATION ASSISTANCE
-			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral(), Robot.oi.getDriveJoystickForward(),
-					getGyroOffset(), 0);
+			robotDrive.mecanumDrive_Cartesian(Robot.oi.getDriveJoystickLateral() * Robot.oi.getDriveJoystickSlider(),
+					Robot.oi.getDriveJoystickForward() * Robot.oi.getDriveJoystickSlider(), getGyroOffset(), 0);
 		} else {
 			robotDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
 			gyro.reset();
@@ -181,26 +195,87 @@ public class Drive extends Subsystem {
 	}
 
 	public void turnLeftAngle(double angle) {
-		double rotationSpeed = ((Math.abs(angle) + getGyro()) * (.2 / Math.abs(angle)));
-		robotDrive.mecanumDrive_Cartesian(0, 0, -rotationSpeed, 0);
+		double rotationSpeed = ((Math.abs(angle) + getGyro()) * (.4 / Math.abs(angle)));
+		robotDrive.mecanumDrive_Cartesian(0, 0, -rotationSpeed - .1, 0);
+	}
+
+	public void turnRightAngle(double angle) {
+		double rotationSpeed = ((Math.abs(angle) - getGyro()) * (.4 / Math.abs(angle)));
+		robotDrive.mecanumDrive_Cartesian(0, 0, rotationSpeed + .1, 0);
+	}
+
+	public void printRightLeftDistances() {
+		double voltage;
+		double distanceRight;
+		double distanceLeft;
+		double rotationalOutput = 0;
+		double translationalOutput = 0;
+
+		voltage = rightCenterIR.getVoltage() * 2.5;
+		distanceRight = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		SmartDashboard.putNumber("Distance Right", distanceRight);
+		voltage = leftCenterIR.getVoltage() * 1.3;
+		distanceLeft = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		SmartDashboard.putNumber("Distance Left", distanceLeft);
+
+		if (distanceRight - distanceLeft > 2) {
+			SmartDashboard.putString("Centering State", "Moving Left");
+		} else if (distanceLeft - distanceRight > 1.25) {
+			SmartDashboard.putString("Centering State", "Moving Right");
+		} else { // only rotate if you are centered
+			SmartDashboard.putString("Centering State", "Centered");
+		}
+
+		SmartDashboard.putNumber("Distance To Tote", distanceToTote());
 	}
 
 	// CENTERS THE ROBOT ON THE STEP
-	public void centerOnStep() {
-		double centerOffsetDistance = getRightDistance() - getLeftDistance();
-		if (isUltrasonicDataGood()) {
-			robotDrive.mecanumDrive_Cartesian(
-					centerOffsetDistance
-					/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
-					getGyroOffset(), 0);
-		} else {
-			stopMotors();
+	public void centerOnTote() {
+		double voltage;
+		double distanceRight;
+		double distanceLeft;
+		double rotationalOutput = 0;
+		double translationalOutput = 0;
+
+		voltage = rightCenterIR.getVoltage(); // removed *2.5
+		distanceRight = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		SmartDashboard.putNumber("Distance Right", distanceRight);
+		voltage = leftCenterIR.getVoltage(); // removed * 1.3
+		distanceLeft = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		SmartDashboard.putNumber("Distance Left", distanceLeft);
+		if (distanceRight - distanceLeft > 2) {
+			isCentered = false;
+			translationalOutput = -.125; // move left
+			SmartDashboard.putString("Centering State", "Moving Left");
+		} else if (distanceLeft - distanceRight > 2) { // was 1.25
+			isCentered = false;
+			translationalOutput = .125; // move right"
+			SmartDashboard.putString("Centering State", "Moving Right");
+		} else if (((distanceRight + distanceLeft) / 2) < 10) { // only rotate if you are centered
+			SmartDashboard.putString("Centering State", "Centered");
+			isCentered = true;
+			double angleError = getIRDistance(IRSensor.rightAngle) - getIRDistance(IRSensor.leftAngle);
+			rotationalOutput = -(angleError * .05); // maximum turn at 20 degrees error
+			if (rotationalOutput > .25) {
+				rotationalOutput = .25;
+			} else if (rotationalOutput < -.25) {
+				rotationalOutput = -.25;
+			}
 		}
+
+		SmartDashboard.putNumber("Rotational Output", rotationalOutput);
+		robotDrive.mecanumDrive_Cartesian(translationalOutput, -.1, rotationalOutput, 0); // was negative -.6
 	}
 
-	// CHECKS IF THE ROBOT IS CENTERED ON THE STEP
-	public boolean isCentered() {
-		return (Math.abs(getRightDistance() - getLeftDistance()) < 1);
+	public double distanceToTote() {
+		double voltage;
+		double distanceLeft;
+		double distanceRight;
+		voltage = leftAngleIR.getVoltage();
+		distanceLeft = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		voltage = rightAngleIR.getVoltage();
+		distanceRight = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		return ((distanceRight + distanceLeft) / 2);
 	}
 
 	// STOPS ALL OF THE MOTORS
@@ -209,24 +284,44 @@ public class Drive extends Subsystem {
 	}
 
 	// RETRIEVES THE DISTANCE THAT THE FRONT ULTRASONIC SENSOR IS FROM AN OBJECT
-	public double getFrontDistance() {
-		double frontUSDistance = (frontRangefinder.getAverageVoltage() * UltrasonicConstant);
-		SmartDashboard.putNumber("Front Distance", frontUSDistance);
-		return frontUSDistance;
+	public double getIRDistance(IRSensor sensor) {
+		double voltage = 0;
+		double distance = 0;
+
+		if (sensor == IRSensor.rightAngle) {
+			voltage = rightAngleIR.getVoltage();
+		} else if (sensor == IRSensor.leftAngle) {
+			voltage = leftAngleIR.getVoltage();
+		} else if (sensor == IRSensor.leftCenter) {
+			voltage = leftCenterIR.getVoltage();
+		} else if (sensor == IRSensor.leftCenter) {
+			voltage = rightCenterIR.getVoltage();
+		}
+		distance = (12 * Math.pow(voltage, -1.053)) * 0.393701; // That last constant is for converting to inches
+		return distance; // In Inches
 	}
 
-	// RETRIEVES THE DISTANCE THAT THE RIGHT ULTRASONIC SENSOR IS FROM AN OBJECT
-	public double getRightDistance() {
-		double rightUSDistance = (rightRangefinder.getAverageVoltage() * UltrasonicConstant);
-		SmartDashboard.putNumber("Right Distance", rightUSDistance);
-		return rightUSDistance;
-	}
+	public void printIRDistance() {
+		double voltage = 0;
+		double distance = 0;
 
-	// RETRIEVES THE DISTANCE THAT THE LEFT ULTRASONIC SENSOR IS FROM AN OBJECT
-	public double getLeftDistance() {
-		double leftUSDistance = (leftRangefinder.getAverageVoltage() * UltrasonicConstant);
-		SmartDashboard.putNumber("Left Distance", leftUSDistance);
-		return leftUSDistance;
+		voltage = rightAngleIR.getVoltage(); // This is BS, fix later
+		distance = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		SmartDashboard.putNumber("rightAngle IR", distance);
+		SmartDashboard.putNumber("rightAngle Voltage", voltage);
+		voltage = leftAngleIR.getVoltage();
+		distance = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		SmartDashboard.putNumber("leftAngle IR", distance);
+		SmartDashboard.putNumber("leftAngle Voltage", voltage);
+		voltage = leftCenterIR.getVoltage();
+		distance = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		SmartDashboard.putNumber("leftCenter IR", distance);
+		SmartDashboard.putNumber("leftCenter Voltage", voltage);
+		voltage = rightCenterIR.getVoltage(); // removed * 2.5
+		distance = ((12 * Math.pow(voltage, -1.053)) * 0.393701) / 2;
+		SmartDashboard.putNumber("rightCenter IR", distance);
+		SmartDashboard.putNumber("rightCenter Voltage", voltage);
+
 	}
 
 	// RETURNS WHETHER OR NOT THE DRIVE MOTORS ARE STALLED
@@ -235,16 +330,10 @@ public class Drive extends Subsystem {
 				RobotMap.Prefs.StalledDriveCurrent, 20)
 				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance().getDouble(
 						RobotMap.Prefs.StalledDriveCurrent, 20)
-						|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
-								RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
-								.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
-										RobotMap.Prefs.StalledDriveCurrent, 20));
-	}
-
-	// CHECKS IF THE ULRASONIC DATA IS REASONABLE
-	public boolean isUltrasonicDataGood() {
-		// 30 IS THE TOTAL DISTANCE OF THE GAP IN AUTONOMOUS - THE WIDTH OF THE CHASIS
-		return (getLeftDistance() + getRightDistance() < 30);
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
+						RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
+				.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
+				RobotMap.Prefs.StalledDriveCurrent, 20));
 	}
 
 	// SETS UP THE GYRO

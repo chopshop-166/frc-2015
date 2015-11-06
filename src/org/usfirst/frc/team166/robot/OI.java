@@ -5,12 +5,18 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team166.robot.commands.autonomous.CenterOnStep;
+import org.usfirst.frc.team166.robot.commands.autonomous.PickUpTwoTotes;
+import org.usfirst.frc.team166.robot.commands.claw.ToggleJank;
+import org.usfirst.frc.team166.robot.commands.drive.CenterOnTote;
 import org.usfirst.frc.team166.robot.commands.drive.DriveDirection;
-import org.usfirst.frc.team166.robot.commands.drive.ToggleDriveSlowSpeed;
+import org.usfirst.frc.team166.robot.commands.drive.MoveToDropDistance;
+import org.usfirst.frc.team166.robot.commands.lifts.DecreaseToteCount;
+import org.usfirst.frc.team166.robot.commands.lifts.IncreaseToteCount;
+import org.usfirst.frc.team166.robot.commands.lifts.MoveToteLiftDistance;
 import org.usfirst.frc.team166.robot.commands.lifts.ReleaseLiftBrake;
 import org.usfirst.frc.team166.robot.commands.lifts.StopRCLift;
 import org.usfirst.frc.team166.robot.commands.lifts.StopToteLift;
+import org.usfirst.frc.team166.robot.subsystems.Lift.LiftDirection;
 
 /**
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
@@ -31,16 +37,31 @@ public class OI {
 
 		JoystickButton button3 = new JoystickButton(driveJoystick, 3);
 		JoystickButton button4 = new JoystickButton(driveJoystick, 4);
-		JoystickButton button2 = new JoystickButton(driveJoystick, RobotMap.centerAtStepButton);
+		JoystickButton button2 = new JoystickButton(driveJoystick, RobotMap.centerOnToteButton);
 		JoystickButton driverTrigger = new JoystickButton(driveJoystick, 1);
+		JoystickButton button14 = new JoystickButton(driveJoystick, 14);
+		JoystickButton xboxAButton = new JoystickButton(copilotController, RobotMap.XboxAButton);
+		JoystickButton xboxBButton = new JoystickButton(copilotController, RobotMap.XboxBButton);
+		JoystickButton xboxXButton = new JoystickButton(copilotController, RobotMap.XboxXButton);
+		JoystickButton xboxYButton = new JoystickButton(copilotController, RobotMap.XboxYButton);
+		JoystickButton xboxRightBumper = new JoystickButton(copilotController, RobotMap.XboxRightBumper);
 
 		xboxRightStickButton = new JoystickButton(copilotController, RobotMap.XboxRightStickButton);
 		xboxLeftStickButton = new JoystickButton(copilotController, RobotMap.XboxLeftStickButton);
 
 		button3.whileHeld(new DriveDirection(270, Preferences.getInstance().getDouble("StrafePower", .25)));
 		button4.whileHeld(new DriveDirection(90, Preferences.getInstance().getDouble("StrafePower", .25)));
-		button2.whenPressed(new CenterOnStep());
-		driverTrigger.whenPressed(new ToggleDriveSlowSpeed());
+		driverTrigger.whileHeld(new CenterOnTote());
+		// button2.whenPressed(new StackTwoTotes());
+		button2.whenPressed(new PickUpTwoTotes());
+		button14.whenPressed(new MoveToDropDistance(.1));
+		xboxYButton.whenPressed(new MoveToteLiftDistance(LiftDirection.up, RobotMap.PickUpToteDistance));
+		xboxAButton.whenPressed(new MoveToteLiftDistance(LiftDirection.down, RobotMap.DropTotesDistance));
+		xboxRightBumper.whenPressed(new ToggleJank());
+		xboxBButton.whenPressed(new IncreaseToteCount());
+		xboxXButton.whenPressed(new DecreaseToteCount());
+
+		// driverTrigger.whenPressed(new ToggleDriveSlowSpeed());
 
 		// xboxBButton.whenPressed(new StopRCLift());
 		// xboxBButton.whenPressed(new StopToteLift());
@@ -50,7 +71,7 @@ public class OI {
 		// SmartDashboard.putData("LowerWings", new LowerWings());
 
 		// Claw commands
-		// SmartDashboard.putData("Toggle Claw", new ToggleClaw());
+		// SmartDashboard.putData("Toggle Claw", new ToggleClaw())
 		// SmartDashboard.putData("Open claw", new OpenClaw());
 		// SmartDashboard.putData("Close claw", new CloseClaw());
 
@@ -113,6 +134,12 @@ public class OI {
 		}
 	}
 
+	public double getDriveJoystickSlider() {
+		SmartDashboard.putNumber("Joystick Slider Value",
+				((-1 * driveJoystick.getRawAxis(RobotMap.DriveJoystickSliderAxis)) + 5) / 6);
+		return (((-1 * driveJoystick.getRawAxis(RobotMap.DriveJoystickSliderAxis)) + 5) / 6);
+	}
+
 	public double getRCLiftUpDownAxis() {
 		double axis = copilotController.getRawAxis(RobotMap.RcLiftUpDownAxis);
 
@@ -131,6 +158,10 @@ public class OI {
 		} else {
 			return 0;
 		}
+	}
+
+	public double getLeftXboxTrigger() {
+		return (copilotController.getRawAxis(RobotMap.LeftXboxTrigger));
 	}
 
 	public double getRightXboxTrigger() {
