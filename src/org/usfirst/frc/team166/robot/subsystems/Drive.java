@@ -1,16 +1,17 @@
 package org.usfirst.frc.team166.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 //IMPORTS
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -75,7 +76,7 @@ public class Drive extends Subsystem {
 		leftRangefinder = new AnalogInput(RobotMap.Analog.LeftRangeFinder);
 
 		// YAWRATE SENSOR
-		gyro = new Gyro(RobotMap.Analog.Gryo);
+		gyro = new AnalogGyro(RobotMap.Analog.Gryo);
 
 		// ENCODER PORTS
 		frontLeftEncoder = new Encoder(RobotMap.Encoders.FrontLeftDriveA, RobotMap.Encoders.FrontLeftDriveB);
@@ -85,13 +86,13 @@ public class Drive extends Subsystem {
 
 		// ENCODER MATH
 		frontLeftEncoder.setDistancePerPulse(DistancePerPulse);
-		frontLeftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
+		frontLeftEncoder.setPIDSourceType(PIDSourceType.kRate);
 		frontRightEncoder.setDistancePerPulse(DistancePerPulse);
-		frontRightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
+		frontRightEncoder.setPIDSourceType(PIDSourceType.kRate);
 		rearLeftEncoder.setDistancePerPulse(DistancePerPulse);
-		rearLeftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
+		rearLeftEncoder.setPIDSourceType(PIDSourceType.kRate);
 		rearRightEncoder.setDistancePerPulse(DistancePerPulse);
-		rearRightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
+		rearRightEncoder.setPIDSourceType(PIDSourceType.kRate);
 
 		// PID SPEED CONTROLLERS
 		frontLeftPID = new PIDSpeedController(frontLeftEncoder, frontLeftTalon, "Drive", "Front Left");
@@ -149,8 +150,8 @@ public class Drive extends Subsystem {
 	}
 
 	private double getGyroOffset() {
-		double gyroOffset = (getGyro() * Preferences.getInstance().getDouble(RobotMap.Prefs.GyroStrafeConstant,
-				.01111111111));
+		double gyroOffset = (getGyro()
+				* Preferences.getInstance().getDouble(RobotMap.Prefs.GyroStrafeConstant, .01111111111));
 		// IF THE ABOSOLUTE VAL OF THE GYRO OFFSET IS LARGER THAN 1
 		if (Math.abs(gyroOffset) > 1) {
 			// SET THE GYRO OFFSET TO EITHER 1 OR -1
@@ -191,8 +192,8 @@ public class Drive extends Subsystem {
 		if (isUltrasonicDataGood()) {
 			robotDrive.mecanumDrive_Cartesian(
 					centerOffsetDistance
-					/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5), 0,
-					getGyroOffset(), 0);
+							/ Preferences.getInstance().getDouble(RobotMap.Prefs.CenterDistanceConstant, 27.5),
+					0, getGyroOffset(), 0);
 		} else {
 			stopMotors();
 		}
@@ -231,14 +232,14 @@ public class Drive extends Subsystem {
 
 	// RETURNS WHETHER OR NOT THE DRIVE MOTORS ARE STALLED
 	public boolean isStalled() {
-		return (Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontLeftDrive) > Preferences.getInstance().getDouble(
-				RobotMap.Prefs.StalledDriveCurrent, 20)
-				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance().getDouble(
-						RobotMap.Prefs.StalledDriveCurrent, 20)
-						|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance().getDouble(
-								RobotMap.Prefs.StalledDriveCurrent, 20) || Robot.pdBoard
-								.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance().getDouble(
-										RobotMap.Prefs.StalledDriveCurrent, 20));
+		return (Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontLeftDrive) > Preferences.getInstance()
+				.getDouble(RobotMap.Prefs.StalledDriveCurrent, 20)
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.FrontRightDrive) > Preferences.getInstance()
+						.getDouble(RobotMap.Prefs.StalledDriveCurrent, 20)
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearLeftDrive) > Preferences.getInstance()
+						.getDouble(RobotMap.Prefs.StalledDriveCurrent, 20)
+				|| Robot.pdBoard.getCurrent(RobotMap.Pwm.RearRightDrive) > Preferences.getInstance()
+						.getDouble(RobotMap.Prefs.StalledDriveCurrent, 20));
 	}
 
 	// CHECKS IF THE ULRASONIC DATA IS REASONABLE
@@ -249,8 +250,7 @@ public class Drive extends Subsystem {
 
 	// SETS UP THE GYRO
 	public void initGyro() {
-		gyro.initGyro();
-		gyro.setSensitivity(GyroSensitivity);
+		gyro.calibrate();
 	}
 
 	// RETURNS THE ANGLE AND RATE OF THE GYRO
@@ -303,7 +303,8 @@ public class Drive extends Subsystem {
 
 	public double getEncoderDistance() {
 		double distanceTraveledAverage = (-getDistanceTraveled(frontRightEncoder)
-				+ getDistanceTraveled(frontLeftEncoder) + -getDistanceTraveled(rearRightEncoder) + getDistanceTraveled(rearLeftEncoder)) / 4;
+				+ getDistanceTraveled(frontLeftEncoder) + -getDistanceTraveled(rearRightEncoder)
+				+ getDistanceTraveled(rearLeftEncoder)) / 4;
 		return distanceTraveledAverage;
 	}
 

@@ -3,7 +3,7 @@ package org.usfirst.frc.team166.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -51,7 +51,7 @@ public class Lift extends Subsystem {
 		LiveWindow.addSensor(subsystem, "Encoder", encoder);
 		LiveWindow.addSensor(subsystem, "Boundary Limit Switch", boundaryLimit);
 
-		encoder.setPIDSourceParameter(PIDSourceParameter.kRate);
+		encoder.setPIDSourceType(PIDSourceType.kRate);
 		pid = new PIDSpeedController(encoder, motor, subsystem, "Speed Control");
 		subsystemName = subsystem;
 	}
@@ -198,9 +198,8 @@ public class Lift extends Subsystem {
 	}
 
 	public boolean isMotorStuck(Lift lift) {
-		return (Math.abs(lift.encoder.getRate()) < Math.abs(Preferences.getInstance().getDouble(
-				RobotMap.Prefs.LiftEncoderMin, 1)))
-				&& Math.abs(pid.get()) > 0;
+		return (Math.abs(lift.encoder.getRate()) < Math
+				.abs(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftEncoderMin, 1))) && Math.abs(pid.get()) > 0;
 	}
 
 	@Override
