@@ -7,22 +7,20 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class StopToteLift extends Command {
+public class IncreaseToteCount extends Command {
 
-	public StopToteLift() {
-		requires(Robot.toteLift);
+	public IncreaseToteCount() {
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.toteLift.stop();
+		Robot.toteCount += 1;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.toteLift.updatePIDSetpoint(0);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

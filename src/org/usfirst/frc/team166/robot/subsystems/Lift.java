@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team166.robot.PIDSpeedController;
+import org.usfirst.frc.team166.robot.Robot;
 import org.usfirst.frc.team166.robot.RobotMap;
 
 /**
@@ -27,10 +28,16 @@ public class Lift extends Subsystem {
 	public String subsystemName;
 	double rcLiftUpDownAxis;
 	double toteLiftUpDownAxis;
+	double slowSpeed = .3;
+	double fastSpeed = .5;
 
 	// This enum describes the movement state of a lift.
 	public enum LiftMovement {
 		Stopped, Up, Down
+	}
+
+	public enum LiftDirection {
+		up, down
 	}
 
 	// This enum describes which carriage is pushing during a collision
@@ -56,11 +63,27 @@ public class Lift extends Subsystem {
 		subsystemName = subsystem;
 	}
 
-	// DON'T FORGET THAT MATT IS DUMB TOO
+	public double getPIDSetpoint() {
+		if (Robot.oi.getLeftXboxTrigger() > .75) {
+			return slowSpeed;
+		} else {
+			return fastSpeed;
+		}
+	}
+
+	public void updatePIDSetpoint(int direction) {
+		if (movementState != LiftMovement.Stopped) {
+			pid.set(direction * getPIDSetpoint());
+		} else {
+			pid.set(0);
+		}
+
+	}
+
 	public void moveUp() {
 		movementState = LiftMovement.Up;
 		releaseBrake();
-		pid.set(-getLiftSpeed());
+		updatePIDSetpoint(0);
 		SmartDashboard.putString(subsystemName + "Move state", enumToString());
 		SmartDashboard.putNumber(subsystemName, encoder.getRate());
 	}
@@ -76,7 +99,7 @@ public class Lift extends Subsystem {
 	public void moveDown() {
 		movementState = LiftMovement.Down;
 		releaseBrake();
-		pid.set(getLiftSpeed());
+		updatePIDSetpoint(0);
 		SmartDashboard.putString(subsystemName + "Move state", enumToString());
 		SmartDashboard.putNumber(subsystemName, encoder.getRate());
 	}
@@ -108,10 +131,8 @@ public class Lift extends Subsystem {
 		}
 	}
 
-	public boolean isAtTargetPos(double position) {
-		double tolerance = Preferences.getInstance().getDouble(RobotMap.Prefs.LiftPosTolerance, 10);
-
-		return (encoder.getDistance() < position + tolerance && encoder.getDistance() > position - tolerance);
+	public double getEncoderDistance() {
+		return encoder.getDistance();
 	}
 
 	// Given lift move states, decides which carriage is pushing in a collision, and sets WhichCarriageMoving
@@ -134,26 +155,42 @@ public class Lift extends Subsystem {
 		double d = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedD, 0);
 		double f = Preferences.getInstance().getDouble(subsystemName + RobotMap.Prefs.LiftSpeedF, 0);
 
-		pid.setConstants(.25, .75, 0, .95);
+		pid.setConstants(.1, .75, 0, .95);
 
 		// encoder.setDistancePerPulse(Preferences.getInstance().getDouble(
 		// subsystemName + RobotMap.Prefs.LiftDistPerPulse, .000611111));
-		encoder.setDistancePerPulse(.0006111111);
+		encoder.setDistancePerPulse(0.000143);
 		setBrake();
 
 	}
 
+	public void printToteCount() {
+		SmartDashboard.putNumber("Tote Count:", Robot.toteCount);
+	}
+
+	public void printPIDOutput() {
+		SmartDashboard.putNumber("PID Output", pid.get());
+	}
+
+	public void zeroPIDOutput() {
+		pid.pidWrite(0.0);
+	}
+
 	// Returns whether or not the lift boundary limit switch is hit
 	public boolean isBoundaryHit() {
-		return boundaryLimit.get();
+		return !boundaryLimit.get();
 	}
 
 	public LiftMovement getMoveState() {
 		return movementState;
 	}
 
+	public void printLiftState() {
+		SmartDashboard.putString("Movement State", enumToString());
+	}
+
 	// Activate brake
-	private void setBrake() {
+	protected void setBrake() {
 		brake.set(DoubleSolenoid.Value.kReverse);
 	}
 
@@ -163,15 +200,17 @@ public class Lift extends Subsystem {
 	}
 
 	public void resetEncoder() {
-		// encoder.reset();
+		encoder.reset();
 	}
 
 	// Get the max of the preference and zero so a negative doesn't change directions
 	private double getLiftSpeed() {
 		if (subsystemName == "Tote") {
-			return -Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+			// return -Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+			return -.65;
 		} else
-			return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+			// return Math.max(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftSpeed, 0), 0);
+			return .65;
 	}
 
 	private double getSlowLiftSpeed() {
@@ -202,8 +241,12 @@ public class Lift extends Subsystem {
 				.abs(Preferences.getInstance().getDouble(RobotMap.Prefs.LiftEncoderMin, 1))) && Math.abs(pid.get()) > 0;
 	}
 
+	public void printEncoderSpeed() {
+		SmartDashboard.putNumber("Lift Encoder Speed", encoder.getRate());
+	}
+
 	@Override
 	public void initDefaultCommand() {
-
+		// setDefaultCommand(new ZeroPIDOutput());
 	}
 }

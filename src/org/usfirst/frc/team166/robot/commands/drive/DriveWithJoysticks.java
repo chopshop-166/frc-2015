@@ -27,10 +27,14 @@ public class DriveWithJoysticks extends Command {
 		Robot.drive.mecanumDrive(Robot.oi.getDriveJoystick());
 		Robot.drive.printEncoderValues();
 		Robot.drive.getGyro();
-		Robot.drive.getFrontDistance();
-		Robot.drive.getRightDistance();
-		Robot.drive.getLeftDistance();
+		Robot.drive.printIRDistance();
+		Robot.drive.printRightLeftDistances();
+		Robot.toteLift.printToteCount();
+		Robot.rcLift.printLiftState();
+		Robot.rcLift.printPIDOutput();
+		Robot.rcLift.printEncoderSpeed();
 		SmartDashboard.putNumber("Distance Traveled", Robot.drive.getEncoderDistance());
+		SmartDashboard.putNumber("Distance To Tote", Robot.drive.distanceToTote());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

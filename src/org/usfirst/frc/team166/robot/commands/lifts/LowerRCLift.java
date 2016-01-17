@@ -22,6 +22,7 @@ public class LowerRCLift extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		Robot.rcLift.updatePIDSetpoint(1);
 		Robot.rcLift.printEncoderValues();
 
 	}
@@ -44,5 +45,6 @@ public class LowerRCLift extends Command {
 	@Override
 	protected void interrupted() {
 		Robot.rcLift.stop();
+		Robot.rcLift.resetEncoder();
 	}
 }

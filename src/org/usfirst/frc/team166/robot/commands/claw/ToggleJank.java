@@ -1,4 +1,4 @@
-package org.usfirst.frc.team166.robot.commands.lifts;
+package org.usfirst.frc.team166.robot.commands.claw;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -7,22 +7,21 @@ import org.usfirst.frc.team166.robot.Robot;
 /**
  *
  */
-public class StopToteLift extends Command {
+public class ToggleJank extends Command {
 
-	public StopToteLift() {
-		requires(Robot.toteLift);
+	public ToggleJank() {
+		requires(Robot.jankShank);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.toteLift.stop();
+		Robot.jankShank.Toggle();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.toteLift.updatePIDSetpoint(0);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
