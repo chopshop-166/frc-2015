@@ -61,4 +61,16 @@ public class PIDSpeedController implements SpeedController {
 		controller.reset();
 	}
 
+	@Override
+	public void setInverted(boolean isInverted) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean getInverted() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
